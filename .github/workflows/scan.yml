@@ -24,14 +24,18 @@ jobs:
           python-version: "3.11"
 
       - name: Install
-        run: pip install -e .
+        run: pip install -e . playwright
 
       - name: Run scan
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           PHONE_HASH_SALT: ${{ secrets.PHONE_HASH_SALT }}
-        run: python -m apt_scout --repo . --build-portal --portal-dir site
+          APT_SCOUT_BROWSER_HEADED: "1"
+        # Headed Chrome (channel="chrome", the runner's stock install - no
+        # `playwright install` download needed) requires a display; xvfb
+        # supplies a virtual one so tier-2 browser sniffing can run here.
+        run: xvfb-run --auto-servernum python -m apt_scout --repo . --build-portal --portal-dir site
 
       # State is committed first, and even when a later step fails: losing
       # notified-ids after alerts went out would mean duplicate alerts forever.
@@ -46,6 +50,7 @@ jobs:
           git push
 
       - name: Publish portal
+        if: ${{ hashFiles('site/index.html') != '' }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
