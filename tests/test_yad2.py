@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+import apt_scout.adapters.yad2 as yad2_module
 from apt_scout.adapters.base import AdapterResult
 from apt_scout.adapters.yad2 import Yad2Adapter, parse_yad2_payload
 from apt_scout.fetch import FetchError, FetchResult
@@ -153,3 +154,68 @@ class TestAdapter:
         result = Yad2Adapter().fetch(FakeFetcher(text="{}"), {}, since=None)
         assert result.listings == []
         assert "url_template" in result.error
+
+
+class TestBrowserFallback:
+    BASE_CONFIG = {
+        "url_template": "https://gw.yad2.co.il/x?minPrice={price_min}&maxPrice={price_max}",
+        "min_tier": "http",
+        "page_url_template": (
+            "https://www.yad2.co.il/realestate/rent"
+            "?minPrice={price_min}&maxPrice={price_max}&minRooms={rooms_min}"
+        ),
+        "price_min": 4000,
+        "price_max": 5500,
+        "rooms_min": 2,
+    }
+
+    def test_html_then_valid_sniff_payload_succeeds(self, monkeypatch):
+        calls = []
+
+        def fake_sniff(url, capture_substring, *args, **kwargs):
+            calls.append(url)
+            return json.dumps(sample_payload())
+
+        monkeypatch.setattr(yad2_module, "_sniff", fake_sniff)
+        fetcher = FakeFetcher(text="<html>blocked</html>")
+
+        result = Yad2Adapter().fetch(fetcher, dict(self.BASE_CONFIG), since=None)
+
+        assert result.error is None
+        assert len(result.listings) == 1
+        assert len(calls) == 1
+        assert "4000" in calls[0] and "5500" in calls[0]
+
+    def test_html_then_sniff_returns_none_reports_both_failures(self, monkeypatch):
+        monkeypatch.setattr(yad2_module, "_sniff", lambda *a, **k: None)
+        fetcher = FakeFetcher(text="<html>blocked</html>")
+
+        result = Yad2Adapter().fetch(fetcher, dict(self.BASE_CONFIG), since=None)
+
+        assert result.listings == []
+        assert "not JSON" in result.error
+        assert "browser fallback also failed" in result.error
+
+    def test_browser_fallback_disabled_skips_sniff(self, monkeypatch):
+        called = []
+        monkeypatch.setattr(yad2_module, "_sniff", lambda *a, **k: called.append(1))
+        fetcher = FakeFetcher(text="<html>blocked</html>")
+        config = dict(self.BASE_CONFIG, browser_fallback=False)
+
+        result = Yad2Adapter().fetch(fetcher, config, since=None)
+
+        assert called == []
+        assert result.listings == []
+        assert "not JSON" in result.error
+        assert "browser fallback" not in result.error
+
+    def test_successful_tier1_never_calls_sniff(self, monkeypatch):
+        called = []
+        monkeypatch.setattr(yad2_module, "_sniff", lambda *a, **k: called.append(1))
+        fetcher = FakeFetcher(text=json.dumps(sample_payload()))
+
+        result = Yad2Adapter().fetch(fetcher, dict(self.BASE_CONFIG), since=None)
+
+        assert called == []
+        assert result.error is None
+        assert len(result.listings) == 1

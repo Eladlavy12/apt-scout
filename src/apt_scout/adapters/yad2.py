@@ -4,10 +4,19 @@ import json
 from datetime import datetime
 from typing import Any
 
+from ..fetch_browser import sniff_json
 from ..models import Listing, Occupancy
 from .base import AdapterResult
 
 LISTING_URL = "https://www.yad2.co.il/realestate/item/{source_id}"
+
+# Substring identifying the JSON API call the search page's frontend makes;
+# used to pick that response out of everything else the page loads.
+_API_CAPTURE_SUBSTRING = "realestate-feed/rent/map"
+
+# Module-level reference so tests can monkeypatch the browser dependency
+# without needing to fake playwright itself.
+_sniff = sniff_json
 
 
 def _get(mapping: Any, *path: str) -> Any:
@@ -103,6 +112,38 @@ def parse_yad2_payload(payload: dict) -> list[Listing]:
 class Yad2Adapter:
     name = "yad2"
 
+    def _browser_fallback(self, config: dict) -> tuple[dict | None, bool]:
+        """Tier 2: drive a real browser through the search page and sniff the
+        JSON it requests.
+
+        Returns (payload, attempted). `attempted` is False when the fallback
+        was skipped outright (disabled, or no usable page_url_template) so the
+        caller can tell "we didn't try" from "we tried and it still failed" -
+        only the latter should change the error message reported upstream.
+        """
+        if not config.get("browser_fallback", True):
+            return None, False
+
+        template = config.get("page_url_template")
+        if not template:
+            return None, False
+        try:
+            page_url = template.format(
+                price_min=config.get("price_min", 0),
+                price_max=config.get("price_max", 100000),
+                rooms_min=config.get("rooms_min", 1),
+            )
+        except (KeyError, IndexError):
+            return None, False
+
+        text = _sniff(page_url, _API_CAPTURE_SUBSTRING)
+        if text is None:
+            return None, True
+        try:
+            return json.loads(text), True
+        except json.JSONDecodeError:
+            return None, True
+
     def fetch(self, fetcher, config: dict, since: datetime | None) -> AdapterResult:
         try:
             url = config["url_template"].format(
@@ -121,10 +162,11 @@ class Yad2Adapter:
         try:
             payload = json.loads(response.text)
         except json.JSONDecodeError as exc:
-            return AdapterResult(
-                source=self.name,
-                error=f"response was not JSON (tier {response.tier}): {exc}",
-            )
+            tier1_error = f"response was not JSON (tier {response.tier}): {exc}"
+            payload, attempted = self._browser_fallback(config)
+            if payload is None:
+                error = f"{tier1_error}; browser fallback also failed" if attempted else tier1_error
+                return AdapterResult(source=self.name, error=error)
 
         try:
             listings = parse_yad2_payload(payload)
