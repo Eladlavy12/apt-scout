@@ -148,3 +148,8 @@ class TestAdapter:
 
         assert result.listings == []
         assert result.error is not None
+
+    def test_missing_url_template_becomes_an_error_result(self):
+        result = Yad2Adapter().fetch(FakeFetcher(text="{}"), {}, since=None)
+        assert result.listings == []
+        assert "url_template" in result.error

@@ -104,11 +104,15 @@ class Yad2Adapter:
     name = "yad2"
 
     def fetch(self, fetcher, config: dict, since: datetime | None) -> AdapterResult:
-        url = config["url_template"].format(
-            price_min=config.get("price_min", 0),
-            price_max=config.get("price_max", 100000),
-            rooms_min=config.get("rooms_min", 1),
-        )
+        try:
+            url = config["url_template"].format(
+                price_min=config.get("price_min", 0),
+                price_max=config.get("price_max", 100000),
+                rooms_min=config.get("rooms_min", 1),
+            )
+        except (KeyError, IndexError) as exc:
+            return AdapterResult(source=self.name, error=f"bad source config: {exc}")
+
         try:
             response = fetcher.get(url, min_tier=config.get("min_tier", "http"))
         except Exception as exc:  # noqa: BLE001 - reported, never raised
