@@ -201,7 +201,8 @@ Four independent enrichers, each cached so work is never repeated:
   permanently by normalised address string.
 - **Drive-time** — driving minutes from the centre point via OSRM (free public
   instance, with a self-hosted fallback documented). Cached by coordinate pair
-  rounded to ~50 m. This is what implements the "15 minutes drive" criterion
+  rounded to three decimal places (~100 m), which keeps the cache hit rate high
+  without meaningfully affecting drive-time accuracy. This is what implements the "15 minutes drive" criterion
   faithfully rather than approximating it with a straight-line radius.
 - **Occupancy classifier** — decides whole-apartment vs. roommates vs. unsure from
   Hebrew keyword heuristics (`שותף`, `שותפה`, `שותפים`, `חדר בדירה`, `מחפשים שותף`).
