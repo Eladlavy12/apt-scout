@@ -1,8 +1,8 @@
 {
   "yad2": {
-    "consecutive_failures": 0,
-    "last_error": null,
-    "last_failure": null,
+    "consecutive_failures": 1,
+    "last_error": "response was not JSON (tier http): Expecting value: line 1 column 1 (char 0); browser fallback also failed",
+    "last_failure": "2026-08-31T17:32:18.814426+00:00",
     "last_success": "2026-08-31T17:30:18.027444+00:00"
   }
 }
