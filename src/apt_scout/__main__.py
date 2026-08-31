@@ -16,7 +16,7 @@ from .filters import Filters
 from .health import HealthTracker
 from .notify.commands import process_commands
 from .notify.telegram import TelegramNotifier
-from .pipeline import run_pipeline
+from .pipeline import RunReport, run_pipeline
 from .portal.builder import build_portal
 from .state import StateStore
 
@@ -56,6 +56,15 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
     )
     store = StateStore(repo_root / "state")
 
+    # The fetch window follows the alert filters (with a margin), so a
+    # threshold changed over Telegram widens what is fetched on the next run
+    # instead of being clipped by a stale sources.json.
+    yad2 = sources_config.get("yad2")
+    if yad2 is not None:
+        yad2["price_min"] = max(0, filters.min_price - 500)
+        yad2["price_max"] = filters.max_price + 500
+        yad2["rooms_min"] = filters.min_rooms
+
     if dry_run:
         notifier: Any = DryRunNotifier()
     else:
@@ -68,7 +77,15 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
             )
         notifier = TelegramNotifier(token, chat_id)
 
-    salt = env.get("PHONE_HASH_SALT", "apt-scout-default-salt")
+    salt = env.get("PHONE_HASH_SALT")
+    if not salt:
+        salt = "apt-scout-default-salt"
+        if not dry_run:
+            print(
+                "WARNING: PHONE_HASH_SALT is not set; "
+                "phone hashes use the built-in default salt",
+                file=sys.stderr,
+            )
     fetcher = Fetcher({"http": HttpTransport()}, ["http", "browser", "apify"])
     return Runtime(
         filters=filters,
@@ -80,6 +97,48 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
         enrichers=build_enrichers(store, salt=salt),
         chat_id=env.get("TELEGRAM_CHAT_ID"),
     )
+
+
+def should_build_portal(report: RunReport, sources_config: dict) -> bool:
+    """Whether this run produced something worth publishing.
+
+    A run in which every enabled source failed and nothing was fetched must
+    not replace the live portal with an empty page; keeping the previous
+    portal online is strictly better than showing a falsely quiet market.
+    """
+    if report.fetched > 0:
+        return True
+    enabled = [
+        name
+        for name, config in sources_config.items()
+        if config.get("enabled", True)
+    ]
+    if not enabled:
+        return True
+    return not all(name in report.errors for name in enabled)
+
+
+HEALTH_WARNED = "health_warned"
+FAILURE_WARNING_THRESHOLD = 3
+
+
+def warn_about_failing_sources(
+    store: StateStore, notifier: Any, threshold: int = FAILURE_WARNING_THRESHOLD
+) -> list[str]:
+    """Send one Telegram warning when a source starts failing repeatedly.
+
+    The already-warned set lives in state, so an hourly schedule does not
+    repeat the same warning every run; a recovery clears the flag, so a
+    relapse warns again.
+    """
+    failing = HealthTracker(store).failing_sources(threshold=threshold)
+    warned = store.load(HEALTH_WARNED, [])
+    newly_failing = [source for source in failing if source not in warned]
+    for source in newly_failing:
+        notifier.send_text(f"⚠️ מקור {source} נכשל {threshold} פעמים ברצף")
+    if sorted(failing) != sorted(warned):
+        store.save(HEALTH_WARNED, sorted(failing))
+    return newly_failing
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -119,14 +178,24 @@ def main(argv: list[str] | None = None) -> int:
         enrichers=runtime.enrichers,
     )
 
+    if not args.dry_run:
+        warn_about_failing_sources(runtime.store, runtime.notifier)
+
     if args.build_portal:
-        build_portal(
-            output_dir=Path(args.repo) / args.portal_dir,
-            listings=report.listings,
-            health=HealthTracker(runtime.store).report(),
-            filters=runtime.filters,
-            generated_at=datetime.now(timezone.utc),
-        )
+        if should_build_portal(report, runtime.sources_config):
+            build_portal(
+                output_dir=Path(args.repo) / args.portal_dir,
+                listings=report.listings,
+                health=HealthTracker(runtime.store).report(),
+                filters=runtime.filters,
+                generated_at=datetime.now(timezone.utc),
+            )
+        else:
+            print(
+                "WARNING: every enabled source failed; "
+                "keeping the previous portal instead of publishing an empty one",
+                file=sys.stderr,
+            )
 
     print(
         f"fetched={report.fetched} new={report.new} "

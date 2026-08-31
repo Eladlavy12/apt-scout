@@ -93,7 +93,7 @@ class TelegramNotifier:
     def send_listing(self, listing: Listing) -> bool:
         caption = format_listing(listing)
         if listing.photos:
-            return self._call(
+            sent = self._call(
                 "sendPhoto",
                 {
                     "chat_id": self._chat_id,
@@ -102,4 +102,7 @@ class TelegramNotifier:
                     "parse_mode": "HTML",
                 },
             )
+            if sent:
+                return True
+            # A dead photo URL must not cost the user the alert itself.
         return self.send_text(caption)

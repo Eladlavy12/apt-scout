@@ -60,6 +60,11 @@ class TestParseRooms:
     def test_word_form_half(self):
         assert parse_rooms("3 וחצי חדרים") == 3.5
 
+    def test_word_form_half_after_the_room_word(self):
+        # The digit before the room word must win over the bare "one and a
+        # half" reading, which used to swallow this as 1.5.
+        assert parse_rooms("3 חדרים וחצי") == 3.5
+
     def test_single_room_and_a_half(self):
         assert parse_rooms("חדר וחצי להשכרה") == 1.5
 

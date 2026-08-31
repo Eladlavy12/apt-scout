@@ -95,6 +95,22 @@ class TestSending:
         assert "SECRET" in url
         assert "SECRET" not in str(payload)
 
+    def test_falls_back_to_text_when_the_photo_send_fails(self):
+        # A dead photo URL makes sendPhoto fail; the alert itself must still
+        # arrive as plain text.
+        class PhotoRejectingClient(FakeClient):
+            def post(self, url, json=None):
+                self.calls.append((url, json))
+                return FakeResponse(ok=not url.endswith("/sendPhoto"))
+
+        client = PhotoRejectingClient()
+        notifier = TelegramNotifier("TOKEN", "CHAT", client=client)
+
+        assert notifier.send_listing(listing(photos=["https://img/1.jpg"])) is True
+
+        endpoints = [url.rsplit("/", 1)[1] for url, _ in client.calls]
+        assert endpoints == ["sendPhoto", "sendMessage"]
+
     def test_returns_false_on_api_failure(self):
         notifier = TelegramNotifier("T", "C", client=FakeClient(ok=False))
         assert notifier.send_listing(listing()) is False

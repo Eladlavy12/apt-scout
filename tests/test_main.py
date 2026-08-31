@@ -2,7 +2,15 @@ import json
 
 import pytest
 
-from apt_scout.__main__ import build_runtime, main
+from apt_scout.__main__ import (
+    build_runtime,
+    main,
+    should_build_portal,
+    warn_about_failing_sources,
+)
+from apt_scout.health import HealthTracker
+from apt_scout.pipeline import RunReport
+from apt_scout.state import StateStore
 
 
 @pytest.fixture
@@ -33,6 +41,130 @@ class TestRuntimeConstruction:
         runtime = build_runtime(repo, {}, dry_run=True)
         assert runtime.notifier.send_listing(None) is True
         assert runtime.notifier.sent == [None]
+
+
+class TestFetchWindowFollowsFilters:
+    def test_yad2_window_is_derived_from_the_filters_with_a_margin(self, repo):
+        (repo / "config" / "filters.json").write_text(
+            json.dumps({"min_price": 5000, "max_price": 7000, "min_rooms": 3}),
+            encoding="utf-8",
+        )
+        runtime = build_runtime(repo, {}, dry_run=True)
+        assert runtime.sources_config["yad2"]["price_min"] == 4500
+        assert runtime.sources_config["yad2"]["price_max"] == 7500
+        assert runtime.sources_config["yad2"]["rooms_min"] == 3
+
+    def test_the_price_floor_never_goes_negative(self, repo):
+        (repo / "config" / "filters.json").write_text(
+            json.dumps({"min_price": 300, "max_price": 7000}), encoding="utf-8"
+        )
+        runtime = build_runtime(repo, {}, dry_run=True)
+        assert runtime.sources_config["yad2"]["price_min"] == 0
+
+
+class TestPortalDecision:
+    def test_builds_when_anything_was_fetched(self):
+        report = RunReport(fetched=3, errors={"yad2": "blocked"})
+        assert should_build_portal(report, {"yad2": {"enabled": True}}) is True
+
+    def test_skips_when_every_enabled_source_failed(self):
+        report = RunReport(fetched=0, errors={"yad2": "blocked", "madlan": "down"})
+        sources = {"yad2": {"enabled": True}, "madlan": {"enabled": True}}
+        assert should_build_portal(report, sources) is False
+
+    def test_builds_when_one_enabled_source_was_merely_quiet(self):
+        # One source erroring while the other genuinely found nothing is a
+        # quiet market, not an outage.
+        report = RunReport(fetched=0, errors={"yad2": "blocked"})
+        sources = {"yad2": {"enabled": True}, "madlan": {"enabled": True}}
+        assert should_build_portal(report, sources) is True
+
+    def test_disabled_sources_do_not_count(self):
+        report = RunReport(fetched=0, errors={"yad2": "blocked"})
+        sources = {"yad2": {"enabled": True}, "madlan": {"enabled": False}}
+        assert should_build_portal(report, sources) is False
+
+    def test_main_skips_the_portal_on_total_source_failure(
+        self, repo, monkeypatch, capsys
+    ):
+        class Exploding:
+            name = "yad2"
+
+            def fetch(self, fetcher, config, since):
+                raise RuntimeError("blocked")
+
+        runtime = build_runtime(repo, {}, dry_run=True)
+        runtime.sources_config = {"yad2": {"enabled": True}}
+        runtime.adapters = [Exploding()]
+        monkeypatch.setattr(
+            "apt_scout.__main__.build_runtime", lambda *a, **k: runtime
+        )
+
+        assert main(["--repo", str(repo), "--dry-run", "--build-portal"]) == 0
+
+        assert not (repo / "site" / "index.html").exists()
+        assert "keeping the previous portal" in capsys.readouterr().err
+
+
+class TestHealthWarnings:
+    class RecordingNotifier:
+        def __init__(self):
+            self.texts = []
+
+        def send_text(self, text):
+            self.texts.append(text)
+            return True
+
+    def fail(self, store, source="yad2", times=3):
+        tracker = HealthTracker(store)
+        for _ in range(times):
+            tracker.record(source, ok=False, error="blocked")
+
+    def test_warns_once_when_a_source_reaches_the_threshold(self, tmp_path):
+        store = StateStore(tmp_path)
+        self.fail(store)
+        notifier = self.RecordingNotifier()
+
+        warn_about_failing_sources(store, notifier)
+        warn_about_failing_sources(store, notifier)
+
+        assert notifier.texts == ["⚠️ מקור yad2 נכשל 3 פעמים ברצף"]
+
+    def test_below_the_threshold_stays_silent(self, tmp_path):
+        store = StateStore(tmp_path)
+        self.fail(store, times=2)
+        notifier = self.RecordingNotifier()
+        warn_about_failing_sources(store, notifier)
+        assert notifier.texts == []
+
+    def test_recovery_clears_the_flag_so_a_relapse_warns_again(self, tmp_path):
+        store = StateStore(tmp_path)
+        notifier = self.RecordingNotifier()
+
+        self.fail(store)
+        warn_about_failing_sources(store, notifier)
+        HealthTracker(store).record("yad2", ok=True)
+        warn_about_failing_sources(store, notifier)
+        self.fail(store)
+        warn_about_failing_sources(store, notifier)
+
+        assert len(notifier.texts) == 2
+
+
+class TestSaltWarning:
+    ENV = {"TELEGRAM_BOT_TOKEN": "t", "TELEGRAM_CHAT_ID": "c"}
+
+    def test_missing_salt_warns_on_stderr(self, repo, capsys):
+        build_runtime(repo, dict(self.ENV))
+        assert "PHONE_HASH_SALT" in capsys.readouterr().err
+
+    def test_no_warning_when_the_salt_is_set(self, repo, capsys):
+        build_runtime(repo, {**self.ENV, "PHONE_HASH_SALT": "pepper"})
+        assert capsys.readouterr().err == ""
+
+    def test_dry_run_does_not_warn(self, repo, capsys):
+        build_runtime(repo, {}, dry_run=True)
+        assert capsys.readouterr().err == ""
 
 
 class TestMain:

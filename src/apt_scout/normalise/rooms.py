@@ -10,6 +10,7 @@ ROOMS_MAX = 15.0
 _ROOM_WORD = r"(?:חדרים|חדרי|חדר|חד['׳\"]?)"
 
 _NUMBER_AND_HALF = re.compile(rf"(\d+)\s*ו?\s*חצי\s*{_ROOM_WORD}")
+_NUMBER_THEN_HALF = re.compile(rf"(\d+)\s*{_ROOM_WORD}\s*ו?\s*חצי")
 _ONE_AND_HALF = re.compile(rf"{_ROOM_WORD}\s*ו?\s*חצי")
 _PLAIN = re.compile(rf"(\d+(?:[.,]\d+)?)\s*{_ROOM_WORD}")
 
@@ -21,6 +22,12 @@ def parse_rooms(text: str | None) -> float | None:
     cleaned = normalise_text(text)
 
     match = _NUMBER_AND_HALF.search(cleaned)
+    if match:
+        return _validate(float(match.group(1)) + 0.5)
+
+    # "3 חדרים וחצי" — a digit before the room word takes precedence over the
+    # bare "one and a half" reading.
+    match = _NUMBER_THEN_HALF.search(cleaned)
     if match:
         return _validate(float(match.group(1)) + 0.5)
 
