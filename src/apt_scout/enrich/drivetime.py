@@ -18,6 +18,14 @@ _PRECISION = 3
 _MISS = "miss"
 
 
+class _TransportError(Exception):
+    """The request itself failed — an outage, not an unroutable location.
+
+    Kept distinct from a genuine no-route so a one-hour OSRM blip does not
+    get cached as "unreachable" forever.
+    """
+
+
 class DriveTimeCalculator:
     """Driving minutes from the centre point, via OSRM, cached.
 
@@ -45,7 +53,12 @@ class DriveTimeCalculator:
             cached = self._cache[key]
             return None if cached == _MISS else cached
 
-        minutes = self._query(lat, lon)
+        try:
+            minutes = self._query(lat, lon)
+        except _TransportError:
+            # Transient failure: not cached, so the next run retries.
+            return None
+
         self._cache[key] = _MISS if minutes is None else minutes
         self._store.save(CACHE, self._cache)
         return minutes
@@ -57,11 +70,17 @@ class DriveTimeCalculator:
         try:
             response = self._client.get(url, params={"overview": "false"})
             payload = response.json()
+        except Exception as exc:  # noqa: BLE001 - an outage must not fail a run
+            raise _TransportError(str(exc)) from exc
+
+        # A response we got but cannot understand is a genuine miss: OSRM
+        # answered, there is just no usable route in it.
+        try:
             routes = payload.get("routes") or []
             if not routes:
                 return None
             duration = routes[0].get("duration")
-        except Exception:  # noqa: BLE001 - a routing outage must not fail a run
+        except (AttributeError, TypeError, IndexError):
             return None
 
         if not isinstance(duration, (int, float)):

@@ -49,9 +49,14 @@ class TestGeocoding:
         assert build(tmp_path, client).geocode(None) is None
         assert client.calls == [], "must not call the API for empty input"
 
-    def test_network_failure_returns_none(self, tmp_path):
-        geocoder = build(tmp_path, FakeClient(raises=RuntimeError("down")))
+    def test_network_failure_returns_none_and_is_retried(self, tmp_path):
+        # A transient outage must not be cached as "address does not exist":
+        # the next lookup hits the API again.
+        client = FakeClient(raises=RuntimeError("down"))
+        geocoder = build(tmp_path, client)
         assert geocoder.geocode("הרצל 10") is None
+        assert geocoder.geocode("הרצל 10") is None
+        assert len(client.calls) == 2, "a transport failure must not be cached"
 
 
 class TestCaching:

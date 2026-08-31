@@ -65,9 +65,21 @@ class TestFailures:
         calc = build(tmp_path, FakeClient({"code": "NoRoute", "routes": []}))
         assert calc.minutes_from_centre(32.07, 34.79) is None
 
-    def test_network_failure_returns_none(self, tmp_path):
-        calc = build(tmp_path, FakeClient(raises=RuntimeError("down")))
+    def test_network_failure_returns_none_and_is_retried(self, tmp_path):
+        # A transient outage must not be cached as "unreachable": the next
+        # lookup hits the API again.
+        client = FakeClient(raises=RuntimeError("down"))
+        calc = build(tmp_path, client)
         assert calc.minutes_from_centre(32.07, 34.79) is None
+        assert calc.minutes_from_centre(32.07, 34.79) is None
+        assert len(client.calls) == 2, "a transport failure must not be cached"
+
+    def test_a_genuine_no_route_is_cached(self, tmp_path):
+        client = FakeClient({"code": "NoRoute", "routes": []})
+        calc = build(tmp_path, client)
+        assert calc.minutes_from_centre(32.07, 34.79) is None
+        assert calc.minutes_from_centre(32.07, 34.79) is None
+        assert len(client.calls) == 1
 
     def test_malformed_payload_shapes_return_none(self, tmp_path):
         for payload in (None, [], {"routes": [None]}, {"routes": "bad"}):

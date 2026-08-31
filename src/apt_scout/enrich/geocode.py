@@ -16,6 +16,14 @@ USER_AGENT = "apt-scout/0.1 (personal apartment search)"
 _MISS = "miss"
 
 
+class _TransportError(Exception):
+    """The request itself failed — an outage, not an unresolvable address.
+
+    Kept distinct from a genuine miss so a one-hour network blip does not get
+    cached as "this address does not exist" forever.
+    """
+
+
 class Geocoder:
     """Address to coordinates via Nominatim, cached and rate limited."""
 
@@ -47,7 +55,11 @@ class Geocoder:
             return None if cached == _MISS else (cached[0], cached[1])
 
         self._throttle()
-        result = self._lookup(key)
+        try:
+            result = self._lookup(key)
+        except _TransportError:
+            # Transient failure: not cached, so the next run retries.
+            return None
 
         self._cache[key] = _MISS if result is None else [result[0], result[1]]
         self._store.save(CACHE, self._cache)
@@ -72,8 +84,8 @@ class Geocoder:
                 headers={"User-Agent": USER_AGENT},
             )
             payload = response.json()
-        except Exception:  # noqa: BLE001 - a geocoding outage must not fail a run
-            return None
+        except Exception as exc:  # noqa: BLE001 - an outage must not fail a run
+            raise _TransportError(str(exc)) from exc
 
         if not payload:
             return None
