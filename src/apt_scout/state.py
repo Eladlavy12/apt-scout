@@ -44,11 +44,30 @@ class StateStore:
         )
         os.replace(tmp, path)
 
+    def first_seen(self) -> dict[str, str]:
+        """Mapping of stable id to first-seen ISO timestamp.
+
+        The legacy on-disk form was a bare list of ids; it is read as entries
+        with an empty timestamp, so old state keeps working after an upgrade.
+        """
+        raw = self.load(SEEN, {})
+        if isinstance(raw, list):
+            return {item: "" for item in raw}
+        return dict(raw)
+
     def seen_ids(self) -> set[str]:
-        return set(self.load(SEEN, []))
+        return set(self.first_seen())
+
+    def record_seen(self, entries: dict[str, str]) -> None:
+        """Merge NEW entries into the seen map.
+
+        An id that is already recorded keeps its original timestamp — the
+        whole point of storing it is that it never changes afterwards.
+        """
+        self.save(SEEN, {**entries, **self.first_seen()})
 
     def mark_seen(self, ids: Iterable[str]) -> None:
-        self.save(SEEN, sorted(self.seen_ids() | set(ids)))
+        self.record_seen({item: "" for item in ids})
 
     def notified_ids(self) -> set[str]:
         return set(self.load(NOTIFIED, []))

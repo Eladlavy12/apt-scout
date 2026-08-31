@@ -146,6 +146,131 @@ class TestSourceToggles:
         assert notifier.sent == []
 
 
+class TestIntraRunDedup:
+    def test_the_same_listing_twice_in_one_run_notifies_once(self, tmp_path):
+        notifier = RecordingNotifier()
+        report = run(
+            [StubAdapter("yad2", [listing(), listing()])],
+            StateStore(tmp_path),
+            notifier,
+        )
+        assert report.fetched == 2
+        assert report.matched == 1
+        assert report.notified == 1
+        assert len(notifier.sent) == 1
+
+
+class TestFirstSeenPersistence:
+    def test_first_seen_survives_across_runs(self, tmp_path):
+        from datetime import datetime, timezone
+
+        store = StateStore(tmp_path)
+        adapters = [StubAdapter("yad2", [listing()])]
+        first_run = datetime(2026, 8, 30, 10, 0, tzinfo=timezone.utc)
+        second_run = datetime(2026, 8, 31, 10, 0, tzinfo=timezone.utc)
+
+        run_pipeline(
+            adapters=adapters,
+            fetcher=None,
+            sources_config={"yad2": {"enabled": True}},
+            filters=Filters(),
+            store=store,
+            notifier=RecordingNotifier(),
+            now=first_run,
+        )
+        report = run_pipeline(
+            adapters=[StubAdapter("yad2", [listing()])],
+            fetcher=None,
+            sources_config={"yad2": {"enabled": True}},
+            filters=Filters(),
+            store=store,
+            notifier=RecordingNotifier(),
+            now=second_run,
+        )
+
+        assert report.new == 0
+        assert report.listings[0].first_seen_at == first_run
+
+    def test_legacy_list_form_seen_state_still_works(self, tmp_path):
+        import json
+
+        (tmp_path / "seen.json").write_text(json.dumps(["yad2:1"]), encoding="utf-8")
+        store = StateStore(tmp_path)
+
+        report = run([StubAdapter("yad2", [listing()])], store, RecordingNotifier())
+
+        assert report.new == 0
+        assert report.listings[0].first_seen_at is None
+
+
+class TestNotifyPersistence:
+    def test_a_sent_alert_is_recorded_before_the_run_finishes(self, tmp_path):
+        # Simulate a crash mid-loop: the second send blows up, yet the first
+        # alert must already be on disk so it is never sent twice.
+        import pytest
+
+        store = StateStore(tmp_path)
+
+        class ExplodesOnSecondSend:
+            def __init__(self):
+                self.count = 0
+
+            def send_listing(self, item):
+                self.count += 1
+                if self.count > 1:
+                    raise RuntimeError("crash mid-run")
+                return True
+
+        with pytest.raises(RuntimeError):
+            run(
+                [StubAdapter("yad2", [listing("1"), listing("2")])],
+                store,
+                ExplodesOnSecondSend(),
+            )
+
+        assert StateStore(tmp_path).notified_ids() == {"yad2:1"}
+
+
+class TestEnricherIsolation:
+    def test_a_raising_enricher_does_not_stop_the_run(self, tmp_path):
+        def explode(item):
+            raise ValueError("bad data")
+
+        notifier = RecordingNotifier()
+        report = run_pipeline(
+            adapters=[StubAdapter("yad2", [listing()])],
+            fetcher=None,
+            sources_config={"yad2": {"enabled": True}},
+            filters=Filters(),
+            store=StateStore(tmp_path),
+            notifier=notifier,
+            enrichers=[explode],
+        )
+
+        assert report.errors["enrich:yad2:1"] == "ValueError: bad data"
+        assert len(report.listings) == 1, "the listing is kept, partially enriched"
+        assert report.notified == 1, "it still flows through filtering and alerts"
+
+    def test_only_the_first_enrich_error_is_recorded_per_listing(self, tmp_path):
+        def explode_a(item):
+            raise ValueError("first")
+
+        def explode_b(item):
+            raise ValueError("second")
+
+        report = run_pipeline(
+            adapters=[StubAdapter("yad2", [listing()])],
+            fetcher=None,
+            sources_config={"yad2": {"enabled": True}},
+            filters=Filters(),
+            store=StateStore(tmp_path),
+            notifier=RecordingNotifier(),
+            enrichers=[explode_a, explode_b],
+        )
+
+        assert report.errors["enrich:yad2:1"] == "ValueError: first"
+
+
 class TestEnrichment:
     def test_enrichers_run_before_filtering(self, tmp_path):
         # A listing 40 minutes away must be rejected, which can only happen if

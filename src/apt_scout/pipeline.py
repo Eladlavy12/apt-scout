@@ -67,19 +67,45 @@ def run_pipeline(
 
     report.fetched = len(collected)
 
-    already_notified = store.notified_ids()
-    seen = store.seen_ids()
-
-    newly_notified: list[str] = []
-    enriched: list[Listing] = []
+    # The same advertisement can arrive twice in one run (overlapping pages,
+    # or two adapters for one site). First occurrence wins.
+    deduped: list[Listing] = []
+    ids_this_run: set[str] = set()
     for listing in collected:
         listing_id = listing.stable_id()
-        if listing_id not in seen:
+        if listing_id in ids_this_run:
+            continue
+        ids_this_run.add(listing_id)
+        deduped.append(listing)
+
+    already_notified = store.notified_ids()
+    first_seen = store.first_seen()
+
+    new_seen: dict[str, str] = {}
+    enriched: list[Listing] = []
+    for listing in deduped:
+        listing_id = listing.stable_id()
+        if listing_id in first_seen:
+            stored = first_seen[listing_id]
+            if stored:
+                try:
+                    listing.first_seen_at = datetime.fromisoformat(stored)
+                except ValueError:
+                    pass  # unreadable timestamp is not worth failing a run
+        else:
             listing.first_seen_at = now
+            new_seen[listing_id] = now.isoformat()
             report.new += 1
 
+        # Enrichers are isolated like adapters: one bad listing (or one flaky
+        # enrichment service) degrades that listing, never the whole run.
         for enrich in enrichers:
-            listing = enrich(listing)
+            try:
+                listing = enrich(listing)
+            except Exception as exc:  # noqa: BLE001 - isolation is the point
+                report.errors.setdefault(
+                    f"enrich:{listing_id}", f"{type(exc).__name__}: {exc}"
+                )
         enriched.append(listing)
 
         if not filters.matches(listing):
@@ -89,13 +115,13 @@ def run_pipeline(
         if listing_id in already_notified:
             continue
         if notifier.send_listing(listing):
-            newly_notified.append(listing_id)
+            # Persisted immediately: a crash later in the loop must never
+            # un-record an alert that was already delivered.
+            store.mark_notified([listing_id])
             report.notified += 1
 
     report.listings = enriched
 
-    store.mark_seen(item.stable_id() for item in collected)
-    if newly_notified:
-        store.mark_notified(newly_notified)
+    store.record_seen(new_seen)
 
     return report

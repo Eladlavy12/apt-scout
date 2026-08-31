@@ -49,6 +49,38 @@ class TestSeenTracking:
         assert store.seen_ids() == {"yad2:1", "yad2:2"}
 
 
+class TestFirstSeenTimestamps:
+    def test_record_seen_stores_the_timestamp(self, tmp_path):
+        store = StateStore(tmp_path)
+        store.record_seen({"yad2:1": "2026-08-31T10:00:00+00:00"})
+        assert StateStore(tmp_path).first_seen() == {
+            "yad2:1": "2026-08-31T10:00:00+00:00"
+        }
+
+    def test_an_existing_entry_keeps_its_original_timestamp(self, tmp_path):
+        store = StateStore(tmp_path)
+        store.record_seen({"yad2:1": "2026-08-30T10:00:00+00:00"})
+        store.record_seen({"yad2:1": "2026-08-31T10:00:00+00:00"})
+        assert store.first_seen()["yad2:1"] == "2026-08-30T10:00:00+00:00"
+
+    def test_legacy_list_form_loads_as_empty_timestamps(self, tmp_path):
+        (tmp_path / "seen.json").write_text(
+            json.dumps(["yad2:1", "yad2:2"]), encoding="utf-8"
+        )
+        store = StateStore(tmp_path)
+        assert store.seen_ids() == {"yad2:1", "yad2:2"}
+        assert store.first_seen() == {"yad2:1": "", "yad2:2": ""}
+
+    def test_legacy_entries_survive_new_records(self, tmp_path):
+        (tmp_path / "seen.json").write_text(json.dumps(["yad2:1"]), encoding="utf-8")
+        store = StateStore(tmp_path)
+        store.record_seen({"yad2:2": "2026-08-31T10:00:00+00:00"})
+        assert store.first_seen() == {
+            "yad2:1": "",
+            "yad2:2": "2026-08-31T10:00:00+00:00",
+        }
+
+
 class TestNotifiedTracking:
     def test_notified_is_separate_from_seen(self, tmp_path):
         store = StateStore(tmp_path)
