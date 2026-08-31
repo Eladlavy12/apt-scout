@@ -57,13 +57,13 @@ class DriveTimeCalculator:
         try:
             response = self._client.get(url, params={"overview": "false"})
             payload = response.json()
+            routes = payload.get("routes") or []
+            if not routes:
+                return None
+            duration = routes[0].get("duration")
         except Exception:  # noqa: BLE001 - a routing outage must not fail a run
             return None
 
-        routes = payload.get("routes") or []
-        if not routes:
-            return None
-        duration = routes[0].get("duration")
         if not isinstance(duration, (int, float)):
             return None
         return round(duration / 60.0, 1)

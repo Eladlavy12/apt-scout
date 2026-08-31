@@ -69,6 +69,11 @@ class TestFailures:
         calc = build(tmp_path, FakeClient(raises=RuntimeError("down")))
         assert calc.minutes_from_centre(32.07, 34.79) is None
 
+    def test_malformed_payload_shapes_return_none(self, tmp_path):
+        for payload in (None, [], {"routes": [None]}, {"routes": "bad"}):
+            calc = build(tmp_path, FakeClient(payload))
+            assert calc.minutes_from_centre(32.07, 34.79) is None
+
 
 class TestCaching:
     def test_identical_coordinates_hit_the_api_once(self, tmp_path):
