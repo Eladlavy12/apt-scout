@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from .adapters.yad2 import Yad2Adapter
+from .enrich.pipeline_enrichers import build_enrichers
 from .fetch import Fetcher, HttpTransport
 from .filters import Filters
 from .notify.telegram import TelegramNotifier
@@ -19,10 +20,10 @@ from .state import StateStore
 class DryRunNotifier:
     """Records what would have been sent, so runs can be rehearsed safely."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.sent: list[Any] = []
 
-    def send_listing(self, listing) -> bool:
+    def send_listing(self, listing: Any) -> bool:
         self.sent.append(listing)
         return True
 
@@ -39,6 +40,7 @@ class Runtime:
     notifier: Any
     fetcher: Fetcher
     adapters: list
+    enrichers: list
 
 
 def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
@@ -61,6 +63,7 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
             )
         notifier = TelegramNotifier(token, chat_id)
 
+    salt = env.get("PHONE_HASH_SALT", "apt-scout-default-salt")
     fetcher = Fetcher({"http": HttpTransport()}, ["http", "browser", "apify"])
     return Runtime(
         filters=filters,
@@ -69,6 +72,7 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
         notifier=notifier,
         fetcher=fetcher,
         adapters=[Yad2Adapter()],
+        enrichers=build_enrichers(store, salt=salt),
     )
 
 
@@ -90,6 +94,7 @@ def main(argv: list[str] | None = None) -> int:
         filters=runtime.filters,
         store=runtime.store,
         notifier=runtime.notifier,
+        enrichers=runtime.enrichers,
     )
 
     print(
