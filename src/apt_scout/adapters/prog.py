@@ -308,9 +308,11 @@ class ProgAdapter:
         # tuple key keeps this from ever comparing a timezone-aware date
         # (parsed from the board's "+0300" offsets) to a naive sentinel,
         # which raises TypeError - dateless entries just sort as "oldest".
-        def _sort_key(entry: dict) -> tuple[int, str]:
+        def _sort_key(entry: dict) -> tuple[int, float]:
             moment = entry.get("date")
-            return (1, moment.isoformat()) if moment is not None else (0, "")
+            # timestamp() compares true instants, so entries straddling a DST
+            # offset change still order chronologically.
+            return (1, moment.timestamp()) if moment is not None else (0, 0.0)
 
         sorted_entries = sorted(active_entries, key=_sort_key, reverse=True)
 
