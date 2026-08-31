@@ -81,6 +81,19 @@ class TestParsing:
         priced = [l for l in listings if l.price is not None]
         assert priced, "real fixture must contain priced listings"
 
+    def test_address_includes_neighborhood(self):
+        item = sample_item()
+        item["address"]["en"]["neighborhood"] = "Yad Eliyahu"
+        listing = parse_onmap_payload([item])[0]
+        assert "Yad Eliyahu" in listing.address_text
+
+    def test_falls_back_to_thumbnail_when_no_images(self):
+        item = sample_item()
+        item["images"] = []
+        item["thumbnail"] = "https://img.onmap.co.il/thumb.jpg"
+        listing = parse_onmap_payload([item])[0]
+        assert listing.photos == ["https://img.onmap.co.il/thumb.jpg"]
+
 
 class FakeFetcher:
     def __init__(self, text=None, error=None):

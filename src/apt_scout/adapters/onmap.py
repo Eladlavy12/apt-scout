@@ -44,6 +44,7 @@ def _address_text(item: dict) -> str | None:
     parts = [
         _get(item, "address", "en", "street_name"),
         _get(item, "address", "en", "house_number"),
+        _get(item, "address", "en", "neighborhood"),
         _get(item, "address", "en", "city_name"),
     ]
     joined = " ".join(str(part) for part in parts if part)
@@ -77,6 +78,11 @@ def _parse_items(items: Any) -> list[Listing]:
             for img in images
             if isinstance(img, dict) and isinstance(img.get("full"), str)
         ]
+        # Fall back to thumbnail if no images were found
+        if not photos:
+            thumbnail = item.get("thumbnail")
+            if isinstance(thumbnail, str):
+                photos = [thumbnail]
 
         listings.append(
             Listing(
