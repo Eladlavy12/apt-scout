@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from typing import Any
 
 from .filters import Filters
 from .health import HealthTracker
@@ -23,11 +24,11 @@ class RunReport:
 
 def run_pipeline(
     adapters: Iterable,
-    fetcher,
+    fetcher: Any,
     sources_config: dict,
     filters: Filters,
     store: StateStore,
-    notifier,
+    notifier: Any,
     enrichers: list[Enricher] | None = None,
     now: datetime | None = None,
 ) -> RunReport:
@@ -88,7 +89,7 @@ def run_pipeline(
             newly_notified.append(listing_id)
             report.notified += 1
 
-    store.mark_seen(l.stable_id() for l in collected)
+    store.mark_seen(item.stable_id() for item in collected)
     if newly_notified:
         store.mark_notified(newly_notified)
 

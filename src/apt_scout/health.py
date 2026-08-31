@@ -14,7 +14,7 @@ class HealthTracker:
     quiet rental market — the most dangerous failure mode this system has.
     """
 
-    def __init__(self, store: StateStore):
+    def __init__(self, store: StateStore) -> None:
         self._store = store
         self._data: dict = store.load(HEALTH, {})
 
