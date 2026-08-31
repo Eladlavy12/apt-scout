@@ -23,6 +23,10 @@ class TestLoadSave:
         (tmp_path / "broken.json").write_text("{not json", encoding="utf-8")
         assert StateStore(tmp_path).load("broken", {"safe": True}) == {"safe": True}
 
+    def test_non_utf8_bytes_fall_back_to_default(self, tmp_path):
+        (tmp_path / "binary.json").write_bytes(b"\xff\xfe\x00garbage")
+        assert StateStore(tmp_path).load("binary", {"safe": True}) == {"safe": True}
+
     def test_save_is_atomic_leaving_no_temp_files(self, tmp_path):
         store = StateStore(tmp_path)
         store.save("thing", {"a": 1})

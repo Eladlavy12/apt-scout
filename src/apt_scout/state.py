@@ -18,7 +18,7 @@ class StateStore:
     truncated state behind.
     """
 
-    def __init__(self, root: Path):
+    def __init__(self, root: Path) -> None:
         self.root = Path(root)
         self.root.mkdir(parents=True, exist_ok=True)
 
@@ -31,7 +31,7 @@ class StateStore:
             return default
         try:
             return json.loads(path.read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, OSError):
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
             # Corrupt state must not stop a run; git history holds the good copy.
             return default
 
