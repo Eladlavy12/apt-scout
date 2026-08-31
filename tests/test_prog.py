@@ -40,6 +40,11 @@ def structitem_html(
         if city_badge
         else ""
     )
+    date_html = (
+        f'<div class="structItem-startDate"><time datetime="{date_iso}">x</time></div>'
+        if date_iso
+        else ""
+    )
     return f"""
     <div class="{' '.join(classes)}">
       <div class="structItem-title">
@@ -47,7 +52,7 @@ def structitem_html(
         <a href="/classifieds/listing-slug.{listing_id}/">{title}</a>
         <span class="label--primary label--smallest">{price_label}</span>
       </div>
-      <div class="structItem-startDate"><time datetime="{date_iso}">x</time></div>
+      {date_html}
     </div>
     """
 
@@ -98,6 +103,22 @@ class TestBoardParsing:
 
         assert all(e["url"].startswith("https://www.prog.co.il") for e in entries)
         assert all(e["id"].isdigit() for e in entries)
+
+        # is-expired pitfall: id 67741 carries the "is-expired" class on its
+        # blocks in the real fixture and must be flagged, not dropped, at
+        # parse level (filtering expired entries out is the adapter's job).
+        by_id = {e["id"]: e for e in entries}
+        assert by_id["67741"]["is_expired"] is True
+
+    def test_expired_entry_flagged_is_expired_true(self):
+        html = board_html(structitem_html("888", expired=True))
+        entry = parse_prog_board(html)[0]
+        assert entry["is_expired"] is True
+
+    def test_non_expired_entry_flagged_is_expired_false(self):
+        html = board_html(structitem_html("999", expired=False))
+        entry = parse_prog_board(html)[0]
+        assert entry["is_expired"] is False
 
     def test_dedupes_by_id_first_occurrence_wins(self):
         html = board_html(
@@ -405,3 +426,52 @@ class TestAdapter:
 
     def test_name_is_prog(self):
         assert ProgAdapter().name == "prog"
+
+    def test_mixed_dated_and_dateless_entries_sort_without_crash_dated_first(self):
+        """Regression: sorting mixed aware/naive dates used to raise TypeError
+        out of fetch() (adapters must never raise). A dateless entry now
+        sorts as oldest, so the dated entry's detail is fetched first."""
+        html = board_html(
+            structitem_html("321", date_iso=None),
+            structitem_html("654", date_iso="2026-08-20T10:00:00+0300"),
+        )
+        detail_map = {_detail_url("654"): _detail_html(rooms="5")}
+        fetcher = CapturingFetcher(board_text=html, detail_map=detail_map)
+        config = {"board_url": TEST_BOARD_URL, "max_details": 1}
+
+        result = ProgAdapter().fetch(fetcher, config, since=None)
+
+        assert result.error is None
+        assert len(result.listings) == 2
+        detail_requests = [u for u in fetcher.requested if u != TEST_BOARD_URL]
+        # only one detail fetch was budgeted, and it went to the dated entry
+        assert detail_requests == [_detail_url("654")]
+
+    def test_expired_entry_excluded_from_adapter_results(self):
+        html = board_html(
+            structitem_html("888", date_iso="2026-08-20T10:00:00+0300", expired=True),
+            structitem_html("999", date_iso="2026-08-21T10:00:00+0300", expired=False),
+        )
+        fetcher = CapturingFetcher(board_text=html)
+        config = {"board_url": TEST_BOARD_URL, "max_details": 0}
+
+        result = ProgAdapter().fetch(fetcher, config, since=None)
+
+        assert result.error is None
+        result_ids = {l.source_id for l in result.listings}
+        assert result_ids == {"999"}
+
+    def test_real_fixture_adapter_excludes_expired_entries(self):
+        html = BOARD_FIXTURE.read_text(encoding="utf-8")
+        parsed_entries = parse_prog_board(html)
+        active_count = sum(1 for e in parsed_entries if not e["is_expired"])
+
+        fetcher = CapturingFetcher(board_text=html)
+        config = {"board_url": TEST_BOARD_URL, "max_details": 0}
+
+        result = ProgAdapter().fetch(fetcher, config, since=None)
+
+        assert result.error is None
+        assert len(result.listings) == active_count
+        result_ids = {l.source_id for l in result.listings}
+        assert "67741" not in result_ids

@@ -115,6 +115,9 @@ def _parse_board_item(node: Tag) -> dict | None:
     date_time = node.select_one(".structItem-startDate time")
     date_iso = date_time.get("datetime") if date_time else None
 
+    node_classes = node.get("class") or []
+    is_expired = "is-expired" in node_classes
+
     return {
         "id": listing_id,
         "url": _absolute_url(href),
@@ -123,6 +126,7 @@ def _parse_board_item(node: Tag) -> dict | None:
         "price": _price_from_text(price_text),
         "city_badge": city_badge,
         "date": _posted_at_from_iso(date_iso if isinstance(date_iso, str) else None),
+        "is_expired": is_expired,
     }
 
 
@@ -134,6 +138,11 @@ def parse_prog_board(html: str) -> list[dict]:
     again in normal chronological position), so entries are deduped by id,
     first occurrence wins - regardless of expired status, since an
     is-expired duplicate and its active twin share the same id.
+
+    Each entry carries `is_expired: bool`, taken from the `is-expired` class
+    on the listing's outer block. This function does not filter expired
+    entries out - that's the adapter's job (expired posts must not become
+    Listings or alerts); the parse level reports the board as-is.
 
     Anything missing on an entry stays None rather than defaulting.
     """
@@ -287,14 +296,23 @@ class ProgAdapter:
         except Exception as exc:  # noqa: BLE001 - a markup change must not crash
             return AdapterResult(source=self.name, error=f"board parse failed: {exc}")
 
+        # Expired posts must never become a Listing or an alert - drop them
+        # before sorting/budgeting so they don't consume the detail-fetch cap.
+        active_entries = [e for e in entries if not e.get("is_expired")]
+
         skip_ids = {str(i) for i in config.get("skip_ids", [])}
         max_details = config.get("max_details", 5)
 
         # Newest first, so the limited detail-fetch budget goes to the
-        # freshest listings; entries with no parseable date sort last.
-        sorted_entries = sorted(
-            entries, key=lambda e: e.get("date") or datetime.min, reverse=True
-        )
+        # freshest listings; entries with no parseable date sort last. A
+        # tuple key keeps this from ever comparing a timezone-aware date
+        # (parsed from the board's "+0300" offsets) to a naive sentinel,
+        # which raises TypeError - dateless entries just sort as "oldest".
+        def _sort_key(entry: dict) -> tuple[int, str]:
+            moment = entry.get("date")
+            return (1, moment.isoformat()) if moment is not None else (0, "")
+
+        sorted_entries = sorted(active_entries, key=_sort_key, reverse=True)
 
         listings: list[Listing] = []
         details_fetched = 0
