@@ -14,6 +14,7 @@ from .enrich.pipeline_enrichers import build_enrichers
 from .fetch import Fetcher, HttpTransport
 from .filters import Filters
 from .health import HealthTracker
+from .notify.commands import process_commands
 from .notify.telegram import TelegramNotifier
 from .pipeline import run_pipeline
 from .portal.builder import build_portal
@@ -96,6 +97,15 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     runtime = build_runtime(Path(args.repo), dict(os.environ), dry_run=args.dry_run)
+
+    if not args.dry_run:
+        runtime.filters = process_commands(
+            runtime.notifier,
+            runtime.store,
+            runtime.filters,
+            Path(args.repo) / "config" / "filters.json",
+        )
+
     report = run_pipeline(
         adapters=runtime.adapters,
         fetcher=runtime.fetcher,

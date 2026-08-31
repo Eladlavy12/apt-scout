@@ -23,6 +23,7 @@ class Filters:
     max_drive_minutes: float = 15
     include_price_missing: bool = True
     include_unsure_occupancy: bool = True
+    paused: bool = False
 
     @classmethod
     def load(cls, path: Path) -> "Filters":
@@ -40,6 +41,9 @@ class Filters:
         toggle. Failing closed on missing data would discard most free-text
         listings, which is exactly the content this system exists to surface.
         """
+        if self.paused:
+            return False
+
         if listing.occupancy is Occupancy.ROOMMATES:
             return False
         if listing.occupancy is Occupancy.UNSURE and not self.include_unsure_occupancy:

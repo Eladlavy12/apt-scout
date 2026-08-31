@@ -38,6 +38,24 @@ python -m apt_scout --repo . --dry-run --build-portal
 python -m http.server 8000 --directory site
 ```
 
+## Changing alert thresholds from your phone
+
+Message the bot; changes apply on the next hourly run and are committed to
+`config/filters.json`.
+
+| Command | Effect |
+|---|---|
+| `/price 4000 5500` | Set the price range |
+| `/radius 15` | Set maximum driving minutes |
+| `/rooms 2` | Set the minimum room count |
+| `/size 50` | Set the minimum size in m² |
+| `/pause` / `/resume` | Stop and restart alerts |
+| `/status` | Show the current thresholds |
+
+These control **alerts**. The portal's sliders control **display**, and the two
+are deliberately independent so you can browse more loosely than you are
+interrupted.
+
 ## Required repository secrets
 
 | Secret | Purpose |

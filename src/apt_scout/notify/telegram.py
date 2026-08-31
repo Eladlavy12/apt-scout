@@ -77,6 +77,19 @@ class TelegramNotifier:
             },
         )
 
+    def get_updates(self, offset: int | None = None) -> list[dict]:
+        """Poll for messages sent to the bot.
+
+        Raises on failure so the caller can leave configuration untouched
+        rather than acting on a partial view of the user's instructions.
+        """
+        url = API_BASE.format(token=self._token, method="getUpdates")
+        payload: dict = {"timeout": 0}
+        if offset is not None:
+            payload["offset"] = offset
+        response = self._client.post(url, json=payload)
+        return response.json().get("result", [])
+
     def send_listing(self, listing: Listing) -> bool:
         caption = format_listing(listing)
         if listing.photos:
