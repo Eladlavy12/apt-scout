@@ -159,3 +159,24 @@ class TestProcessing:
         result = process_commands(Broken(), StateStore(tmp_path), Filters(), path)
 
         assert result.to_dict() == Filters().to_dict()
+
+    def test_status_does_not_rewrite_the_config_file(self, tmp_path):
+        path = tmp_path / "filters.json"
+        original = json.dumps(Filters().to_dict())
+        path.write_text(original, encoding="utf-8")
+        notifier = FakeNotifier([update(1, "/status")])
+
+        process_commands(notifier, StateStore(tmp_path), Filters(), path)
+
+        assert path.read_text("utf-8") == original, "no-op command must not touch the file"
+        assert notifier.replies, "status must still get a reply"
+
+    def test_invalid_command_does_not_rewrite_the_config_file(self, tmp_path):
+        path = tmp_path / "filters.json"
+        original = json.dumps(Filters().to_dict())
+        path.write_text(original, encoding="utf-8")
+        notifier = FakeNotifier([update(1, "/price abc")])
+
+        process_commands(notifier, StateStore(tmp_path), Filters(), path)
+
+        assert path.read_text("utf-8") == original

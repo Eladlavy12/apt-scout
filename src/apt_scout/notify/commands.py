@@ -129,8 +129,10 @@ def process_commands(
         if parsed is None:
             continue
         command, args = parsed
+        before = filters.to_dict()
         filters, reply = apply_command(filters, command, args)
-        changed = True
+        if filters.to_dict() != before:
+            changed = True
         notifier.send_text(reply)
 
     if highest is not None:
