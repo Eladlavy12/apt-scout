@@ -118,12 +118,65 @@ class TestParsing:
     def test_parses_real_fixture(self):
         html = FIXTURE.read_text(encoding="utf-8")
         listings = parse_homeless_html(html)
+        # The fixture's table#mainresults has exactly 30 organic ad_ rows;
+        # table#relatedresults (sponsored, isrelated="1") has 15 more,
+        # for 45 ad_ rows total. Only the 30 organic ones should parse.
+        assert len(listings) == 30
         assert len(listings) >= 20
         assert all(l.source_id.isdigit() for l in listings)
         priced = [l for l in listings if l.price is not None]
         assert priced
         for l in priced:
             assert 500 <= l.price <= 100000
+        # Defense-in-depth checks: nothing from the sponsored related-ads
+        # widget should leak into the results.
+        assert not any("RentTivuch" in l.url for l in listings)
+        related_only_ids = {"83527", "83518", "83510", "83482", "83479"}
+        assert not any(l.source_id in related_only_ids for l in listings)
+
+    def test_excludes_sponsored_related_ads_table(self):
+        html = f"""
+        <html><body>
+        <table id="mainresults">
+        {HEADER_ROW}
+        <tr id="ad_1001" type="ad" class="light">
+            <td class="selectionarea"><input type="checkbox" /></td>
+            <td><div><img src="/pic.jpg" /></div></td>
+            <td>דירה</td>
+            <td>תל אביב</td>
+            <td>שכונה</td>
+            <td>רחוב הרצל 5</td>
+            <td>3</td>
+            <td>2</td>
+            <td>4,800 ₪</td>
+            <td>מיידי</td>
+            <td><span class="newmessage">15/03/2026</span></td>
+            <td class="details"><a href="/rent/viewad,1001.aspx">לפרטים</a></td>
+        </tr>
+        </table>
+        <table id="relatedresults">
+        {HEADER_ROW}
+        <tr id="ad_999" type="ad" class="light" isrelated="1">
+            <td class="selectionarea"><input type="checkbox" /></td>
+            <td><div><img src="/pic.jpg" /></div></td>
+            <td>דירה</td>
+            <td>תל אביב</td>
+            <td>שכונה אחרת</td>
+            <td>רחוב אחר 1</td>
+            <td>4</td>
+            <td>1</td>
+            <td>7,000 ₪</td>
+            <td>מיידי</td>
+            <td><span class="newmessage">15/03/2026</span></td>
+            <td class="details"><a href="/RentTivuch/viewad,999.aspx">לפרטים</a></td>
+        </tr>
+        </table>
+        </body></html>
+        """
+        listings = parse_homeless_html(html)
+        assert len(listings) == 1
+        assert listings[0].source_id == "1001"
+        assert not any("RentTivuch" in l.url for l in listings)
 
 
 class FakeFetcher:

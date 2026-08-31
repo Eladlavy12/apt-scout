@@ -141,6 +141,16 @@ def parse_homeless_html(html: str) -> list[Listing]:
     site does not support it via GET, and the pipeline's filter engine
     handles it downstream. Anything missing on a row stays None rather
     than defaulting.
+
+    The page also carries a "related ads" widget (`table#relatedresults`)
+    of sponsored/promoted listings from a different sub-site
+    (`/RentTivuch/viewad,...` instead of `/rent/viewad,...`), each row
+    flagged `isrelated="1"`. Those are not part of the search results and
+    are excluded with two independent checks (defense in depth, in case
+    either marker is absent or the markup shifts): parsing is scoped to
+    the organic `table#mainresults` when present (else every table except
+    `table#relatedresults`), and any row carrying `isrelated="1"` is
+    skipped regardless of which table it's found in.
     """
     if not isinstance(html, str):
         raise TypeError(f"expected str HTML, got {type(html).__name__}")
@@ -148,13 +158,25 @@ def parse_homeless_html(html: str) -> list[Listing]:
     soup = BeautifulSoup(html, "html.parser")
     listings: list[Listing] = []
 
-    for table in soup.find_all("table"):
+    organic_table = soup.find("table", id="mainresults")
+    if organic_table is not None:
+        tables = [organic_table]
+    else:
+        tables = [
+            table
+            for table in soup.find_all("table")
+            if table.get("id") != "relatedresults"
+        ]
+
+    for table in tables:
         rows = table.find_all("tr", id=_ROW_ID_RE)
         if not rows:
             continue
         index_map = _column_index_map(table)
 
         for row in rows:
+            if row.get("isrelated") == "1":
+                continue
             match = _ROW_ID_RE.match(row.get("id", ""))
             if not match:
                 continue
