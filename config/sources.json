@@ -1,0 +1,12 @@
+{
+  "yad2": {
+    "enabled": true,
+    "min_tier": "http",
+    "cadence_hours": 1,
+    "url_template": "https://gw.yad2.co.il/realestate-feed/rent/map?region=3&area=1&minPrice={price_min}&maxPrice={price_max}&minRooms={rooms_min}",
+    "price_min": 4000,
+    "price_max": 5500,
+    "rooms_min": 2,
+    "max_results": 200
+  }
+}

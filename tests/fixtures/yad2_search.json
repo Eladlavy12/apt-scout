@@ -1,0 +1,3178 @@
+{
+ "data": {
+  "markers": [
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "חולון"
+     },
+     "area": {
+      "text": "אזור חולון ובת ים"
+     },
+     "neighborhood": {
+      "text": "תל גיבורים"
+     },
+     "street": {
+      "text": "התותחנים"
+     },
+     "house": {
+      "number": 27,
+      "floor": 2
+     },
+     "coords": {
+      "lon": 34.760375,
+      "lat": 32.032602
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4600,
+    "token": "nacqkkaf",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 50,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "images": [],
+     "squareMeterBuild": 50
+    },
+    "tags": [],
+    "orderId": 56733605,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "רמת גן"
+     },
+     "area": {
+      "text": "אזור רמת גן וגבעתיים"
+     },
+     "neighborhood": {
+      "text": "אזור הבילויים"
+     },
+     "street": {
+      "text": "שרה אהרונסון"
+     },
+     "house": {
+      "number": 45,
+      "floor": 1
+     },
+     "coords": {
+      "lon": 34.82704,
+      "lat": 32.061001
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4790,
+    "token": "0lhq3gyg",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 61,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010114_20260722022545.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010114_20260722022545.jpeg",
+      "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010790_20260722022756.jpeg",
+      "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010205_20260722022546.jpeg",
+      "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010770_20260722022547.jpeg",
+      "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010191_20260722022546.jpeg",
+      "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010786_20260722022645.jpeg",
+      "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010737_20260722022645.jpeg",
+      "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010666_20260722022645.jpeg",
+      "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010978_20260722022645.jpeg",
+      "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010508_20260722023035.jpeg"
+     ],
+     "video": "https://s3.eu-west-1.amazonaws.com/videos.yad2.co.il/Video/202607/22/2_2/o/y2_1_010197_20260722022253.mp4",
+     "squareMeterBuild": 61
+    },
+    "tags": [],
+    "orderId": 57264006,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "נווה אליעזר וכפר שלם מזרח"
+     },
+     "street": {
+      "text": "צוקרמן"
+     },
+     "house": {
+      "number": 11,
+      "floor": 3
+     },
+     "coords": {
+      "lon": 34.807527,
+      "lat": 32.046578
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5300,
+    "token": "xaj9ofuv",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 60,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010370_20260722113154.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010370_20260722113154.jpeg",
+      "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010223_20260722113155.jpeg",
+      "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010692_20260722113155.jpeg",
+      "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010518_20260722113242.jpeg"
+     ],
+     "video": "https://s3.eu-west-1.amazonaws.com/videos.yad2.co.il/Video/202607/22/2_2/o/y2_1_010446_20260722113137.mov",
+     "squareMeterBuild": 60
+    },
+    "tags": [],
+    "orderId": 57265218,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "רמת גן"
+     },
+     "area": {
+      "text": "אזור רמת גן וגבעתיים"
+     },
+     "neighborhood": {
+      "text": "נווה רם, שיכון מזרחי"
+     },
+     "street": {
+      "text": "ראש פינה"
+     },
+     "house": {
+      "number": 14,
+      "floor": 3
+     },
+     "coords": {
+      "lon": 34.829699,
+      "lat": 32.06436
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4500,
+    "token": "qxc14son",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2.5,
+     "squareMeter": 35,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "images": [],
+     "squareMeterBuild": 35
+    },
+    "tags": [],
+    "orderId": 57062895,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "יד אליהו"
+     },
+     "street": {
+      "text": "גוש עציון"
+     },
+     "house": {
+      "number": 68,
+      "floor": 1
+     },
+     "coords": {
+      "lon": 34.790652,
+      "lat": 32.054393
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4300,
+    "token": "bmb4n2qr",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2,
+     "squareMeter": 55,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010668_20260722181058.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010668_20260722181058.jpeg",
+      "https://img.yad2.co.il/Pic/202607/22/2_2/o/y2_1pa_010361_20260722181058.jpeg"
+     ],
+     "squareMeterBuild": 35
+    },
+    "tags": [],
+    "orderId": 57267465,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "רמת גן"
+     },
+     "area": {
+      "text": "אזור רמת גן וגבעתיים"
+     },
+     "neighborhood": {
+      "text": "מרום נווה, רמת יצחק"
+     },
+     "street": {
+      "text": "תרצה"
+     },
+     "house": {
+      "number": 2,
+      "floor": 2
+     },
+     "coords": {
+      "lon": 34.829185,
+      "lat": 32.075349
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4500,
+    "token": "2lxzk97u",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2.5,
+     "squareMeter": 78,
+     "propertyCondition": {
+      "id": 5
+     }
+    },
+    "metaData": {
+     "images": [],
+     "squareMeterBuild": 78
+    },
+    "tags": [],
+    "orderId": 57269027,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "התקוה, בית יעקב, נווה צה\"ל"
+     },
+     "street": {
+      "text": "קלמן"
+     },
+     "house": {
+      "number": 8,
+      "floor": 2
+     },
+     "coords": {
+      "lon": 34.793309,
+      "lat": 32.048952
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5200,
+    "token": "kb9ou9zc",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 60,
+     "propertyCondition": {
+      "id": 6
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/23/2_2/o/y2_1pa_010590_20260723170527.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/23/2_2/o/y2_1pa_010590_20260723170527.jpeg"
+     ],
+     "squareMeterBuild": 58
+    },
+    "tags": [],
+    "orderId": 57271098,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "שפירא"
+     },
+     "street": {
+      "text": "דרך קיבוץ גלויות"
+     },
+     "house": {
+      "number": 89,
+      "floor": 3
+     },
+     "coords": {
+      "lon": 34.775284,
+      "lat": 32.049029
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5000,
+    "token": "sm1t17td",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2.5,
+     "squareMeter": 60,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "images": [],
+     "video": "https://s3.eu-west-1.amazonaws.com/videos.yad2.co.il/Video/202607/23/2_2/o/y2_1_010413_20260723193726.mov"
+    },
+    "tags": [],
+    "orderId": 57271695,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "תל ברוך צפון"
+     },
+     "street": {
+      "text": "יוכבד בת מרים"
+     },
+     "house": {
+      "number": 34,
+      "floor": 0
+     },
+     "coords": {
+      "lon": 34.822441,
+      "lat": 32.122654
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4000,
+    "token": "yqji81eg",
+    "additionalDetails": {
+     "property": {
+      "text": "מרתף/ פרטר"
+     },
+     "roomsCount": 2.5,
+     "squareMeter": 50,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/24/2_2/o/y2_1pa_010062_20260724145106.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/24/2_2/o/y2_1pa_010062_20260724145106.jpeg",
+      "https://img.yad2.co.il/Pic/202607/24/2_2/o/y2_1pa_010056_20260724145107.jpeg"
+     ]
+    },
+    "tags": [],
+    "orderId": 57274060,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "רמת גן"
+     },
+     "area": {
+      "text": "אזור רמת גן וגבעתיים"
+     },
+     "neighborhood": {
+      "text": "אזור הבילויים"
+     },
+     "street": {
+      "text": "שרה אהרונסון"
+     },
+     "house": {
+      "number": 45,
+      "floor": 1
+     },
+     "coords": {
+      "lon": 34.82704,
+      "lat": 32.061001
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4800,
+    "token": "f3cwjz7k",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 60,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010608_20260725104814.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010608_20260725104814.jpeg",
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010320_20260725104814.jpeg",
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010834_20260725104814.jpeg",
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010985_20260725104814.jpeg",
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010377_20260725104812.jpeg",
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010641_20260725104815.jpeg",
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010347_20260725104815.jpeg",
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010928_20260725104816.jpeg"
+     ],
+     "squareMeterBuild": 60
+    },
+    "tags": [],
+    "orderId": 57275350,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "קרית שלום"
+     },
+     "street": {
+      "text": "גיתית"
+     },
+     "house": {
+      "number": 3,
+      "floor": 1
+     },
+     "coords": {
+      "lat": 32.041288,
+      "lon": 34.774997
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5200,
+    "token": "7gv252qw",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 70,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010752_20260725152541.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010752_20260725152541.jpeg",
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010162_20260725152541.jpeg",
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010841_20260725152541.jpeg",
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010219_20260725152545.jpeg",
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010306_20260725152545.jpeg",
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010974_20260725152547.jpeg"
+     ],
+     "squareMeterBuild": 70
+    },
+    "tags": [],
+    "orderId": 57275870,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "לבנה"
+     },
+     "street": {
+      "text": "דרך חיים ברלב"
+     },
+     "house": {
+      "number": 158,
+      "floor": 3
+     },
+     "coords": {
+      "lat": 32.045527,
+      "lon": 34.805709
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4900,
+    "token": "ay6ct8yj",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 60,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "images": []
+    },
+    "tags": [],
+    "orderId": 57276311,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "נווה שרת"
+     },
+     "street": {
+      "text": "כורזים"
+     },
+     "house": {
+      "number": 9,
+      "floor": 4
+     },
+     "coords": {
+      "lon": 34.842858,
+      "lat": 32.12041
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4200,
+    "token": "idojapta",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2.5,
+     "squareMeter": 50,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202601/12/2_2/o/y2_1_02459_20260112123302.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202601/12/2_2/o/y2_1_02459_20260112123302.jpeg",
+      "https://img.yad2.co.il/Pic/202601/16/2_2/o/y2_2_08573_20260116180737.jpeg",
+      "https://img.yad2.co.il/Pic/202601/16/2_2/o/y2_3_09976_20260116180742.jpeg",
+      "https://img.yad2.co.il/Pic/202601/16/2_2/o/y2_4_05944_20260116180746.jpeg",
+      "https://img.yad2.co.il/Pic/202601/16/2_2/o/y2_5_03348_20260116180750.jpeg",
+      "https://img.yad2.co.il/Pic/202601/16/2_2/o/y2_6_08769_20260116180754.jpeg",
+      "https://img.yad2.co.il/Pic/202601/16/2_2/o/y2_7_03113_20260116180758.jpeg",
+      "https://img.yad2.co.il/Pic/202601/16/2_2/o/y2_8_03358_20260116180802.jpeg"
+     ]
+    },
+    "tags": [],
+    "orderId": 55664011,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "יד אליהו"
+     },
+     "street": {
+      "text": "עיינות"
+     },
+     "house": {
+      "number": 1,
+      "floor": 1
+     },
+     "coords": {
+      "lon": 34.79171,
+      "lat": 32.054412
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5200,
+    "token": "uqoqz5dc",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2,
+     "squareMeter": 45,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010105_20260725213500.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010105_20260725213500.jpeg",
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010078_20260725213500.jpeg",
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010548_20260725213501.jpeg",
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010806_20260725213501.jpeg",
+      "https://img.yad2.co.il/Pic/202607/25/2_2/o/y2_1pa_010872_20260725213501.jpeg"
+     ],
+     "video": "https://s3.eu-west-1.amazonaws.com/videos.yad2.co.il/Video/202607/25/2_2/o/y2_1_010824_20260725213430.mov",
+     "squareMeterBuild": 45
+    },
+    "tags": [],
+    "orderId": 57276680,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "שפירא"
+     },
+     "street": {
+      "text": "האסיף"
+     },
+     "house": {
+      "number": 9,
+      "floor": 2
+     },
+     "coords": {
+      "lon": 34.782418,
+      "lat": 32.048944
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5300,
+    "token": "6xesb150",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2.5,
+     "squareMeter": 50,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010300_20260726113432.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010300_20260726113432.jpeg",
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010080_20260726113432.jpeg",
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010072_20260726113432.jpeg",
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010661_20260726113432.jpeg",
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010270_20260726113432.jpeg",
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010407_20260726113432.jpeg"
+     ]
+    },
+    "tags": [],
+    "orderId": 57279065,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "צהלון, שיכוני חסכון"
+     },
+     "street": {
+      "text": "שדרות ירושלים"
+     },
+     "house": {
+      "number": 66,
+      "floor": 1
+     },
+     "coords": {
+      "lon": 34.758453,
+      "lat": 32.048212
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5500,
+    "token": "tzmxm60u",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2,
+     "squareMeter": 61,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010691_20260726191750.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010691_20260726191750.jpeg",
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010728_20260726191750.jpeg",
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010051_20260726191750.jpeg",
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010463_20260726191751.jpeg",
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010837_20260726191751.jpeg"
+     ],
+     "squareMeterBuild": 61
+    },
+    "tags": [],
+    "orderId": 57282605,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "רמת גן"
+     },
+     "area": {
+      "text": "אזור רמת גן וגבעתיים"
+     },
+     "neighborhood": {
+      "text": "שכונת יהלום, מרכז העיר ב"
+     },
+     "street": {
+      "text": "קריניצי"
+     },
+     "house": {
+      "number": 9,
+      "floor": 1
+     },
+     "coords": {
+      "lon": 34.816046,
+      "lat": 32.07962
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4800,
+    "token": "1kqkmkj2",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2,
+     "squareMeter": 55,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/27/2_2/o/y2_1pa_010299_20260727012028.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/27/2_2/o/y2_1pa_010299_20260727012028.jpeg",
+      "https://img.yad2.co.il/Pic/202607/27/2_2/o/y2_1pa_010794_20260727012032.jpeg",
+      "https://img.yad2.co.il/Pic/202607/27/2_2/o/y2_1pa_010579_20260727012033.jpeg"
+     ],
+     "squareMeterBuild": 55
+    },
+    "tags": [],
+    "orderId": 57283938,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "התקוה, בית יעקב, נווה צה\"ל"
+     },
+     "street": {
+      "text": "נתן הנביא"
+     },
+     "house": {
+      "number": 12,
+      "floor": 1
+     },
+     "coords": {
+      "lon": 34.790866,
+      "lat": 32.052016
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4000,
+    "token": "dg7hcpvg",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2,
+     "squareMeter": 45,
+     "propertyCondition": {
+      "id": 5
+     }
+    },
+    "metaData": {
+     "images": [],
+     "squareMeterBuild": 42
+    },
+    "tags": [],
+    "orderId": 57284589,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "לבנה"
+     },
+     "street": {
+      "text": "דרך חיים ברלב"
+     },
+     "house": {
+      "number": 96,
+      "floor": 0
+     },
+     "coords": {
+      "lon": 34.799134,
+      "lat": 32.046788
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4200,
+    "token": "rtscepy7",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2.5,
+     "squareMeter": 70,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202606/09/2_2/o/y2_1pa_010346_20260609112913.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202606/09/2_2/o/y2_1pa_010346_20260609112913.jpeg",
+      "https://img.yad2.co.il/Pic/202606/09/2_2/o/y2_1pa_010834_20260609112918.jpeg",
+      "https://img.yad2.co.il/Pic/202606/09/2_2/o/y2_1pa_010428_20260609112919.jpeg",
+      "https://img.yad2.co.il/Pic/202606/09/2_2/o/y2_1pa_010833_20260609112920.jpeg",
+      "https://img.yad2.co.il/Pic/202606/09/2_2/o/y2_1pa_010101_20260609112920.jpeg",
+      "https://img.yad2.co.il/Pic/202606/09/2_2/o/y2_1pa_010003_20260609112921.jpeg",
+      "https://img.yad2.co.il/Pic/202606/09/2_2/o/y2_1pa_010033_20260609112921.jpeg",
+      "https://img.yad2.co.il/Pic/202606/09/2_2/o/y2_1pa_010301_20260609112925.jpeg",
+      "https://img.yad2.co.il/Pic/202606/09/2_2/o/y2_1pa_010255_20260609113000.jpeg",
+      "https://img.yad2.co.il/Pic/202606/09/2_2/o/y2_1pa_010345_20260609113001.jpeg"
+     ],
+     "squareMeterBuild": 50
+    },
+    "tags": [
+     {
+      "name": "חניה",
+      "id": 1003,
+      "priority": 1
+     },
+     {
+      "name": "מומלץ",
+      "id": 1090,
+      "priority": 10
+     },
+     {
+      "name": "חבל לפספס",
+      "id": 1092,
+      "priority": 10
+     }
+    ],
+    "orderId": 57059135,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "התקוה, בית יעקב, נווה צה\"ל"
+     },
+     "street": {
+      "text": "לבלוב"
+     },
+     "house": {
+      "number": 4,
+      "floor": 1
+     },
+     "coords": {
+      "lat": 32.052246,
+      "lon": 34.792621
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4500,
+    "token": "7wz6vub9",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2,
+     "squareMeter": 40,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/27/2_2/o/y2_1pa_010141_20260727180111.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/27/2_2/o/y2_1pa_010141_20260727180111.jpeg",
+      "https://img.yad2.co.il/Pic/202607/27/2_2/o/y2_1pa_010924_20260727180111.jpeg",
+      "https://img.yad2.co.il/Pic/202607/27/2_2/o/y2_1pa_010317_20260727180111.jpeg",
+      "https://img.yad2.co.il/Pic/202607/27/2_2/o/y2_1pa_010333_20260727180111.jpeg",
+      "https://img.yad2.co.il/Pic/202607/27/2_2/o/y2_1pa_010638_20260727180112.jpeg"
+     ],
+     "squareMeterBuild": 40
+    },
+    "tags": [],
+    "orderId": 57288127,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "אזור"
+     },
+     "area": {
+      "text": "אזור חולון ובת ים"
+     },
+     "neighborhood": {
+      "text": "גני אזור"
+     },
+     "street": {
+      "text": "ירושלים"
+     },
+     "house": {
+      "number": 173,
+      "floor": 3
+     },
+     "coords": {
+      "lon": 34.80311,
+      "lat": 32.030051
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4200,
+    "token": "ezp4430o",
+    "additionalDetails": {
+     "property": {
+      "text": "יחידת דיור"
+     },
+     "roomsCount": 2,
+     "squareMeter": 105,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "images": [],
+     "squareMeterBuild": 85
+    },
+    "tags": [],
+    "orderId": 57288474,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "פלורנטין"
+     },
+     "street": {
+      "text": "זבולון"
+     },
+     "house": {
+      "number": 48,
+      "floor": 0
+     },
+     "coords": {
+      "lon": 34.772126,
+      "lat": 32.05725
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4650,
+    "token": "z1w4ys4q",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2,
+     "squareMeter": 33,
+     "propertyCondition": {
+      "id": 6
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/27/2_2/o/y2_1pa_010370_20260727231946.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/27/2_2/o/y2_1pa_010370_20260727231946.jpeg",
+      "https://img.yad2.co.il/Pic/202607/27/2_2/o/y2_1pa_010019_20260727231946.jpeg",
+      "https://img.yad2.co.il/Pic/202607/27/2_2/o/y2_1pa_010936_20260727231946.jpeg",
+      "https://img.yad2.co.il/Pic/202607/27/2_2/o/y2_1pa_010895_20260727231946.jpeg",
+      "https://img.yad2.co.il/Pic/202607/27/2_2/o/y2_1pa_010293_20260727232030.jpeg"
+     ]
+    },
+    "tags": [],
+    "orderId": 57289389,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "רמת גן"
+     },
+     "area": {
+      "text": "אזור רמת גן וגבעתיים"
+     },
+     "neighborhood": {
+      "text": "נגבה"
+     },
+     "street": {
+      "text": "טרומן"
+     },
+     "house": {
+      "number": 35,
+      "floor": 1
+     },
+     "coords": {
+      "lon": 34.826763,
+      "lat": 32.068163
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4200,
+    "token": "nu5yj4g6",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2,
+     "squareMeter": 40,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/23/2_2/o/y2_1_01223_20260723223352.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/23/2_2/o/y2_1_01223_20260723223352.jpeg",
+      "https://img.yad2.co.il/Pic/202607/23/2_2/o/y2_2_02324_20260723223355.jpeg",
+      "https://img.yad2.co.il/Pic/202607/23/2_2/o/y2_3_07709_20260723223358.jpeg",
+      "https://img.yad2.co.il/Pic/202607/23/2_2/o/y2_4_01286_20260723223401.jpeg",
+      "https://img.yad2.co.il/Pic/202607/23/2_2/o/y2_5_02268_20260723223404.jpeg",
+      "https://img.yad2.co.il/Pic/202607/23/2_2/o/y2_6_03862_20260723223407.jpeg"
+     ],
+     "video": "//yad2.cdnwiz.com/p/102/sp/10200/playManifest/entryId/0_ixdpvd9w/format/url/protocol/http",
+     "squareMeterBuild": 40
+    },
+    "tags": [],
+    "orderId": 57268273,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "חולון"
+     },
+     "area": {
+      "text": "אזור חולון ובת ים"
+     },
+     "neighborhood": {
+      "text": "תל גיבורים"
+     },
+     "street": {
+      "text": "הפרדס"
+     },
+     "house": {
+      "number": 17,
+      "floor": 3
+     },
+     "coords": {
+      "lon": 34.76594,
+      "lat": 32.032701
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4200,
+    "token": "rijng222",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 60,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010205_20260728084824.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010205_20260728084824.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010802_20260728084824.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010325_20260728084825.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010943_20260728084825.jpeg"
+     ]
+    },
+    "tags": [],
+    "orderId": 57290113,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "יפו ד', גבעת התמרים"
+     },
+     "street": {
+      "text": "קהילת קנדה"
+     },
+     "house": {
+      "number": 3,
+      "floor": 1
+     },
+     "coords": {
+      "lon": 34.753265,
+      "lat": 32.033063
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5500,
+    "token": "r89xwmi1",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2,
+     "squareMeter": 65,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010761_20260728111811.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010761_20260728111811.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010242_20260728111813.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010792_20260728111814.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010921_20260728111814.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010171_20260728111815.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010069_20260728111815.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010045_20260728111816.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010529_20260728111816.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010270_20260728111817.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010147_20260728111817.jpeg"
+     ],
+     "squareMeterBuild": 65
+    },
+    "tags": [],
+    "orderId": 57291053,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "רמת גן"
+     },
+     "area": {
+      "text": "אזור רמת גן וגבעתיים"
+     },
+     "neighborhood": {
+      "text": "יד לבנים"
+     },
+     "street": {
+      "text": "הסנה"
+     },
+     "house": {
+      "number": 1,
+      "floor": 0
+     },
+     "coords": {
+      "lon": 34.824684,
+      "lat": 32.076402
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4500,
+    "token": "zlw1ehrk",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2,
+     "squareMeter": 45,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010025_20260728205831.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010025_20260728205831.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010033_20260728205831.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010199_20260728205831.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010287_20260728205831.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010015_20260728205832.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010809_20260728205831.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010586_20260728205832.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010057_20260728205832.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010194_20260728205832.jpeg"
+     ]
+    },
+    "tags": [],
+    "orderId": 57294313,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "תל חיים"
+     },
+     "street": {
+      "text": "עמישב"
+     },
+     "house": {
+      "number": 6,
+      "floor": 2
+     },
+     "coords": {
+      "lat": 32.065381,
+      "lon": 34.803753
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5300,
+    "token": "eth0ke6v",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2.5,
+     "squareMeter": 60,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010602_20260728212806.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010602_20260728212806.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010925_20260728213016.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010062_20260728213121.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010003_20260728213208.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010789_20260728213302.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010309_20260728213350.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010103_20260728213435.jpeg"
+     ]
+    },
+    "tags": [],
+    "orderId": 57294497,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "הדר יוסף"
+     },
+     "street": {
+      "text": "קהילת ורשה"
+     },
+     "house": {
+      "number": 4,
+      "floor": 0
+     },
+     "coords": {
+      "lon": 34.818512,
+      "lat": 32.110406
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5500,
+    "token": "urhq0te7",
+    "additionalDetails": {
+     "property": {
+      "text": "דירת גן"
+     },
+     "roomsCount": 2,
+     "squareMeter": 1,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010503_20260728215343.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010503_20260728215343.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010357_20260728215343.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010182_20260728215343.jpeg",
+      "https://img.yad2.co.il/Pic/202607/28/2_2/o/y2_1pa_010463_20260728215343.jpeg"
+     ]
+    },
+    "tags": [],
+    "orderId": 57294530,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "נווה עופר, תל כביר"
+     },
+     "street": {
+      "text": "אוהלי יעקב"
+     },
+     "house": {
+      "number": 9,
+      "floor": 5
+     },
+     "coords": {
+      "lat": 32.042151,
+      "lon": 34.762882
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5200,
+    "token": "mpekkmb6",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 75,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/29/2_2/o/y2_1_04472_20260729012129.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/29/2_2/o/y2_1_04472_20260729012129.jpeg",
+      "https://img.yad2.co.il/Pic/202607/29/2_2/o/y2_2_03887_20260729012134.jpeg",
+      "https://img.yad2.co.il/Pic/202607/29/2_2/o/y2_3_05630_20260729012138.jpeg",
+      "https://img.yad2.co.il/Pic/202607/29/2_2/o/y2_4_07329_20260729012143.jpeg",
+      "https://img.yad2.co.il/Pic/202607/29/2_2/o/y2_5_03242_20260729012148.jpeg"
+     ],
+     "squareMeterBuild": 70
+    },
+    "tags": [],
+    "orderId": 57294815,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "נווה חן"
+     },
+     "street": {
+      "text": "מעפילי אגוז"
+     },
+     "house": {
+      "number": 49,
+      "floor": 3
+     },
+     "coords": {
+      "lon": 34.810738,
+      "lat": 32.052287
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4950,
+    "token": "90xj0oqb",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 70,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202605/04/2_2/o/y2_1pa_010330_20260504100137.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202605/04/2_2/o/y2_1pa_010330_20260504100137.jpeg",
+      "https://img.yad2.co.il/Pic/202605/04/2_2/o/y2_1pa_010775_20260504100137.jpeg",
+      "https://img.yad2.co.il/Pic/202605/04/2_2/o/y2_1pa_010977_20260504100137.jpeg",
+      "https://img.yad2.co.il/Pic/202605/04/2_2/o/y2_1pa_010644_20260504100137.jpeg",
+      "https://img.yad2.co.il/Pic/202605/04/2_2/o/y2_1pa_010370_20260504100137.jpeg",
+      "https://img.yad2.co.il/Pic/202605/04/2_2/o/y2_1pa_010067_20260504100137.jpeg",
+      "https://img.yad2.co.il/Pic/202605/04/2_2/o/y2_1pa_010641_20260504100137.jpeg",
+      "https://img.yad2.co.il/Pic/202605/04/2_2/o/y2_1pa_010293_20260504100138.jpeg"
+     ],
+     "squareMeterBuild": 70
+    },
+    "tags": [],
+    "orderId": 56891395,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "נווה אליעזר וכפר שלם מזרח"
+     },
+     "street": {
+      "text": "צוקרמן"
+     },
+     "house": {
+      "number": 13,
+      "floor": 2
+     },
+     "coords": {
+      "lat": 32.046611,
+      "lon": 34.807738
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5500,
+    "token": "erpxeg8m",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 70,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/29/2_2/o/y2_1pa_010447_20260729125730.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/29/2_2/o/y2_1pa_010447_20260729125730.jpeg",
+      "https://img.yad2.co.il/Pic/202607/29/2_2/o/y2_1pa_010411_20260729125730.jpeg",
+      "https://img.yad2.co.il/Pic/202607/29/2_2/o/y2_1pa_010255_20260729125729.jpeg",
+      "https://img.yad2.co.il/Pic/202607/29/2_2/o/y2_1pa_010052_20260729125730.jpeg"
+     ]
+    },
+    "tags": [],
+    "orderId": 57296872,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "שפירא"
+     },
+     "street": {
+      "text": "שיפר"
+     },
+     "house": {
+      "number": 10,
+      "floor": 2
+     },
+     "coords": {
+      "lon": 34.777478,
+      "lat": 32.049527
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5500,
+    "token": "ukmtwc7f",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2.5,
+     "squareMeter": 130,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "images": [],
+     "squareMeterBuild": 55
+    },
+    "tags": [],
+    "orderId": 57299109,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "נווה שאנן"
+     },
+     "street": {
+      "text": "מטלון"
+     },
+     "house": {
+      "number": 54,
+      "floor": 0
+     },
+     "coords": {
+      "lon": 34.773851,
+      "lat": 32.058572
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4500,
+    "token": "vxdzpmjm",
+    "additionalDetails": {
+     "property": {
+      "text": "יחידת דיור"
+     },
+     "roomsCount": 2,
+     "squareMeter": 50,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/30/2_2/o/y2_1pa_010956_20260730115619.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/30/2_2/o/y2_1pa_010956_20260730115619.jpeg",
+      "https://img.yad2.co.il/Pic/202607/30/2_2/o/y2_1pa_010787_20260730120432.jpeg"
+     ],
+     "squareMeterBuild": 50
+    },
+    "tags": [],
+    "orderId": 57301332,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "רמת גן"
+     },
+     "area": {
+      "text": "אזור רמת גן וגבעתיים"
+     },
+     "neighborhood": {
+      "text": "עליות"
+     },
+     "street": {
+      "text": "הרא\"ה"
+     },
+     "house": {
+      "number": 127,
+      "floor": 0
+     },
+     "coords": {
+      "lon": 34.825901,
+      "lat": 32.078778
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4990,
+    "token": "se1sfbm5",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2.5,
+     "squareMeter": 67,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/30/2_2/o/y2_1pa_010951_20260730155449.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/30/2_2/o/y2_1pa_010951_20260730155449.jpeg",
+      "https://img.yad2.co.il/Pic/202607/30/2_2/o/y2_1pa_010475_20260730155449.jpeg",
+      "https://img.yad2.co.il/Pic/202607/30/2_2/o/y2_1pa_010075_20260730155449.jpeg",
+      "https://img.yad2.co.il/Pic/202607/30/2_2/o/y2_1pa_010802_20260730155449.jpeg",
+      "https://img.yad2.co.il/Pic/202607/30/2_2/o/y2_1pa_010698_20260730155449.jpeg",
+      "https://img.yad2.co.il/Pic/202607/30/2_2/o/y2_1pa_010449_20260730155449.jpeg"
+     ]
+    },
+    "tags": [],
+    "orderId": 57303115,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "נווה שאנן"
+     },
+     "street": {
+      "text": "איגר עקיבא"
+     },
+     "house": {
+      "number": 20,
+      "floor": 1
+     },
+     "coords": {
+      "lon": 34.781718,
+      "lat": 32.058274
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5300,
+    "token": "6qfzxcna",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 65,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010519_20260726111931.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010519_20260726111931.jpeg",
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010563_20260726111931.jpeg",
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010655_20260726111932.jpeg",
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010098_20260726111932.jpeg",
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010121_20260726112049.jpeg",
+      "https://img.yad2.co.il/Pic/202607/26/2_2/o/y2_1pa_010268_20260726112049.jpeg"
+     ],
+     "squareMeterBuild": 65
+    },
+    "tags": [],
+    "orderId": 57278701,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "התקוה, בית יעקב, נווה צה\"ל"
+     },
+     "street": {
+      "text": "כביר"
+     },
+     "house": {
+      "number": 32,
+      "floor": 3
+     },
+     "coords": {
+      "lon": 34.788558,
+      "lat": 32.050145
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5500,
+    "token": "hcf1b352",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 65,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010662_20260801094728.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010662_20260801094728.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010831_20260801094729.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010509_20260801094729.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010323_20260801094729.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010652_20260801094729.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010145_20260801094730.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010495_20260801094733.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010373_20260801094734.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010935_20260801094734.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010839_20260801094734.jpeg"
+     ]
+    },
+    "tags": [],
+    "orderId": 57307623,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "רמת גן"
+     },
+     "area": {
+      "text": "אזור רמת גן וגבעתיים"
+     },
+     "neighborhood": {
+      "text": "נווה יהושע, ערמונים"
+     },
+     "street": {
+      "text": "נווה יהושע"
+     },
+     "house": {
+      "number": 45,
+      "floor": 2
+     },
+     "coords": {
+      "lon": 34.834576,
+      "lat": 32.06101
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4400,
+    "token": "xl53fvsj",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 70,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010189_20260801143420.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010189_20260801143420.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010348_20260801143435.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010180_20260801143438.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010273_20260801143441.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010980_20260801143441.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010004_20260801143444.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010844_20260801143449.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010745_20260801143455.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010940_20260801143455.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010064_20260801143459.jpeg"
+     ],
+     "squareMeterBuild": 74
+    },
+    "tags": [],
+    "orderId": 57308187,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "גבעת הרצל, אזור המלאכה יפו"
+     },
+     "street": {
+      "text": "חיים בן עטר"
+     },
+     "house": {
+      "number": 19,
+      "floor": 1
+     },
+     "coords": {
+      "lon": 34.768443,
+      "lat": 32.054662
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4000,
+    "token": "aict67qu",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 120,
+     "propertyCondition": {
+      "id": 5
+     }
+    },
+    "metaData": {
+     "images": []
+    },
+    "tags": [],
+    "orderId": 57308457,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "התקוה, בית יעקב, נווה צה\"ל"
+     },
+     "street": {
+      "text": "שמחה"
+     },
+     "house": {
+      "number": 49,
+      "floor": 0
+     },
+     "coords": {
+      "lon": 34.791832,
+      "lat": 32.047835
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4200,
+    "token": "283v18r2",
+    "additionalDetails": {
+     "property": {
+      "text": "דירת גן"
+     },
+     "roomsCount": 2,
+     "squareMeter": 43,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010972_20260801224839.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010972_20260801224839.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010174_20260801224839.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010078_20260801224839.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010672_20260801224839.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010462_20260801224840.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010764_20260801224840.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010169_20260801224840.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010985_20260801224840.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010699_20260801224840.jpeg"
+     ],
+     "video": "https://s3.eu-west-1.amazonaws.com/videos.yad2.co.il/Video/202608/01/2_2/o/y2_1_010746_20260801224845.mp4",
+     "squareMeterBuild": 30
+    },
+    "tags": [],
+    "orderId": 57309391,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "לבנה"
+     },
+     "street": {
+      "text": "דרך חיים ברלב"
+     },
+     "house": {
+      "number": 162,
+      "floor": 2
+     },
+     "coords": {
+      "lon": 34.805888,
+      "lat": 32.045492
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5000,
+    "token": "7qlsol0d",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 60,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010318_20260801231622.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010318_20260801231622.jpeg",
+      "https://img.yad2.co.il/Pic/202608/01/2_2/o/y2_1pa_010161_20260801231622.jpeg"
+     ]
+    },
+    "tags": [],
+    "orderId": 57309497,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "שפירא"
+     },
+     "street": {
+      "text": "דרך קיבוץ גלויות"
+     },
+     "house": {
+      "number": 119,
+      "floor": 2
+     },
+     "coords": {
+      "lat": 32.048043,
+      "lon": 34.778438
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5100,
+    "token": "1oaxhhlb",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 70,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "images": [],
+     "squareMeterBuild": 64
+    },
+    "tags": [],
+    "orderId": 57312680,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "שפירא"
+     },
+     "street": {
+      "text": "דרך קיבוץ גלויות"
+     },
+     "house": {
+      "number": 119,
+      "floor": 2
+     },
+     "coords": {
+      "lon": 34.778438,
+      "lat": 32.048043
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5100,
+    "token": "a6kkh5je",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 70,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "images": [],
+     "squareMeterBuild": 64
+    },
+    "tags": [],
+    "orderId": 57313803,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "רמת גן"
+     },
+     "area": {
+      "text": "אזור רמת גן וגבעתיים"
+     },
+     "neighborhood": {
+      "text": "שכונת בן גוריון, מרכז העיר ג'"
+     },
+     "street": {
+      "text": "יוסף הגלילי"
+     },
+     "house": {
+      "number": 11,
+      "floor": 0
+     },
+     "coords": {
+      "lon": 34.819327,
+      "lat": 32.088102
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5500,
+    "token": "yzq5l3kz",
+    "additionalDetails": {
+     "property": {
+      "text": "יחידת דיור"
+     },
+     "roomsCount": 2,
+     "squareMeter": 55,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202608/02/2_2/o/y2_1pa_010928_20260802174241.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202608/02/2_2/o/y2_1pa_010928_20260802174241.jpeg",
+      "https://img.yad2.co.il/Pic/202608/02/2_2/o/y2_1pa_010644_20260802174241.jpeg",
+      "https://img.yad2.co.il/Pic/202608/02/2_2/o/y2_1pa_010988_20260802174241.jpeg",
+      "https://img.yad2.co.il/Pic/202608/02/2_2/o/y2_1pa_010889_20260802174241.jpeg",
+      "https://img.yad2.co.il/Pic/202608/02/2_2/o/y2_1pa_010642_20260802174241.jpeg"
+     ],
+     "squareMeterBuild": 50
+    },
+    "tags": [],
+    "orderId": 57313827,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "עזרא, הארגזים"
+     },
+     "street": {
+      "text": "אייר"
+     },
+     "house": {
+      "number": 33,
+      "floor": 0
+     },
+     "coords": {
+      "lon": 34.791008,
+      "lat": 32.045574
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5200,
+    "token": "1vypt906",
+    "additionalDetails": {
+     "property": {
+      "text": "בית פרטי/ קוטג'"
+     },
+     "roomsCount": 4,
+     "squareMeter": 130,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "images": []
+    },
+    "tags": [],
+    "orderId": 57315009,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "תל חיים"
+     },
+     "street": {
+      "text": "עמישב"
+     },
+     "house": {
+      "number": 14,
+      "floor": 1
+     },
+     "coords": {
+      "lat": 32.064314,
+      "lon": 34.804059
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5500,
+    "token": "piz7433f",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2,
+     "squareMeter": 53,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1pa_010232_20260803121859.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1pa_010232_20260803121859.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1pa_010590_20260803121859.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1pa_010863_20260803121900.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1pa_010637_20260803121900.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1pa_010130_20260803121900.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1pa_010384_20260803121901.jpeg"
+     ]
+    },
+    "tags": [],
+    "orderId": 57316656,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "נווה שאנן"
+     },
+     "street": {
+      "text": "ראש פינה"
+     },
+     "house": {
+      "number": 20,
+      "floor": 4
+     },
+     "coords": {
+      "lon": 34.782089,
+      "lat": 32.058495
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 4500,
+    "token": "igj5ejrg",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2.5,
+     "squareMeter": 55,
+     "propertyCondition": {
+      "id": 3
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1pa_010903_20260803151926.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1pa_010903_20260803151926.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1pa_010516_20260803151925.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1pa_010243_20260803151925.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1pa_010681_20260803151926.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1pa_010232_20260803151926.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1pa_010412_20260803151925.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1pa_010578_20260803151926.jpeg"
+     ],
+     "squareMeterBuild": 55
+    },
+    "tags": [],
+    "orderId": 57318230,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "נווה חן"
+     },
+     "street": {
+      "text": "סנפיר"
+     },
+     "house": {
+      "number": 9,
+      "floor": 1
+     },
+     "coords": {
+      "lat": 32.05333,
+      "lon": 34.80904
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5500,
+    "token": "qmch1mdo",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 75,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1_08133_20260803184708.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_1_08133_20260803184708.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_2_07316_20260803184838.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_3_05223_20260803184841.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_4_03583_20260803184844.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_5_06091_20260803185023.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_6_06449_20260803185027.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_7_05739_20260803185030.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_8_04193_20260803185033.jpeg",
+      "https://img.yad2.co.il/Pic/202608/03/2_2/o/y2_9_03988_20260803185240.jpeg"
+     ]
+    },
+    "tags": [],
+    "priceBeforeTag": 5900,
+    "orderId": 57290575,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "רמת הטייסים"
+     },
+     "street": {
+      "text": "הצבי"
+     },
+     "house": {
+      "number": 14,
+      "floor": 3
+     },
+     "coords": {
+      "lon": 34.810705,
+      "lat": 32.057195
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5280,
+    "token": "gtn22gos",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 65,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202601/27/2_2/o/y2_1pa_010768_20260127123455.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202601/27/2_2/o/y2_1pa_010768_20260127123455.jpeg",
+      "https://img.yad2.co.il/Pic/202601/27/2_2/o/y2_1pa_010316_20260127123454.jpeg",
+      "https://img.yad2.co.il/Pic/202601/27/2_2/o/y2_1pa_010681_20260127123505.jpeg",
+      "https://img.yad2.co.il/Pic/202601/27/2_2/o/y2_1pa_010620_20260127123509.jpeg",
+      "https://img.yad2.co.il/Pic/202601/27/2_2/o/y2_1pa_010203_20260127123511.jpeg",
+      "https://img.yad2.co.il/Pic/202601/27/2_2/o/y2_1pa_010181_20260127123514.jpeg",
+      "https://img.yad2.co.il/Pic/202601/27/2_2/o/y2_1pa_010174_20260127123515.jpeg",
+      "https://img.yad2.co.il/Pic/202601/27/2_2/o/y2_1pa_010559_20260127123518.jpeg",
+      "https://img.yad2.co.il/Pic/202601/27/2_2/o/y2_1pa_010697_20260127123522.jpeg",
+      "https://img.yad2.co.il/Pic/202601/27/2_2/o/y2_1pa_010877_20260127123524.jpeg"
+     ],
+     "squareMeterBuild": 65
+    },
+    "tags": [
+     {
+      "name": "נכס עורפי",
+      "id": 1002,
+      "priority": 1
+     },
+     {
+      "name": "חבל לפספס",
+      "id": 1092,
+      "priority": 10
+     },
+     {
+      "name": "ייחודי",
+      "id": 1093,
+      "priority": 10
+     }
+    ],
+    "orderId": 56508366,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "התקוה, בית יעקב, נווה צה\"ל"
+     },
+     "street": {
+      "text": "יחיעם"
+     },
+     "house": {
+      "number": 5,
+      "floor": 1
+     },
+     "coords": {
+      "lon": 34.793292,
+      "lat": 32.05315
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5500,
+    "token": "omufy605",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 2,
+     "squareMeter": 55,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202608/04/2_2/o/y2_1pa_010317_20260804110308.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202608/04/2_2/o/y2_1pa_010317_20260804110308.jpeg",
+      "https://img.yad2.co.il/Pic/202608/04/2_2/o/y2_1pa_010776_20260804110309.jpeg",
+      "https://img.yad2.co.il/Pic/202608/04/2_2/o/y2_1pa_010638_20260804110309.jpeg",
+      "https://img.yad2.co.il/Pic/202608/04/2_2/o/y2_1pa_010938_20260804110309.jpeg"
+     ],
+     "video": "https://s3.eu-west-1.amazonaws.com/videos.yad2.co.il/Video/202608/04/2_2/o/y2_1_010741_20260804110515.mp4",
+     "squareMeterBuild": 40
+    },
+    "tags": [],
+    "orderId": 57322457,
+    "priority": 1
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "יפו ד', גבעת התמרים"
+     },
+     "street": {
+      "text": "הרב רובינשטיין"
+     },
+     "house": {
+      "number": 55,
+      "floor": 7
+     },
+     "coords": {
+      "lon": 34.757481,
+      "lat": 32.035574
+     }
+    },
+    "subcategoryId": 2,
+    "categoryId": 2,
+    "adType": "private",
+    "price": 5400,
+    "token": "k43dk8r5",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 4,
+     "squareMeter": 60,
+     "propertyCondition": {
+      "id": 2
+     }
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202608/04/2_2/o/y2_1pa_010135_20260804171145.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202608/04/2_2/o/y2_1pa_010135_20260804171145.jpeg",
+      "https://img.yad2.co.il/Pic/202608/04/2_2/o/y2_1pa_010464_20260804171145.jpeg",
+      "https://img.yad2.co.il/Pic/202608/04/2_2/o/y2_1pa_010826_20260804171145.jpeg",
+      "https://img.yad2.co.il/Pic/202608/04/2_2/o/y2_1pa_010518_20260804171145.jpeg",
+      "https://img.yad2.co.il/Pic/202608/04/2_2/o/y2_1pa_010022_20260804171145.jpeg",
+      "https://img.yad2.co.il/Pic/202608/04/2_2/o/y2_1pa_010425_20260804171145.jpeg",
+      "https://img.yad2.co.il/Pic/202608/04/2_2/o/y2_1pa_010540_20260804171145.jpeg",
+      "https://img.yad2.co.il/Pic/202608/04/2_2/o/y2_1pa_010443_20260804171145.jpeg"
+     ],
+     "squareMeterBuild": 60
+    },
+    "tags": [
+     {
+      "name": "נכס עורפי",
+      "id": 1002,
+      "priority": 1
+     },
+     {
+      "name": "נוף פתוח לעיר",
+      "id": 1006,
+      "priority": 1
+     }
+    ],
+    "orderId": 57325134,
+    "priority": 2
+   }
+  ],
+  "yad1Markers": [],
+  "clusters": [
+   {
+    "docCount": 429,
+    "key": "5000",
+    "center": [
+     34.797374,
+     32.087667
+    ],
+    "regionId": 3,
+    "areaId": 1,
+    "cityId": "5000"
+   },
+   {
+    "docCount": 278,
+    "key": "8600",
+    "center": [
+     34.828384,
+     32.070094
+    ],
+    "regionId": 3,
+    "areaId": 3,
+    "cityId": "8600"
+   },
+   {
+    "docCount": 67,
+    "key": "6300",
+    "center": [
+     34.809427,
+     32.070129
+    ],
+    "regionId": 3,
+    "areaId": 3,
+    "cityId": "6300"
+   },
+   {
+    "docCount": 20,
+    "key": "6600",
+    "center": [
+     34.784569,
+     32.013439
+    ],
+    "regionId": 3,
+    "areaId": 11,
+    "cityId": "6600"
+   },
+   {
+    "docCount": 18,
+    "key": "6200",
+    "center": [
+     34.747733,
+     32.013199
+    ],
+    "regionId": 3,
+    "areaId": 11,
+    "cityId": "6200"
+   },
+   {
+    "docCount": 2,
+    "key": "0565",
+    "center": [
+     34.807096,
+     32.024607
+    ],
+    "regionId": 3,
+    "areaId": 11,
+    "cityId": "0565"
+   }
+  ],
+  "yad1Promotions": [],
+  "agencyPromotions": [
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "הצפון הישן - החלק הדרומי"
+     },
+     "street": {
+      "text": "סמולנסקין"
+     },
+     "house": {
+      "number": 3,
+      "floor": 0
+     },
+     "coords": {
+      "lat": 32.081515,
+      "lon": 34.771353
+     }
+    },
+    "subcategoryId": 6,
+    "categoryId": 2,
+    "adType": "commercial",
+    "price": 4999,
+    "token": "pter6azv",
+    "additionalDetails": {
+     "property": {
+      "text": "דירת גן"
+     },
+     "roomsCount": 2,
+     "squareMeter": 85,
+     "propertyCondition": {
+      "id": 6
+     },
+     "promotions": []
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202608/12/2_6/o/y2_1_BzVo4js1Sf_20260812.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202608/12/2_6/o/y2_1_BzVo4js1Sf_20260812.jpeg",
+      "https://img.yad2.co.il/Pic/202608/12/2_6/o/y2_2_mJ8ne1shof_20260812.jpeg",
+      "https://img.yad2.co.il/Pic/202608/12/2_6/o/y2_3_UlFP72cQ7W_20260812.jpeg",
+      "https://img.yad2.co.il/Pic/202608/12/2_6/o/y2_4_Ln924s2oGM_20260812.jpeg",
+      "https://img.yad2.co.il/Pic/202608/12/2_6/o/y2_5_gIsxARz4l0_20260812.jpeg",
+      "https://img.yad2.co.il/Pic/202608/12/2_6/o/y2_6_8JxxSkSG0o_20260812.jpeg",
+      "https://img.yad2.co.il/Pic/202608/12/2_6/o/y2_7_EETt2Hcuwd_20260812.jpeg",
+      "https://img.yad2.co.il/Pic/202608/12/2_6/o/y2_8_NsjGFrCZM5_20260812.jpeg",
+      "https://img.yad2.co.il/Pic/202608/12/2_6/o/y2_11_5btUxxnrf8_20260812.jpeg",
+      "https://img.yad2.co.il/Pic/202608/12/2_6/o/y2_10_K9r9EYEPkE_20260812.jpeg",
+      "https://img.yad2.co.il/Pic/202608/12/2_6/o/y2_13_RNzSpSOsW__20260812.jpeg",
+      "https://img.yad2.co.il/Pic/202608/12/2_6/o/y2_12_ejDBrqvTMr_20260812.jpeg",
+      "https://img.yad2.co.il/Pic/202608/12/2_6/o/y2_13_IdbT_agpnY_20260812.jpeg"
+     ],
+     "video": "//yad2.cdnwiz.com/p/102/sp/10200/playManifest/entryId/0_zg6cvoki/format/url/protocol/http",
+     "squareMeterBuild": 85
+    },
+    "customer": {
+     "agencyName": "הבניין חברה לשיווק נדל\"ן",
+     "agencyLogo": "//images.yad2.co.il/Pic/TivMiniSite/edffad38-85a8-47bd-8a5a-33536f73e75a.png?t=1788189709160"
+    },
+    "tags": [
+     {
+      "name": "בהזדמנות",
+      "id": 1291,
+      "priority": 10
+     },
+     {
+      "name": "חבל לפספס",
+      "id": 1292,
+      "priority": 10
+     },
+     {
+      "name": "ייחודי",
+      "id": 1293,
+      "priority": 10
+     }
+    ],
+    "orderId": 57364737,
+    "priority": 3,
+    "packages": {}
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "תל אביב יפו"
+     },
+     "area": {
+      "text": "אזור תל אביב יפו"
+     },
+     "neighborhood": {
+      "text": "אזור תעסוקה צומת חולון"
+     },
+     "street": {
+      "text": "תל גיבורים"
+     },
+     "house": {
+      "number": 15,
+      "floor": 1
+     },
+     "coords": {
+      "lon": 34.769659,
+      "lat": 32.035216
+     }
+    },
+    "subcategoryId": 6,
+    "categoryId": 2,
+    "adType": "commercial",
+    "price": 4700,
+    "token": "z08aove3",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 64,
+     "propertyCondition": {
+      "id": 2
+     },
+     "promotions": []
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202602/22/2_6/o/y2_1_B3Vrldb7Ob_20260222.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202602/22/2_6/o/y2_1_B3Vrldb7Ob_20260222.jpeg",
+      "https://img.yad2.co.il/Pic/202602/22/2_6/o/y2_2_G3H1G1dnTo_20260222.jpeg",
+      "https://img.yad2.co.il/Pic/202602/22/2_6/o/y2_3_AjB6y33p4m_20260222.jpeg",
+      "https://img.yad2.co.il/Pic/202602/22/2_6/o/y2_4_K0eft3DObH_20260222.jpeg",
+      "https://img.yad2.co.il/Pic/202602/22/2_6/o/y2_5_DcZLZ9syNU_20260222.jpeg",
+      "https://img.yad2.co.il/Pic/202602/22/2_6/o/y2_6_YnKvSFYaaW_20260222.jpeg",
+      "https://img.yad2.co.il/Pic/202602/22/2_6/o/y2_7_IMyQddv5Do_20260222.jpeg",
+      "https://img.yad2.co.il/Pic/202602/22/2_6/o/y2_8_SCq6WAiOQZ_20260222.jpeg",
+      "https://img.yad2.co.il/Pic/202602/22/2_6/o/y2_9_lrUyAWEvMe_20260222.jpeg",
+      "https://img.yad2.co.il/Pic/202602/22/2_6/o/y2_10_MgZccPWOsv_20260222.jpeg",
+      "https://img.yad2.co.il/Pic/202602/22/2_6/o/y2_11_SmkpoFo2_J_20260222.jpeg",
+      "https://img.yad2.co.il/Pic/202602/22/2_6/o/y2_12_QhwzbMt7jy_20260222.jpeg",
+      "https://img.yad2.co.il/Pic/202602/22/2_6/o/y2_13_U4S_DCWvxU_20260222.jpeg",
+      "https://img.yad2.co.il/Pic/202602/22/2_6/o/y2_14_zxbWsJwHO5_20260222.jpeg",
+      "https://img.yad2.co.il/Pic/202602/22/2_6/o/y2_15_857nfkT0pl_20260222.jpeg"
+     ],
+     "squareMeterBuild": 62
+    },
+    "customer": {
+     "agencyName": "Relocation משה-אקילוב צעד-חכם!",
+     "agencyLogo": "//images.yad2.co.il/Pic/TivMiniSite/8a476af7-8f5c-4706-80c4-0d1239a5b8e7.jpeg?t=1788185372252"
+    },
+    "tags": [],
+    "orderId": 56622784,
+    "priority": 1,
+    "packages": {}
+   },
+   {
+    "address": {
+     "region": {
+      "text": "תל אביב והסביבה",
+      "id": 3
+     },
+     "city": {
+      "text": "רמת גן"
+     },
+     "area": {
+      "text": "אזור רמת גן וגבעתיים"
+     },
+     "street": {
+      "text": "השר משה"
+     },
+     "house": {
+      "floor": 1
+     },
+     "coords": {
+      "lon": 34.8243845432099,
+      "lat": 32.0661101851852
+     }
+    },
+    "subcategoryId": 6,
+    "categoryId": 2,
+    "adType": "commercial",
+    "price": 5500,
+    "token": "h2fzr2nq",
+    "additionalDetails": {
+     "property": {
+      "text": "דירה"
+     },
+     "roomsCount": 3,
+     "squareMeter": 75,
+     "propertyCondition": {
+      "id": 3
+     },
+     "promotions": []
+    },
+    "metaData": {
+     "coverImage": "https://img.yad2.co.il/Pic/202607/19/2_6/o/y2_1_ag2VmUhtKh_20260719.jpeg",
+     "images": [
+      "https://img.yad2.co.il/Pic/202607/19/2_6/o/y2_1_ag2VmUhtKh_20260719.jpeg",
+      "https://img.yad2.co.il/Pic/202607/19/2_6/o/y2_7_it94kUxqSD_20260719.jpeg",
+      "https://img.yad2.co.il/Pic/202607/19/2_6/o/y2_3_jvnttNmvAm_20260719.jpeg",
+      "https://img.yad2.co.il/Pic/202607/19/2_6/o/y2_4_LHNGQnKm7n_20260719.jpeg",
+      "https://img.yad2.co.il/Pic/202607/19/2_6/o/y2_2_M8lSkVl6TG_20260719.jpeg",
+      "https://img.yad2.co.il/Pic/202607/19/2_6/o/y2_5_InQmfJDyUh_20260719.jpeg",
+      "https://img.yad2.co.il/Pic/202607/19/2_6/o/y2_6_V1JJ77PFRR_20260719.jpeg"
+     ],
+     "squareMeterBuild": 75
+    },
+    "customer": {
+     "agencyName": "רימקס פוקוס",
+     "agencyLogo": "//images.yad2.co.il/Pic/TivMiniSite/logo100_2_7_713957_20181111091110-l.jpg?t=1788189170084"
+    },
+    "tags": [],
+    "priceBeforeTag": 5650,
+    "orderId": 57249899,
+    "priority": 1,
+    "packages": {}
+   }
+  ],
+  "grayMarkers": [
+   {
+    "token": "18040",
+    "projectName": "שפרינצק 7 תל אביב",
+    "developerName": "ב.ס.ט גורדי 4 איי.ג'י בע\"מ",
+    "address": {
+     "city": "תל אביב יפו",
+     "neighborhood": "גני שרונה, קרית הממשלה",
+     "coords": {
+      "lat": 32.0711784362793,
+      "lon": 34.78310012817383
+     }
+    },
+    "property": {
+     "id": "12",
+     "text": "בניני ציבור"
+    }
+   },
+   {
+    "token": "12889",
+    "projectName": "רוקח 42 רמת גן",
+    "developerName": "ב.ר  זוארץ יזמות ופיתוח בע\"מ",
+    "address": {
+     "city": "רמת גן",
+     "neighborhood": "שכונת הותיקים",
+     "coords": {
+      "lat": 32.09109497070312,
+      "lon": 34.8095817565918
+     }
+    },
+    "property": {
+     "id": "12",
+     "text": "בניני ציבור"
+    }
+   }
+  ]
+ },
+ "message": "OK"
+}
