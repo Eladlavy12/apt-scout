@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Protocol
+from typing import TYPE_CHECKING, Protocol
+
+if TYPE_CHECKING:
+    import httpx
 
 # Israeli property sites routinely reject unrecognised user agents. These
 # headers make a plain HTTP request indistinguishable from a normal browser,
@@ -43,7 +46,7 @@ class HttpTransport:
 
     name = "http"
 
-    def __init__(self, client=None, timeout: float = 20.0):
+    def __init__(self, client: "httpx.Client | None" = None, timeout: float = 20.0) -> None:
         if client is None:
             import httpx
 
@@ -69,9 +72,9 @@ class Fetcher:
     configuration change to its minimum tier rather than a code change.
     """
 
-    def __init__(self, transports: dict[str, Transport], order: list[str] | None = None):
+    def __init__(self, transports: dict[str, Transport], order: list[str] | None = None) -> None:
         self._transports = transports
-        self._order = order or TIER_ORDER
+        self._order = order if order is not None else TIER_ORDER
 
     def get(
         self,
