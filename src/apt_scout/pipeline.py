@@ -20,6 +20,7 @@ class RunReport:
     matched: int = 0
     notified: int = 0
     errors: dict[str, str] = field(default_factory=dict)
+    listings: list[Listing] = field(default_factory=list)
 
 
 def run_pipeline(
@@ -70,6 +71,7 @@ def run_pipeline(
     seen = store.seen_ids()
 
     newly_notified: list[str] = []
+    enriched: list[Listing] = []
     for listing in collected:
         listing_id = listing.stable_id()
         if listing_id not in seen:
@@ -78,6 +80,7 @@ def run_pipeline(
 
         for enrich in enrichers:
             listing = enrich(listing)
+        enriched.append(listing)
 
         if not filters.matches(listing):
             continue
@@ -88,6 +91,8 @@ def run_pipeline(
         if notifier.send_listing(listing):
             newly_notified.append(listing_id)
             report.notified += 1
+
+    report.listings = enriched
 
     store.mark_seen(item.stable_id() for item in collected)
     if newly_notified:

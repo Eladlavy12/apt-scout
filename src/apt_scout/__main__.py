@@ -5,6 +5,7 @@ import json
 import os
 import sys
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -12,8 +13,10 @@ from .adapters.yad2 import Yad2Adapter
 from .enrich.pipeline_enrichers import build_enrichers
 from .fetch import Fetcher, HttpTransport
 from .filters import Filters
+from .health import HealthTracker
 from .notify.telegram import TelegramNotifier
 from .pipeline import run_pipeline
+from .portal.builder import build_portal
 from .state import StateStore
 
 
@@ -84,6 +87,12 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Run the full pipeline without sending notifications",
     )
+    parser.add_argument(
+        "--build-portal", action="store_true", help="Generate the static portal"
+    )
+    parser.add_argument(
+        "--portal-dir", default="site", help="Where to write the portal"
+    )
     args = parser.parse_args(argv)
 
     runtime = build_runtime(Path(args.repo), dict(os.environ), dry_run=args.dry_run)
@@ -96,6 +105,15 @@ def main(argv: list[str] | None = None) -> int:
         notifier=runtime.notifier,
         enrichers=runtime.enrichers,
     )
+
+    if args.build_portal:
+        build_portal(
+            output_dir=Path(args.repo) / args.portal_dir,
+            listings=report.listings,
+            health=HealthTracker(runtime.store).report(),
+            filters=runtime.filters,
+            generated_at=datetime.now(timezone.utc),
+        )
 
     print(
         f"fetched={report.fetched} new={report.new} "

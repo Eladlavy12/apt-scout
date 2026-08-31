@@ -30,7 +30,14 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           PHONE_HASH_SALT: ${{ secrets.PHONE_HASH_SALT }}
-        run: python -m apt_scout --repo .
+        run: python -m apt_scout --repo . --build-portal --portal-dir site
+
+      - name: Publish portal
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          publish_branch: gh-pages
 
       - name: Commit state
         run: |
