@@ -35,14 +35,16 @@ def format_listing(listing: Listing) -> str:
         lines.append(f"🚗 {round(listing.drive_minutes)} דקות נסיעה")
 
     lines.append(f"מקור: {listing.source}")
-    lines.append(listing.url)
+    lines.append(html.escape(listing.url))
     return "\n".join(lines)
 
 
 class TelegramNotifier:
     """Sends listing alerts to a single Telegram chat."""
 
-    def __init__(self, token: str, chat_id: str, client=None, timeout: float = 15.0):
+    def __init__(
+        self, token: str, chat_id: str, client: object | None = None, timeout: float = 15.0
+    ) -> None:
         self._token = token
         self._chat_id = chat_id
         if client is None:

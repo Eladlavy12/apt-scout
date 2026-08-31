@@ -62,6 +62,11 @@ class TestFormatting:
         )
         assert "None" not in text
 
+    def test_escapes_ampersands_in_the_url_for_html_mode(self):
+        text = format_listing(listing(url="https://y/item?a=1&b=2"))
+        assert "a=1&amp;b=2" in text
+        assert "a=1&b=2" not in text
+
 
 class TestSending:
     def test_sends_a_photo_when_one_exists(self):
