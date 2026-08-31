@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import time
+from collections.abc import Callable
+from typing import Any
 
 from ..normalise.text import normalise_text
 from ..state import StateStore
@@ -20,12 +22,12 @@ class Geocoder:
     def __init__(
         self,
         store: StateStore,
-        client=None,
+        client: Any = None,
         min_interval: float = 1.0,
-        sleep=time.sleep,
-    ):
+        sleep: Callable[[float], None] = time.sleep,
+    ) -> None:
         self._store = store
-        self._cache: dict = store.load(CACHE, {})
+        self._cache: dict[str, Any] = store.load(CACHE, {})
         self._min_interval = min_interval
         self._sleep = sleep
         self._last_call = 0.0
