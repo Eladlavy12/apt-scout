@@ -56,7 +56,7 @@ exclude listings, since a good apartment in Ramat Gan should still surface.
 
 ### In scope for v1
 
-- Scout sites: yad2, madlan, komo
+- Scout sites: yad2, madlan, komo, onmap, homeless, prog
 - Facebook Marketplace (Tel Aviv property rentals)
 - Public Facebook groups, keyword-filtered and budget-capped
 - Subsidized / young-adult housing project discovery and tracking
@@ -147,8 +147,30 @@ degraded source.
 | `yad2` | Internal JSON API, direct | Most bot-protected; highest maintenance risk. Built first because it is the highest-value and most likely to break. |
 | `madlan` | Internal API / HTML, direct | |
 | `komo` | Internal API / HTML, direct | |
+| `onmap` | Internal JSON API, direct | Modern SPA, so a JSON API almost certainly backs it. Rejected a plain HTTP probe during design; expected to need browser-like headers. |
+| `homeless` | HTML, direct | Long-established Israeli rental board with good landlord-direct volume. Rejected a plain HTTP probe; expected to need browser-like headers. |
+| `prog` | Forum classifieds, direct | XenForo-style classifieds board (`לוח נדל"ן להשכרה`). Forum software usually exposes predictable listing URLs and often an RSS feed, which would make this the cheapest adapter to build and the most stable. Rejected a plain HTTP probe; expected to need browser-like headers. |
 | `fb_marketplace` | Apify `curious_coder/facebook-marketplace` | Uses Facebook's own filters (price, bedrooms, radius, sort-by-newest) so only pre-matching listings are ever fetched. No cookies. ~$0.50/1,000 listings. |
 | `fb_groups` | Apify `swerve/fb-group-scraper` | Public groups only. `keyword` + `postedAfter` filter server-side, so billing covers matching new posts only. `maxPostsPerGroup` acts as a runaway guard. $3.50/1,000 results. |
+
+**Tiered fetching.** During design, plain HTTP probes of onmap, homeless, and prog
+were all rejected (403/404), while the same pages are reachable in a normal
+browser. Israeli property sites commonly block unrecognised user agents. Adapters
+therefore do not issue raw requests themselves; they call a shared fetch layer
+that escalates through three tiers:
+
+1. **HTTP with realistic headers** — proper `User-Agent`, `Accept-Language: he-IL`,
+   `Referer`, and a session that retains cookies. Expected to resolve most of the
+   403s seen above. Cheapest and fastest.
+2. **Headless browser** (Playwright, which runs fine on GitHub Actions runners) for
+   sites that genuinely require JavaScript execution or issue challenge cookies.
+3. **Apify actor** as a last resort, for any site whose protection defeats both,
+   subject to the budget guard.
+
+Each adapter declares its lowest working tier in `sources.json`, so we never pay
+the cost of a browser where headers suffice. The tier is a configuration value,
+not code, so a site tightening its protection is a config change rather than a
+rewrite.
 
 **Note on scan frequency and cost.** Because `postedAfter` filters server-side and
 billing is per returned result, scanning more often does not increase cost — the
@@ -391,7 +413,7 @@ GroupYield     group_id, group_url, posts_billed, clusters, matches,
 
 | Job | Cadence | Runs on |
 |---|---|---|
-| Scout sites (yad2, madlan, komo) | Hourly | GitHub Actions |
+| Scout sites (yad2, madlan, komo, onmap, homeless, prog) | Hourly | GitHub Actions |
 | Facebook Marketplace | Every 3 hours | GitHub Actions |
 | Facebook groups | Every 3 hours | GitHub Actions |
 | Portal rebuild | Every run | GitHub Actions |
@@ -417,7 +439,7 @@ clustering always sees a consistent snapshot.
 | Nominatim geocoding | $0 |
 | OSRM routing | $0 |
 | Leaflet / OpenStreetMap tiles | $0 |
-| yad2 / madlan / komo scraping | $0 |
+| yad2 / madlan / komo / onmap / homeless / prog scraping | $0 |
 | Apify — Facebook Marketplace | ~$0.50 |
 | Apify — Facebook groups | remainder of the $5 cap |
 | Claude cloud agent | ~30 runs/month of subscription usage |
@@ -481,6 +503,12 @@ group selection matter rather than being optimisations.
 
 - yad2 has strong bot protection and is the most likely adapter to break. It is
   built first, and has an Apify fallback path if direct access proves unworkable.
+- onmap, homeless, and prog all rejected plain HTTP probes during design. The
+  tiered fetch layer exists to absorb this, but if any of them turns out to need
+  the Apify tier rather than headers or a headless browser, it would draw on the
+  same $5 budget the groups use. Each is validated at tier 1 and 2 before being
+  considered for tier 3, and a site that only works at tier 3 will be raised with
+  the user rather than silently spending budget.
 - Free public OSRM and Nominatim instances impose rate limits; caching keeps usage
   low, and self-hosting is the documented escape hatch.
 - $5/month is a genuinely tight group budget. Group coverage in v1 is deliberately
@@ -533,7 +561,10 @@ become genuinely accurate.
 **Phase 3 — Portal.** Static site, client-side filters, map, health footer,
 GitHub Pages.
 
-**Phase 4 — Breadth.** madlan and komo adapters, Facebook Marketplace.
+**Phase 4 — Breadth.** The remaining free adapters — madlan, komo, onmap,
+homeless, prog — plus Facebook Marketplace. Adapters are independent of one
+another, so this phase parallelises well. prog is a good early target within the
+phase, since forum software tends to be the most stable and predictable to parse.
 
 **Phase 5 — Clustering.** Fingerprinting, union-find, field pooling,
 once-per-cluster notification. Deliberately after multiple sources exist, since it
