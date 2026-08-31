@@ -107,8 +107,14 @@ def process_commands(
     store: StateStore,
     filters: Filters,
     filters_path: Path,
+    chat_id: str,
 ) -> Filters:
     """Poll Telegram, apply any commands, and persist the result.
+
+    Only messages from the configured chat are honoured: anyone can message a
+    bot, so a stranger must not be able to reconfigure the alerts. Foreign
+    updates are dropped silently — no reply, but the offset still advances so
+    they are not re-fetched forever.
 
     A polling failure is swallowed: the run continues with the existing
     configuration rather than being lost to a Telegram outage.
@@ -124,7 +130,11 @@ def process_commands(
 
     for item in updates:
         highest = max(highest or 0, item.get("update_id", 0))
-        text = (item.get("message") or {}).get("text")
+        message = item.get("message") or {}
+        update_chat_id = (message.get("chat") or {}).get("id")
+        if str(update_chat_id) != str(chat_id):
+            continue
+        text = message.get("text")
         parsed = parse_command(text)
         if parsed is None:
             continue

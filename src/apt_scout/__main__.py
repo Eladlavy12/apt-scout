@@ -45,6 +45,7 @@ class Runtime:
     fetcher: Fetcher
     adapters: list
     enrichers: list
+    chat_id: str | None = None
 
 
 def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
@@ -77,6 +78,7 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
         fetcher=fetcher,
         adapters=[Yad2Adapter()],
         enrichers=build_enrichers(store, salt=salt),
+        chat_id=env.get("TELEGRAM_CHAT_ID"),
     )
 
 
@@ -104,6 +106,7 @@ def main(argv: list[str] | None = None) -> int:
             runtime.store,
             runtime.filters,
             Path(args.repo) / "config" / "filters.json",
+            chat_id=runtime.chat_id or "",
         )
 
     report = run_pipeline(

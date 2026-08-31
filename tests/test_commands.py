@@ -100,8 +100,14 @@ class FakeNotifier:
         return True
 
 
-def update(update_id, text):
-    return {"update_id": update_id, "message": {"text": text}}
+CHAT_ID = "111"
+
+
+def update(update_id, text, chat_id=111):
+    return {
+        "update_id": update_id,
+        "message": {"text": text, "chat": {"id": chat_id}},
+    }
 
 
 class TestProcessing:
@@ -110,7 +116,7 @@ class TestProcessing:
         path.write_text(json.dumps(Filters().to_dict()), encoding="utf-8")
         notifier = FakeNotifier([update(1, "/radius 25")])
 
-        result = process_commands(notifier, StateStore(tmp_path), Filters(), path)
+        result = process_commands(notifier, StateStore(tmp_path), Filters(), path, chat_id=CHAT_ID)
 
         assert result.max_drive_minutes == 25
         assert json.loads(path.read_text("utf-8"))["max_drive_minutes"] == 25
@@ -120,10 +126,10 @@ class TestProcessing:
         path = tmp_path / "filters.json"
         path.write_text(json.dumps(Filters().to_dict()), encoding="utf-8")
         store = StateStore(tmp_path)
-        process_commands(FakeNotifier([update(7, "/radius 25")]), store, Filters(), path)
+        process_commands(FakeNotifier([update(7, "/radius 25")]), store, Filters(), path, chat_id=CHAT_ID)
 
         second = FakeNotifier([])
-        process_commands(second, store, Filters(), path)
+        process_commands(second, store, Filters(), path, chat_id=CHAT_ID)
 
         assert second.offsets == [8], "must ask only for updates after the last one"
 
@@ -132,7 +138,7 @@ class TestProcessing:
         path.write_text(json.dumps(Filters().to_dict()), encoding="utf-8")
         notifier = FakeNotifier([update(1, "/radius 20"), update(2, "/radius 30")])
 
-        result = process_commands(notifier, StateStore(tmp_path), Filters(), path)
+        result = process_commands(notifier, StateStore(tmp_path), Filters(), path, chat_id=CHAT_ID)
 
         assert result.max_drive_minutes == 30
 
@@ -141,7 +147,7 @@ class TestProcessing:
         path.write_text(json.dumps(Filters().to_dict()), encoding="utf-8")
         notifier = FakeNotifier([update(1, "good morning")])
 
-        process_commands(notifier, StateStore(tmp_path), Filters(), path)
+        process_commands(notifier, StateStore(tmp_path), Filters(), path, chat_id=CHAT_ID)
 
         assert notifier.replies == []
 
@@ -156,7 +162,7 @@ class TestProcessing:
         path = tmp_path / "filters.json"
         path.write_text(json.dumps(Filters().to_dict()), encoding="utf-8")
 
-        result = process_commands(Broken(), StateStore(tmp_path), Filters(), path)
+        result = process_commands(Broken(), StateStore(tmp_path), Filters(), path, chat_id=CHAT_ID)
 
         assert result.to_dict() == Filters().to_dict()
 
@@ -166,7 +172,7 @@ class TestProcessing:
         path.write_text(original, encoding="utf-8")
         notifier = FakeNotifier([update(1, "/status")])
 
-        process_commands(notifier, StateStore(tmp_path), Filters(), path)
+        process_commands(notifier, StateStore(tmp_path), Filters(), path, chat_id=CHAT_ID)
 
         assert path.read_text("utf-8") == original, "no-op command must not touch the file"
         assert notifier.replies, "status must still get a reply"
@@ -177,6 +183,37 @@ class TestProcessing:
         path.write_text(original, encoding="utf-8")
         notifier = FakeNotifier([update(1, "/price abc")])
 
-        process_commands(notifier, StateStore(tmp_path), Filters(), path)
+        process_commands(notifier, StateStore(tmp_path), Filters(), path, chat_id=CHAT_ID)
 
         assert path.read_text("utf-8") == original
+
+    def test_a_command_from_a_foreign_chat_is_ignored_entirely(self, tmp_path):
+        # Anyone on Telegram can message the bot; only the configured chat may
+        # reconfigure the alerts. No reply either — silence gives strangers
+        # nothing to probe. The offset still advances so the foreign update is
+        # not re-fetched on every run.
+        path = tmp_path / "filters.json"
+        original = json.dumps(Filters().to_dict())
+        path.write_text(original, encoding="utf-8")
+        store = StateStore(tmp_path)
+        notifier = FakeNotifier([update(5, "/radius 25", chat_id=999)])
+
+        result = process_commands(notifier, store, Filters(), path, chat_id=CHAT_ID)
+
+        assert result.to_dict() == Filters().to_dict()
+        assert notifier.replies == []
+        assert path.read_text("utf-8") == original
+        assert store.load("telegram_offset", None) == 6
+
+    def test_a_matching_chat_id_may_arrive_as_an_int(self, tmp_path):
+        # Telegram sends chat ids as integers; the configured id is an env
+        # string. The comparison must not care.
+        path = tmp_path / "filters.json"
+        path.write_text(json.dumps(Filters().to_dict()), encoding="utf-8")
+        notifier = FakeNotifier([update(1, "/radius 25", chat_id=111)])
+
+        result = process_commands(
+            notifier, StateStore(tmp_path), Filters(), path, chat_id="111"
+        )
+
+        assert result.max_drive_minutes == 25
