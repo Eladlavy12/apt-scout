@@ -1,0 +1,104 @@
+import json
+from datetime import datetime, timezone
+
+from apt_scout.filters import Filters
+from apt_scout.models import Listing, Occupancy
+from apt_scout.portal.builder import build_portal, listing_to_public_dict
+
+NOW = datetime(2026, 8, 31, 12, 0, tzinfo=timezone.utc)
+
+
+def listing(**overrides) -> Listing:
+    base = dict(
+        source="yad2",
+        source_id="1",
+        url="https://y/1",
+        price=4800,
+        rooms=3.0,
+        size_sqm=70.0,
+        drive_minutes=11.4,
+        city="תל אביב",
+        address_text="הרצל 10",
+        lat=32.07,
+        lon=34.79,
+        photos=["https://img/1.jpg"],
+        occupancy=Occupancy.WHOLE,
+        phone_hash="deadbeef",
+        first_seen_at=NOW,
+    )
+    base.update(overrides)
+    return Listing(**base)
+
+
+class TestPublicDict:
+    def test_includes_the_display_fields(self):
+        data = listing_to_public_dict(listing())
+        assert data["price"] == 4800
+        assert data["rooms"] == 3.0
+        assert data["drive_minutes"] == 11.4
+        assert data["url"] == "https://y/1"
+
+    def test_never_includes_the_phone_hash(self):
+        # The salted hash is an internal matching key. It has no display value
+        # and publishing it would be a needless leak of derived personal data.
+        assert "phone_hash" not in listing_to_public_dict(listing())
+
+    def test_never_includes_raw_text(self):
+        # Raw post text routinely contains phone numbers and names.
+        data = listing_to_public_dict(listing(raw_text="חייגו 050-1234567"))
+        assert "raw_text" not in data
+        assert "050" not in json.dumps(data, ensure_ascii=False)
+
+    def test_serialises_datetimes_as_iso_strings(self):
+        assert listing_to_public_dict(listing())["first_seen_at"] == NOW.isoformat()
+
+    def test_handles_missing_values(self):
+        data = listing_to_public_dict(listing(price=None, first_seen_at=None))
+        assert data["price"] is None
+        assert data["first_seen_at"] is None
+
+
+class TestBuildPortal:
+    def test_writes_the_data_file(self, tmp_path):
+        build_portal(tmp_path, [listing()], {}, Filters(), NOW)
+        data = json.loads((tmp_path / "data" / "listings.json").read_text("utf-8"))
+        assert len(data["listings"]) == 1
+        assert data["generated_at"] == NOW.isoformat()
+
+    def test_copies_the_static_assets(self, tmp_path):
+        build_portal(tmp_path, [listing()], {}, Filters(), NOW)
+        assert (tmp_path / "index.html").exists()
+        assert (tmp_path / "app.js").exists()
+        assert (tmp_path / "style.css").exists()
+
+    def test_includes_source_health(self, tmp_path):
+        health = {"yad2": {"consecutive_failures": 0, "last_success": NOW.isoformat()}}
+        build_portal(tmp_path, [listing()], health, Filters(), NOW)
+        data = json.loads((tmp_path / "data" / "listings.json").read_text("utf-8"))
+        assert data["health"]["yad2"]["consecutive_failures"] == 0
+
+    def test_includes_the_alert_thresholds_as_initial_ui_values(self, tmp_path):
+        build_portal(tmp_path, [listing()], {}, Filters(max_price=6000), NOW)
+        data = json.loads((tmp_path / "data" / "listings.json").read_text("utf-8"))
+        assert data["defaults"]["max_price"] == 6000
+
+    def test_no_phone_number_appears_anywhere_in_the_output(self, tmp_path):
+        # The hard rule from the spec, enforced by a test rather than a comment.
+        build_portal(
+            tmp_path,
+            [listing(raw_text="לפרטים 052-9876543", phone_hash="abc123")],
+            {},
+            Filters(),
+            NOW,
+        )
+        published = (tmp_path / "data" / "listings.json").read_text("utf-8")
+        assert "052" not in published
+        assert "9876543" not in published
+        assert "abc123" not in published
+
+    def test_sorts_newest_first(self, tmp_path):
+        older = listing(source_id="old", first_seen_at=datetime(2026, 8, 30, tzinfo=timezone.utc))
+        newer = listing(source_id="new", first_seen_at=datetime(2026, 8, 31, tzinfo=timezone.utc))
+        build_portal(tmp_path, [older, newer], {}, Filters(), NOW)
+        data = json.loads((tmp_path / "data" / "listings.json").read_text("utf-8"))
+        assert data["listings"][0]["source_id"] == "new"
