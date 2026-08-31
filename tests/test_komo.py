@@ -62,6 +62,30 @@ class TestParsing:
         assert "modaaNum=12345" in listing.url
         assert listing.occupancy is Occupancy.WHOLE
 
+    def test_extracts_photo_url(self):
+        listing = parse_komo_html(card_html())[0]
+        assert listing.photos == [
+            "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=999&luachNum=2&picSize=1"
+        ]
+
+    def test_photo_url_missing_returns_empty_list(self):
+        # Card with no image__wrapper
+        html_no_img = """
+        <div id="modaaRowDv12345" class="modaaRowAd View_Ad_Details modaa__box" key="12345">
+          <div class="contant">
+            <a href="/code/nadlan/details/?modaaNum=12345">
+              <h2 class="title">תל אביב יפו, התקווה, בועז</h2>
+            </a>
+            <div class="price">4,500&nbsp;&#8362;</div>
+            <div class="description">
+              &nbsp;דירה&nbsp;3.0 חדרים (65 מ&quot;ר) <br> קומה:2 מתוך 4
+            </div>
+          </div>
+        </div>
+        """
+        listing = parse_komo_html(html_no_img)[0]
+        assert listing.photos == []
+
     def test_city_parsed_from_title(self):
         listing = parse_komo_html(card_html())[0]
         assert listing.city == "תל אביב יפו"
@@ -89,6 +113,8 @@ class TestParsing:
         assert priced
         for l in priced:
             assert 1000 <= l.price <= 50000
+        # Verify that photos are extracted from the fixture
+        assert any(l.photos for l in listings)
 
 
 class FakeFetcher:

@@ -56,6 +56,30 @@ def _price(card: Tag) -> int | None:
     return _price_from_text(price_div.get_text())
 
 
+def _photos(card: Tag) -> list[str]:
+    """Extract the first image URL from the card's image__wrapper div.
+
+    Returns an absolute URL (prepended with BASE_URL if needed), or empty list
+    if no image is found.
+    """
+    image_wrapper = card.select_one("div.image__wrapper")
+    if image_wrapper is None:
+        return []
+
+    img = image_wrapper.select_one("img")
+    if img is None:
+        return []
+
+    src = img.get("src")
+    if not isinstance(src, str) or not src:
+        return []
+
+    # Make the URL absolute if it's relative
+    if src.startswith("http"):
+        return [src]
+    return [f"{BASE_URL}{src}"]
+
+
 def _title_parts(card: Tag) -> list[str]:
     title = card.select_one("h2.title")
     if title is None:
@@ -117,6 +141,7 @@ def parse_komo_html(html: str) -> list[Listing]:
                 floor=floor,
                 city=city,
                 address_text=", ".join(title_parts) or None,
+                photos=_photos(card),
                 # komo's apartments-for-rent search lists whole properties
                 # only; there is no roommate-ad category on this path.
                 occupancy=Occupancy.WHOLE,
