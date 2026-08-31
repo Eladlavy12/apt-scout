@@ -6,6 +6,9 @@ const TOGGLES = ["include-no-price", "include-unsure"];
 
 let listings = [];
 let defaults = {};
+let map = null;
+let markerLayer = null;
+const CENTRE = [32.056581, 34.804087];
 
 function safeHttpUrl(value) {
   try {
@@ -142,6 +145,55 @@ function card(item) {
   return el;
 }
 
+function popupContent(item) {
+  const wrap = document.createElement("div");
+  const priceEl = document.createElement("b");
+  priceEl.textContent = item.price === null ? "מחיר לא צוין" : item.price.toLocaleString("he-IL") + " ₪";
+  wrap.appendChild(priceEl);
+  wrap.appendChild(document.createElement("br"));
+  const link = document.createElement("a");
+  link.textContent = "למודעה";
+  const url = safeHttpUrl(item.url);
+  if (url) link.href = url;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  wrap.appendChild(link);
+  return wrap;
+}
+
+function renderMap(visible) {
+  if (!map) {
+    map = L.map("map").setView(CENTRE, 13);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: "&copy; OpenStreetMap contributors",
+    }).addTo(map);
+    markerLayer = L.layerGroup().addTo(map);
+
+    L.circleMarker(CENTRE, {
+      radius: 8,
+      color: "#b42318",
+      fillColor: "#b42318",
+      fillOpacity: 0.9,
+    })
+      .bindPopup("נקודת הייחוס")
+      .addTo(map);
+  }
+
+  markerLayer.clearLayers();
+  visible.forEach((item) => {
+    if (item.lat === null || item.lon === null) return;
+    L.circleMarker([item.lat, item.lon], {
+      radius: 6,
+      color: "#1f6feb",
+      fillColor: "#1f6feb",
+      fillOpacity: 0.75,
+    })
+      .bindPopup(popupContent(item))
+      .addTo(markerLayer);
+  });
+}
+
 function render() {
   const state = readControls();
   applyControls(state);
@@ -153,6 +205,8 @@ function render() {
 
   document.getElementById("summary").textContent =
     visible.length + " מתוך " + listings.length + " מודעות";
+
+  renderMap(visible);
 }
 
 function renderHealth(health, generatedAt) {

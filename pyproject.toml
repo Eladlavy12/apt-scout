@@ -17,7 +17,7 @@ build-backend = "setuptools.build_meta"
 where = ["src"]
 
 [tool.setuptools.package-data]
-apt_scout = ["portal/assets/*"]
+apt_scout = ["portal/assets/*", "portal/assets/vendor/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

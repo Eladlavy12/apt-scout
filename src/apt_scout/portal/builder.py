@@ -78,4 +78,6 @@ def build_portal(
     for asset in ("index.html", "app.js", "style.css"):
         shutil.copy(ASSETS / asset, output_dir / asset)
 
+    shutil.copytree(ASSETS / "vendor", output_dir / "vendor", dirs_exist_ok=True)
+
     return output_dir / "data" / "listings.json"
