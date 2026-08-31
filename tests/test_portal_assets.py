@@ -51,3 +51,8 @@ class TestJavaScript:
         js = (ASSETS / "app.js").read_text(encoding="utf-8")
         assert "addEventListener" in js
         assert "location.reload" not in js
+
+    def test_never_uses_innerhtml_with_scraped_data(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        assert "innerHTML" not in js, "scraped data must be DOM-built, not string-injected"
+        assert "safeHttpUrl" in js, "URLs from scraped data must be scheme-validated"

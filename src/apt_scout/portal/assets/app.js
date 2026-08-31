@@ -7,6 +7,16 @@ const TOGGLES = ["include-no-price", "include-unsure"];
 let listings = [];
 let defaults = {};
 
+function safeHttpUrl(value) {
+  try {
+    const url = new URL(value, window.location.href);
+    if (url.protocol === "http:" || url.protocol === "https:") return url.href;
+  } catch (err) {
+    /* fall through */
+  }
+  return null;
+}
+
 function readControls() {
   const state = {};
   CONTROLS.forEach((id) => {
@@ -79,20 +89,56 @@ function card(item) {
   if (item.size_sqm !== null) facts.push(item.size_sqm + ' מ"ר');
   if (item.drive_minutes !== null) facts.push("🚗 " + Math.round(item.drive_minutes) + " דק'");
 
-  const photo = item.photos && item.photos.length
-    ? '<img loading="lazy" alt="" src="' + item.photos[0] + '">'
-    : "";
+  if (item.photos && item.photos.length) {
+    const photoUrl = safeHttpUrl(item.photos[0]);
+    if (photoUrl) {
+      const img = document.createElement("img");
+      img.loading = "lazy";
+      img.alt = "";
+      img.src = photoUrl;
+      el.appendChild(img);
+    }
+  }
 
-  el.innerHTML =
-    photo +
-    '<div class="body">' +
-    (isNew(item) ? '<span class="badge new">חדש</span>' : "") +
-    '<span class="badge source">' + item.source + "</span>" +
-    "<h2>" + price + "</h2>" +
-    "<p>" + facts.join(" · ") + "</p>" +
-    "<p class=\"addr\">" + (item.address_text || item.city || "") + "</p>" +
-    '<a href="' + item.url + '" target="_blank" rel="noopener noreferrer">למודעה המקורית</a>' +
-    "</div>";
+  const body = document.createElement("div");
+  body.className = "body";
+
+  if (isNew(item)) {
+    const badgeNew = document.createElement("span");
+    badgeNew.className = "badge new";
+    badgeNew.textContent = "חדש";
+    body.appendChild(badgeNew);
+  }
+
+  const badgeSource = document.createElement("span");
+  badgeSource.className = "badge source";
+  badgeSource.textContent = item.source;
+  body.appendChild(badgeSource);
+
+  const h2 = document.createElement("h2");
+  h2.textContent = price;
+  body.appendChild(h2);
+
+  const factsP = document.createElement("p");
+  factsP.textContent = facts.join(" · ");
+  body.appendChild(factsP);
+
+  const addrP = document.createElement("p");
+  addrP.className = "addr";
+  addrP.textContent = item.address_text || item.city || "";
+  body.appendChild(addrP);
+
+  const link = document.createElement("a");
+  link.textContent = "למודעה המקורית";
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  const linkUrl = safeHttpUrl(item.url);
+  if (linkUrl) {
+    link.href = linkUrl;
+  }
+  body.appendChild(link);
+
+  el.appendChild(body);
   return el;
 }
 
@@ -110,16 +156,20 @@ function render() {
 }
 
 function renderHealth(health, generatedAt) {
-  const parts = Object.entries(health || {}).map(([source, entry]) => {
+  const nodes = [
+    document.createTextNode(
+      "עודכן: " + new Date(generatedAt).toLocaleString("he-IL") + " · "
+    ),
+  ];
+  Object.entries(health || {}).forEach(([source, entry], index) => {
     const broken = entry.consecutive_failures >= 3;
-    return (
-      '<span class="' + (broken ? "bad" : "good") + '">' +
-      source + (broken ? " ✕" : " ✓") +
-      "</span>"
-    );
+    if (index > 0) nodes.push(document.createTextNode(" "));
+    const span = document.createElement("span");
+    span.className = broken ? "bad" : "good";
+    span.textContent = source + (broken ? " ✕" : " ✓");
+    nodes.push(span);
   });
-  document.getElementById("health").innerHTML =
-    "עודכן: " + new Date(generatedAt).toLocaleString("he-IL") + " · " + parts.join(" ");
+  document.getElementById("health").replaceChildren(...nodes);
 }
 
 function wire() {
