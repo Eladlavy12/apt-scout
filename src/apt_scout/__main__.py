@@ -242,8 +242,13 @@ def main(argv: list[str] | None = None) -> int:
                 generated_at=datetime.now(timezone.utc),
             )
         else:
+            reason = (
+                "no source was due to run (cadence-gated)"
+                if not report.attempted
+                else "every enabled source failed"
+            )
             print(
-                "WARNING: every enabled source failed; "
+                f"WARNING: {reason}; "
                 "keeping the previous portal instead of publishing an empty one",
                 file=sys.stderr,
             )
