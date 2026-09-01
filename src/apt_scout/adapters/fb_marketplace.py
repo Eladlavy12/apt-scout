@@ -255,12 +255,28 @@ class FbMarketplaceAdapter:
         except Exception as exc:  # noqa: BLE001 - a shape change must not crash
             return AdapterResult(source=self.name, error=f"parse failed: {exc}")
 
-        limit = config.get("max_results")
-        if limit:
-            listings = listings[:limit]
-
+        # Record budget BEFORE filtering, since we paid for all fetched items.
         self._budget.record(
             self.name, len(listings), len(listings) * COST_PER_ITEM_USD, now
         )
+
+        # Facebook returns a rotating sample of listings—without an age guard,
+        # old listings resurface repeatedly as fresh alerts. Filter to keep only
+        # recent listings, but retain items with unknown posted_at (fail open).
+        max_age_days = config.get("max_age_days", 7)
+        filtered = []
+        for listing in listings:
+            if listing.posted_at is None:
+                # Fail open: keep listings with no posted_at timestamp.
+                filtered.append(listing)
+            else:
+                age = now - listing.posted_at
+                if age.days <= max_age_days:
+                    filtered.append(listing)
+        listings = filtered
+
+        limit = config.get("max_results")
+        if limit:
+            listings = listings[:limit]
 
         return AdapterResult(source=self.name, listings=listings)

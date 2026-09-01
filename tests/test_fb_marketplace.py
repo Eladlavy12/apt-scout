@@ -226,6 +226,7 @@ class TestAdapterBudget:
 
         assert result.error is None
         assert len(result.listings) == 2
+        # Budget is recorded with all 2 fetched items.
         assert budget.record_calls == [
             ("fb_marketplace", 2, 2 * 0.0015, budget.record_calls[0][3])
         ]
@@ -294,7 +295,7 @@ class TestAdapterBudget:
         assert result.error is not None
         assert budget.record_calls == []
 
-    def test_max_results_truncates_and_budget_reflects_truncated_count(self, monkeypatch):
+    def test_max_results_truncates_but_budget_reflects_all_fetched(self, monkeypatch):
         items = [
             {
                 "id": str(i),
@@ -316,7 +317,9 @@ class TestAdapterBudget:
 
         assert result.error is None
         assert len(result.listings) == 2
-        assert budget.record_calls[0][1] == 2
+        # Budget reflects all 5 fetched items (we paid for them), even though
+        # only 2 are returned due to max_results.
+        assert budget.record_calls[0][1] == 5
 
     def test_can_spend_is_checked_with_a_timezone_aware_now(self, monkeypatch):
         monkeypatch.setattr(
@@ -331,3 +334,50 @@ class TestAdapterBudget:
         source, now = budget.can_spend_calls[0]
         assert source == "fb_marketplace"
         assert now.tzinfo is not None
+
+    def test_age_filter_drops_stale_listings_but_keeps_unknown_age(self, monkeypatch):
+        from datetime import timedelta
+
+        now = datetime.now(timezone.utc)
+        thirty_days_ago = int((now - timedelta(days=30)).timestamp())
+        now_timestamp = int(now.timestamp())
+
+        items = [
+            {
+                "id": "recent",
+                "marketplace_listing_title": "דירה להשכרה",
+                "listing_price": {"amount": "4500.00", "currency": "ILS"},
+                "listingUrl": "https://www.facebook.com/marketplace/item/recent",
+                "creation_time": now_timestamp,
+            },
+            {
+                "id": "stale",
+                "marketplace_listing_title": "דירה ישנה",
+                "listing_price": {"amount": "4000.00", "currency": "ILS"},
+                "listingUrl": "https://www.facebook.com/marketplace/item/stale",
+                "creation_time": thirty_days_ago,
+            },
+            {
+                "id": "no_age",
+                "marketplace_listing_title": "דירה ללא תאריך",
+                "listing_price": {"amount": "4200.00", "currency": "ILS"},
+                "listingUrl": "https://www.facebook.com/marketplace/item/no_age",
+            },
+        ]
+        monkeypatch.setattr(
+            fb_marketplace,
+            "post_json",
+            lambda url, payload, timeout=280.0: (201, _dataset_text(items)),
+        )
+        budget = FakeBudget(allow=True)
+        config = {"token": TEST_TOKEN, "max_age_days": 7}
+
+        result = FbMarketplaceAdapter(budget).fetch(fetcher=None, config=config, since=None)
+
+        # Budget should record all 3 fetched items
+        assert budget.record_calls[0][1] == 3
+        # But only 2 should be returned (recent + no_age; stale is dropped)
+        assert result.error is None
+        assert len(result.listings) == 2
+        returned_ids = {l.source_id for l in result.listings}
+        assert returned_ids == {"recent", "no_age"}
