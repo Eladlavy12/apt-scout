@@ -117,7 +117,7 @@ class TestBuildPortal:
         # Phone digits must not appear
         assert "052" not in published
         assert "1234567" not in published
-        assert "03" not in published or "03-" not in published  # Area code removed but "03" might appear elsewhere
+        assert "03-" not in published
         assert "5551234" not in published
         # House number and price must survive
         assert "10" in published

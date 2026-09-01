@@ -227,7 +227,7 @@ class TestAdapterBudget:
         assert result.error is None
         assert len(result.listings) == 2
         assert budget.record_calls == [
-            ("fb_marketplace", 2, 2 * 0.0005, budget.record_calls[0][3])
+            ("fb_marketplace", 2, 2 * 0.0015, budget.record_calls[0][3])
         ]
         assert isinstance(budget.record_calls[0][3], datetime)
         # token travels in the URL, not committed anywhere; payload uses the

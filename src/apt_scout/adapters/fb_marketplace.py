@@ -70,7 +70,7 @@ DEFAULT_SEARCH_URL = (
     "?minPrice=4000&maxPrice=5500&sortBy=creation_time_descend&exact=false"
 )
 
-COST_PER_ITEM_USD = 0.0005
+COST_PER_ITEM_USD = 0.0015  # curious_coder actor: ~$0.50/1k basic + detail fetches; measured effective rate ~$1.50/1k
 
 
 def post_json(url: str, payload: dict, timeout: float = 280.0) -> tuple[int, str]:
