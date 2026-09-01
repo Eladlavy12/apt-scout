@@ -21,6 +21,7 @@ class Filters:
     min_rooms: float = 2
     min_size_sqm: float = 50
     max_drive_minutes: float = 15
+    max_distance_km: float = 5.0
     include_price_missing: bool = True
     include_unsure_occupancy: bool = True
     paused: bool = False
@@ -64,6 +65,12 @@ class Filters:
         if (
             listing.drive_minutes is not None
             and listing.drive_minutes > self.max_drive_minutes
+        ):
+            return False
+
+        if (
+            listing.distance_km is not None
+            and listing.distance_km > self.max_distance_km
         ):
             return False
 

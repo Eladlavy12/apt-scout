@@ -11,6 +11,7 @@ def default_filters(**overrides) -> Filters:
         min_rooms=2,
         min_size_sqm=50,
         max_drive_minutes=15,
+        max_distance_km=5.0,
         include_price_missing=True,
         include_unsure_occupancy=True,
     )
@@ -27,6 +28,7 @@ def listing(**overrides) -> Listing:
         rooms=3.0,
         size_sqm=70.0,
         drive_minutes=10.0,
+        distance_km=3.0,
         occupancy=Occupancy.WHOLE,
     )
     base.update(overrides)
@@ -82,6 +84,20 @@ class TestDriveTime:
     def test_unknown_drive_time_does_not_disqualify(self):
         # Before the enrichment phase runs, nothing has a drive time yet.
         assert default_filters().matches(listing(drive_minutes=None)) is True
+
+
+class TestDistance:
+    def test_rejects_beyond_the_cap(self):
+        assert default_filters().matches(listing(distance_km=6.0)) is False
+
+    def test_accepts_within_the_cap(self):
+        assert default_filters().matches(listing(distance_km=3.0)) is True
+
+    def test_accepts_the_boundary_inclusively(self):
+        assert default_filters().matches(listing(distance_km=5.0)) is True
+
+    def test_unknown_distance_does_not_disqualify(self):
+        assert default_filters().matches(listing(distance_km=None)) is True
 
 
 class TestOccupancy:

@@ -1,6 +1,7 @@
 {
   "include_price_missing": true,
   "include_unsure_occupancy": true,
+  "max_distance_km": 5,
   "max_drive_minutes": 15,
   "max_price": 5500,
   "min_price": 4000,

@@ -9,6 +9,7 @@ from ..normalise.rooms import parse_rooms
 from ..normalise.size import parse_size
 from ..normalise.text import extract_phone, hash_phone
 from ..state import StateStore
+from .distance import distance_from_centre_km
 from .drivetime import DriveTimeCalculator
 from .geocode import Geocoder
 from .occupancy import classify_occupancy
@@ -76,6 +77,17 @@ def _make_drive_step(drive: Any) -> Enricher:
     return add_drive_time
 
 
+def _add_distance(listing: Listing) -> Listing:
+    """Straight-line distance from the centre point, as a hard cap.
+
+    OSRM's drive time is free-flow (no traffic), which can let distant
+    addresses slide under the minutes threshold. This is cheap, local math
+    that runs regardless of that.
+    """
+    listing.distance_km = distance_from_centre_km(listing.lat, listing.lon)
+    return listing
+
+
 def build_enrichers(
     store: StateStore,
     salt: str,
@@ -94,5 +106,6 @@ def build_enrichers(
         _classify,
         _make_phone_hasher(salt),
         _make_geocoder_step(geocoder),
+        _add_distance,
         _make_drive_step(drive),
     ]

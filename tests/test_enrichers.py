@@ -69,6 +69,26 @@ class TestDriveTime:
         assert drive.calls == []
 
 
+class TestDistance:
+    def test_fills_straight_line_distance_from_coordinates(self, tmp_path):
+        result = enrich(base(lat=32.07, lon=34.79), tmp_path)
+        assert result.distance_km is not None
+        assert result.distance_km > 0
+
+    def test_skipped_when_there_are_no_coordinates(self, tmp_path):
+        result = enrich(base(), tmp_path, geocoder=StubGeocoder(result=None))
+        assert result.distance_km is None
+
+    def test_uses_the_coordinates_found_by_geocoding(self, tmp_path):
+        result = enrich(
+            base(address_text="הרצל 10"),
+            tmp_path,
+            geocoder=StubGeocoder(result=(32.056581, 34.804087)),
+        )
+        # Geocoded coordinates equal the centre point exactly.
+        assert result.distance_km == 0.0
+
+
 class TestTextDerivedFields:
     def test_fills_a_missing_price_from_raw_text(self, tmp_path):
         result = enrich(base(raw_text='להשכרה 4800 ש"ח'), tmp_path)
