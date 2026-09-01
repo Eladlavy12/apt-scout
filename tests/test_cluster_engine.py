@@ -52,12 +52,17 @@ class TestScenario2SharedExturl:
 
 class TestScenario3TwoSharedWeak:
     def test_same_struct_and_geo_merges(self):
+        # Both carry real street addresses (differing from the bare city
+        # name), so their coordinates are listing-precise and the geo key
+        # is a legitimate second weak signal alongside struct.
         a = make_listing(
             source="yad2",
             source_id="y3",
             price=4800,
             rooms=3.0,
             size_sqm=65.0,
+            address_text="רחוב הרצל 5",
+            city="תל אביב",
             lat=32.0801,
             lon=34.7806,
         )
@@ -67,6 +72,8 @@ class TestScenario3TwoSharedWeak:
             price=4800,
             rooms=3.0,
             size_sqm=65.0,
+            address_text="הרצל 5, תל אביב",
+            city="תל אביב",
             lat=32.0803,
             lon=34.7806,
         )
@@ -83,6 +90,8 @@ class TestScenario4OneSharedWeakOnly:
             price=4800,
             rooms=3.0,
             size_sqm=65.0,
+            address_text="רחוב הרצל 5",
+            city="תל אביב",
             lat=32.0801,
             lon=34.7806,
         )
@@ -92,6 +101,8 @@ class TestScenario4OneSharedWeakOnly:
             price=4800,
             rooms=3.0,
             size_sqm=65.0,
+            address_text="רחוב ביאליק 12",
+            city="תל אביב",
             lat=32.1100,
             lon=34.7806,
         )
@@ -325,6 +336,58 @@ class TestScenario14SourcesDedup:
         clusters = cluster_of([yad2_a, yad2_b, fb])
         assert len(clusters) == 1
         assert clusters[0].sources == ["yad2", "fb_marketplace"]
+
+
+class TestScenario15CityCentroidGuard:
+    def test_two_address_less_same_city_listings_do_not_merge(self):
+        # Both geocoded from the bare city name to the exact same centroid,
+        # and both size-less: without the guard they would share identical
+        # geo + empty-bucket struct keys and merge two distinct apartments.
+        a = make_listing(
+            source="yad2",
+            source_id="cg1",
+            price=4800,
+            rooms=3.0,
+            city="תל אביב",
+            lat=32.0801,
+            lon=34.7806,
+        )
+        b = make_listing(
+            source="komo",
+            source_id="cg2",
+            price=4800,
+            rooms=3.0,
+            city="תל אביב",
+            lat=32.0801,
+            lon=34.7806,
+        )
+        clusters = cluster_of([a, b])
+        assert len(clusters) == 2
+
+
+class TestScenario16AgencyPhoneGuard:
+    def _with_phone(self, index: int):
+        return make_listing(
+            source="yad2",
+            source_id=f"agency{index}",
+            price=4000 + index * 100,
+            rooms=2.0 + index,
+            raw_text=f"דירה מספר {index} בתיווך, לפרטים 050-1234567",
+        )
+
+    def test_a_phone_shared_by_six_listings_is_not_a_merge_signal(self):
+        # An agency switchboard number appears on the whole inventory;
+        # merging on it would collapse six distinct apartments into one
+        # cluster (and one alert would mark them all notified forever).
+        listings = [self._with_phone(i) for i in range(6)]
+        clusters = cluster_of(listings)
+        assert len(clusters) == 6
+
+    def test_a_phone_shared_by_three_listings_still_merges(self):
+        listings = [self._with_phone(i) for i in range(3)]
+        clusters = cluster_of(listings)
+        assert len(clusters) == 1
+        assert len(clusters[0].members) == 3
 
 
 class TestScenario11SaltedPhoneHash:

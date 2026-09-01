@@ -80,16 +80,32 @@ class TestStructFingerprint:
         fp = fingerprints(listing, SALT)
         assert not any(k.startswith("struct:") for k in fp["weak"])
 
+    def test_absent_when_size_missing_and_no_address(self):
+        # An address-less price+rooms-only match is too weak: two unrelated
+        # same-city listings that merely agree on 4800/3 must not share it.
+        listing = make_listing(price=4800, rooms=3.0, size_sqm=None)
+        fp = fingerprints(listing, SALT)
+        assert not any(k.startswith("struct:") for k in fp["weak"])
+
+    def test_loose_empty_bucket_key_kept_when_an_address_is_present(self):
+        listing = make_listing(
+            price=4800, rooms=3.0, size_sqm=None, address_text="רחוב הרצל 5"
+        )
+        fp = fingerprints(listing, SALT)
+        assert "struct:4800|3.0|" in fp["weak"]
+
 
 class TestGeoFingerprint:
-    def test_present_when_coords_given(self):
-        listing = make_listing(lat=32.0801, lon=34.7806)
+    def test_present_when_coords_and_street_address_given(self):
+        listing = make_listing(
+            lat=32.0801, lon=34.7806, address_text="רחוב הרצל 5", city="תל אביב"
+        )
         fp = fingerprints(listing, SALT)
         assert "geo:32.080,34.781" in fp["weak"]
 
     def test_rounding_equates_nearby_coords(self):
-        a = make_listing(lat=32.0801, lon=34.7806)
-        b = make_listing(lat=32.0803, lon=34.7806)
+        a = make_listing(lat=32.0801, lon=34.7806, address_text="רחוב הרצל 5")
+        b = make_listing(lat=32.0803, lon=34.7806, address_text="רחוב הרצל 5")
         fp_a = fingerprints(a, SALT)
         fp_b = fingerprints(b, SALT)
         geo_a = [k for k in fp_a["weak"] if k.startswith("geo:")]
@@ -97,7 +113,28 @@ class TestGeoFingerprint:
         assert geo_a == geo_b
 
     def test_absent_when_coords_missing(self):
-        listing = make_listing(lat=None, lon=None)
+        listing = make_listing(lat=None, lon=None, address_text="רחוב הרצל 5")
+        fp = fingerprints(listing, SALT)
+        assert not any(k.startswith("geo:") for k in fp["weak"])
+
+    def test_absent_when_no_address(self):
+        # Address-less listings geocode to the city centroid: an identical
+        # geo: key on every such listing proves nothing.
+        listing = make_listing(lat=32.0801, lon=34.7806, city="תל אביב")
+        fp = fingerprints(listing, SALT)
+        assert not any(k.startswith("geo:") for k in fp["weak"])
+
+    def test_absent_when_the_address_is_just_the_city_name(self):
+        listing = make_listing(
+            lat=32.0801, lon=34.7806, address_text="תל אביב", city="תל אביב"
+        )
+        fp = fingerprints(listing, SALT)
+        assert not any(k.startswith("geo:") for k in fp["weak"])
+
+    def test_city_comparison_ignores_whitespace_differences(self):
+        listing = make_listing(
+            lat=32.0801, lon=34.7806, address_text="  תל אביב ", city="תל אביב"
+        )
         fp = fingerprints(listing, SALT)
         assert not any(k.startswith("geo:") for k in fp["weak"])
 

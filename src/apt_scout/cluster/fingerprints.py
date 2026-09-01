@@ -42,10 +42,26 @@ def _extract_exturls(raw_text: str) -> list[str]:
 def _size_bucket(size_sqm: float | None) -> str:
     """10-sqm bucket, e.g. 65 -> "6". Empty string when size is unknown so
     listings that agree on price+rooms but differ only by a missing size
-    still get a (looser) struct key instead of none at all."""
+    still get a (looser) struct key instead of none at all. That looser,
+    empty-bucket key is only emitted for listings that carry a real address
+    (see `fingerprints`): an address-less price+rooms-only match is too weak
+    to count as a dedup signal."""
     if size_sqm is None:
         return ""
     return str(int(size_sqm // 10))
+
+
+def _has_listing_precise_location(listing: Listing) -> bool:
+    """Whether this listing's coordinates plausibly point at the listing
+    itself rather than at a city centroid.
+
+    Address-less listings are geocoded from their city alone, which lands
+    every one of them on the exact same centroid: identical `geo:` keys that
+    prove nothing. Coordinates only count as a dedup signal when the listing
+    has an address whose normalised form differs from its city name."""
+    if not listing.address_text:
+        return False
+    return normalise_text(listing.address_text) != normalise_text(listing.city)
 
 
 def _text_similarity_key(raw_text: str) -> str | None:
@@ -80,6 +96,15 @@ def fingerprints(listing: Listing, salt: str) -> dict[str, list[str]]:
     listings. Weak signals (structural stats, geo cell, text similarity) are
     individually circumstantial; the engine merges on two or more distinct
     shared weak fingerprints.
+
+    Address-less listings get extra caution: their coordinates come from
+    geocoding the city name alone, so every such listing in a city shares
+    the exact same centroid `geo:` key. The `geo:` key is therefore only
+    emitted when the listing has an address that differs from its city
+    (see _has_listing_precise_location), and the size-less, empty-bucket
+    `struct:` key is likewise withheld without an address - otherwise two
+    unrelated same-city listings that merely agree on price+rooms would
+    share two weak keys and be merged (then permanently marked notified).
     """
     raw_text = listing.raw_text or ""
     strong: list[str] = []
@@ -93,9 +118,16 @@ def fingerprints(listing: Listing, salt: str) -> dict[str, list[str]]:
         strong.append(f"exturl:{exturl}")
 
     if listing.price is not None and listing.rooms is not None:
-        weak.append(f"struct:{listing.price}|{listing.rooms}|{_size_bucket(listing.size_sqm)}")
+        if listing.size_sqm is not None or listing.address_text:
+            weak.append(
+                f"struct:{listing.price}|{listing.rooms}|{_size_bucket(listing.size_sqm)}"
+            )
 
-    if listing.lat is not None and listing.lon is not None:
+    if (
+        listing.lat is not None
+        and listing.lon is not None
+        and _has_listing_precise_location(listing)
+    ):
         weak.append(f"geo:{listing.lat:.3f},{listing.lon:.3f}")
 
     text_key = _text_similarity_key(raw_text)

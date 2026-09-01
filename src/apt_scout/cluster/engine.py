@@ -16,6 +16,14 @@ _SOURCE_PRIORITY = ["yad2", "onmap", "komo", "homeless", "fb_marketplace", "prog
 
 _MIN_SHARED_WEAK_FINGERPRINTS = 2
 
+# A phone number shared by more listings than any one apartment plausibly
+# has ads is an agency switchboard, not an identity signal: merging on it
+# would collapse an agency's whole inventory into one mega-cluster (and one
+# notification would permanently mark every member notified). Above this
+# many listings in a single run, a phone: key is ignored as a merge signal;
+# exturl: keys are unaffected - a listing URL can't be a switchboard.
+_MAX_PHONE_CLUSTER = 4
+
 
 @dataclass
 class Cluster:
@@ -148,8 +156,12 @@ class ClusterEngine:
             for key in set(fp["weak"]):
                 weak_index[key].append(index)
 
-        # Any shared strong fingerprint merges outright.
-        for indices in strong_index.values():
+        # Any shared strong fingerprint merges outright - except a phone
+        # shared too widely to be one apartment's (see _MAX_PHONE_CLUSTER).
+        # Other signals still apply to those listings.
+        for key, indices in strong_index.items():
+            if key.startswith("phone:") and len(indices) > _MAX_PHONE_CLUSTER:
+                continue
             for other in indices[1:]:
                 union_find.union(indices[0], other)
 
