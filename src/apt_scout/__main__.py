@@ -15,7 +15,7 @@ from .adapters.onmap import OnmapAdapter
 from .adapters.prog import ProgAdapter
 from .adapters.yad2 import Yad2Adapter
 from .enrich.pipeline_enrichers import build_enrichers
-from .fetch import Fetcher, HttpTransport
+from .fetch import CurlTransport, Fetcher, HttpTransport
 from .filters import Filters
 from .health import HealthTracker
 from .notify.commands import process_commands
@@ -106,7 +106,10 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
                 "phone hashes use the built-in default salt",
                 file=sys.stderr,
             )
-    fetcher = Fetcher({"http": HttpTransport()}, ["http", "browser", "apify"])
+    fetcher = Fetcher(
+        {"http": HttpTransport(), "curl": CurlTransport()},
+        ["http", "curl", "browser", "apify"],
+    )
     return Runtime(
         filters=filters,
         sources_config=sources_config,

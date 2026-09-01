@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import re
+import time
 from datetime import datetime
+from typing import Callable
 from urllib.parse import quote
 
 from bs4 import BeautifulSoup, Tag
@@ -10,6 +12,12 @@ from ..models import Listing, Occupancy
 from .base import AdapterResult
 
 BASE_URL = "https://www.homeless.co.il"
+
+# homeless.co.il intermittently 403s the third rapid same-host request
+# within a run (rate limiting). A short pause between per-city fetches
+# keeps us under that threshold; it costs a couple of seconds across the
+# whole city list, which is negligible next to an hourly cadence.
+_CITY_DELAY_SECONDS = 1.0
 
 # Column keys, in the fixed order they appear in the results table (both the
 # header row's `<th orderfield=...>` attributes and each data row's `<td>`
@@ -211,6 +219,9 @@ def parse_homeless_html(html: str) -> list[Listing]:
 class HomelessAdapter:
     name = "homeless"
 
+    def __init__(self, sleep: Callable[[float], None] = time.sleep) -> None:
+        self._sleep = sleep
+
     def fetch(self, fetcher, config: dict, since: datetime | None) -> AdapterResult:
         try:
             url_template = config["url_template"]
@@ -226,7 +237,10 @@ class HomelessAdapter:
         all_listings: list[Listing] = []
         last_error: str | None = None
 
-        for city in cities:
+        for index, city in enumerate(cities):
+            if index > 0:
+                self._sleep(_CITY_DELAY_SECONDS)
+
             try:
                 url = url_template.format(city=quote(city, safe=""))
             except (KeyError, IndexError) as exc:

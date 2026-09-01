@@ -301,3 +301,23 @@ class TestAdapter:
 
         assert result.listings == []
         assert result.error is not None
+
+
+class TestCityPoliteness:
+    def test_sleeps_between_cities_but_not_before_the_first(self):
+        fetcher = FakeFetcher(text=row_html())
+        config = dict(BASE_CONFIG)  # 3 cities
+        sleeps = []
+
+        HomelessAdapter(sleep=sleeps.append).fetch(fetcher, config, since=None)
+
+        assert len(sleeps) == len(config["cities"]) - 1
+
+    def test_single_city_never_sleeps(self):
+        fetcher = FakeFetcher(text=row_html())
+        config = dict(BASE_CONFIG, cities=["תל אביב"])
+        sleeps = []
+
+        HomelessAdapter(sleep=sleeps.append).fetch(fetcher, config, since=None)
+
+        assert sleeps == []
