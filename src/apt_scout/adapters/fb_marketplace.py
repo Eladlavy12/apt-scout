@@ -24,10 +24,14 @@ from .base import AdapterResult
 #        is no per-request item-count field in the input schema itself; the
 #        cap is applied via the run endpoint's own "maxItems" query param.
 #
-# The actual capture call (token redacted):
+# The actual request (the token is sent as an `Authorization: Bearer <token>`
+# header, never as a URL query param - URLs leak into logs, tracebacks, and
+# proxies far more readily than headers do; the original discovery capture
+# used `?token=`, since replaced):
 #
 #   POST https://api.apify.com/v2/acts/curious_coder~facebook-marketplace
-#        /run-sync-get-dataset-items?token=...&timeout=280&maxItems=20
+#        /run-sync-get-dataset-items?timeout=280&maxItems=20
+#   Authorization: Bearer ...
 #   Content-Type: application/json
 #   {
 #     "urls": ["https://www.facebook.com/marketplace/telaviv/propertyrentals"
@@ -74,11 +78,16 @@ DEFAULT_SEARCH_URL = (
 COST_PER_ITEM_USD = 0.0015  # curious_coder actor: ~$0.50/1k basic + detail fetches; measured effective rate ~$1.50/1k
 
 
-def post_json(url: str, payload: dict, timeout: float = 280.0) -> tuple[int, str]:
+def post_json(
+    url: str,
+    payload: dict,
+    timeout: float = 280.0,
+    headers: dict | None = None,
+) -> tuple[int, str]:
     """Minimal POST helper used only by this adapter - see module docstring."""
     import httpx
 
-    response = httpx.post(url, json=payload, timeout=timeout)
+    response = httpx.post(url, json=payload, timeout=timeout, headers=headers)
     return response.status_code, response.text
 
 
@@ -235,25 +244,49 @@ class FbMarketplaceAdapter:
             "maxPagesPerUrl": config.get("max_pages_per_url", 1),
         }
         max_items = config.get("max_items", 20)
-        run_url = f"{ACTOR_RUN_URL}?token={token}&timeout=280&maxItems={max_items}"
+        # The token travels only in the Authorization header, never in the
+        # URL - URLs end up in logs and tracebacks; headers don't.
+        run_url = f"{ACTOR_RUN_URL}?timeout=280&maxItems={max_items}"
+        headers = {"Authorization": f"Bearer {token}"}
+
+        def error_result(message: str) -> AdapterResult:
+            # Defense in depth: exception text can embed the full request
+            # (httpx transport errors do), and AdapterResult.error flows into
+            # logs and health state - the token must never travel with it.
+            return AdapterResult(
+                source=self.name, error=message.replace(token, "***")
+            )
+
+        def record_full_cap() -> None:
+            # Pay-per-event billing may well have charged for the run even
+            # though we couldn't read (or parse) its result, so conservatively
+            # record the full item cap as spent. Only the no-network paths
+            # above (budget exhausted, missing token) record nothing.
+            self._budget.record(
+                self.name, max_items, max_items * COST_PER_ITEM_USD, now
+            )
 
         try:
-            status, text = post_json(run_url, payload)
+            status, text = post_json(run_url, payload, headers=headers)
         except Exception as exc:  # noqa: BLE001 - reported, never raised
-            return AdapterResult(source=self.name, error=f"fetch failed: {exc}")
+            record_full_cap()
+            return error_result(f"fetch failed: {exc}")
 
         if status not in (200, 201):
-            return AdapterResult(source=self.name, error=f"apify HTTP {status}")
+            record_full_cap()
+            return error_result(f"apify HTTP {status}")
 
         try:
             items = json.loads(text)
         except json.JSONDecodeError as exc:
-            return AdapterResult(source=self.name, error=f"response was not JSON: {exc}")
+            record_full_cap()
+            return error_result(f"response was not JSON: {exc}")
 
         try:
             listings = parse_marketplace_items(items)
         except Exception as exc:  # noqa: BLE001 - a shape change must not crash
-            return AdapterResult(source=self.name, error=f"parse failed: {exc}")
+            record_full_cap()
+            return error_result(f"parse failed: {exc}")
 
         # Record budget BEFORE filtering, since we paid for all fetched items.
         self._budget.record(

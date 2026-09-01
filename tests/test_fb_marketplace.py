@@ -213,9 +213,10 @@ class TestAdapterBudget:
         ]
         captured = {}
 
-        def fake_post_json(url, payload, timeout=280.0):
+        def fake_post_json(url, payload, timeout=280.0, headers=None):
             captured["url"] = url
             captured["payload"] = payload
+            captured["headers"] = headers
             return 201, _dataset_text(items)
 
         monkeypatch.setattr(fb_marketplace, "post_json", fake_post_json)
@@ -231,9 +232,12 @@ class TestAdapterBudget:
             ("fb_marketplace", 2, 2 * 0.0015, budget.record_calls[0][3])
         ]
         assert isinstance(budget.record_calls[0][3], datetime)
-        # token travels in the URL, not committed anywhere; payload uses the
-        # actor's real input field name "urls" (not "startUrls").
-        assert TEST_TOKEN in captured["url"]
+        # The token travels ONLY in the Authorization header - URLs leak into
+        # logs and tracebacks, headers don't. The payload uses the actor's
+        # real input field name "urls" (not "startUrls").
+        assert captured["headers"] == {"Authorization": f"Bearer {TEST_TOKEN}"}
+        assert TEST_TOKEN not in captured["url"]
+        assert "token=" not in captured["url"]
         assert ACTOR_RUN_URL in captured["url"]
         assert captured["payload"]["urls"] == [DEFAULT_SEARCH_URL]
         assert captured["payload"]["getListingDetails"] is True
@@ -241,7 +245,7 @@ class TestAdapterBudget:
     def test_custom_search_url_is_used_when_configured(self, monkeypatch):
         captured = {}
 
-        def fake_post_json(url, payload, timeout=280.0):
+        def fake_post_json(url, payload, timeout=280.0, headers=None):
             captured["payload"] = payload
             return 201, _dataset_text([])
 
@@ -253,9 +257,32 @@ class TestAdapterBudget:
 
         assert captured["payload"]["urls"] == ["https://example.com/search"]
 
-    def test_http_transport_failure_becomes_error_result(self, monkeypatch):
-        def raising(url, payload, timeout=280.0):
+    def test_http_transport_failure_records_the_full_cap_as_spent(self, monkeypatch):
+        # Pay-per-event may have charged for the run even though we couldn't
+        # read the result, so the failure conservatively records the run's
+        # full item cap - the budget guard must never undercount.
+        def raising(url, payload, timeout=280.0, headers=None):
             raise RuntimeError("connection reset")
+
+        monkeypatch.setattr(fb_marketplace, "post_json", raising)
+        budget = FakeBudget(allow=True)
+        config = {"token": TEST_TOKEN, "max_items": 5}
+
+        result = FbMarketplaceAdapter(budget).fetch(fetcher=None, config=config, since=None)
+
+        assert result.listings == []
+        assert result.error is not None
+        assert "connection reset" in result.error
+        assert budget.record_calls == [
+            ("fb_marketplace", 5, 5 * 0.0015, budget.record_calls[0][3])
+        ]
+
+    def test_error_text_embedding_the_token_is_redacted(self, monkeypatch):
+        # httpx transport errors can embed the full request in their message;
+        # the token must never reach AdapterResult.error (it flows into logs
+        # and health state).
+        def raising(url, payload, timeout=280.0, headers=None):
+            raise RuntimeError(f"request to ...?auth={TEST_TOKEN} timed out")
 
         monkeypatch.setattr(fb_marketplace, "post_json", raising)
         budget = FakeBudget(allow=True)
@@ -263,14 +290,15 @@ class TestAdapterBudget:
 
         result = FbMarketplaceAdapter(budget).fetch(fetcher=None, config=config, since=None)
 
-        assert result.listings == []
         assert result.error is not None
-        assert "connection reset" in result.error
-        assert budget.record_calls == []
+        assert TEST_TOKEN not in result.error
+        assert "***" in result.error
 
-    def test_non_200_status_becomes_error_result(self, monkeypatch):
+    def test_non_200_status_becomes_error_and_records_the_cap(self, monkeypatch):
         monkeypatch.setattr(
-            fb_marketplace, "post_json", lambda url, payload, timeout=280.0: (500, "boom")
+            fb_marketplace,
+            "post_json",
+            lambda url, payload, timeout=280.0, headers=None: (500, "boom"),
         )
         budget = FakeBudget(allow=True)
         config = {"token": TEST_TOKEN}
@@ -280,11 +308,15 @@ class TestAdapterBudget:
         assert result.listings == []
         assert result.error is not None
         assert "500" in result.error
-        assert budget.record_calls == []
+        assert budget.record_calls == [
+            ("fb_marketplace", 20, 20 * 0.0015, budget.record_calls[0][3])
+        ]
 
-    def test_unparseable_json_response_becomes_error_result(self, monkeypatch):
+    def test_unparseable_json_becomes_error_and_records_the_cap(self, monkeypatch):
         monkeypatch.setattr(
-            fb_marketplace, "post_json", lambda url, payload, timeout=280.0: (201, "not json")
+            fb_marketplace,
+            "post_json",
+            lambda url, payload, timeout=280.0, headers=None: (201, "not json"),
         )
         budget = FakeBudget(allow=True)
         config = {"token": TEST_TOKEN}
@@ -293,7 +325,9 @@ class TestAdapterBudget:
 
         assert result.listings == []
         assert result.error is not None
-        assert budget.record_calls == []
+        assert budget.record_calls == [
+            ("fb_marketplace", 20, 20 * 0.0015, budget.record_calls[0][3])
+        ]
 
     def test_max_results_truncates_but_budget_reflects_all_fetched(self, monkeypatch):
         items = [
@@ -308,7 +342,7 @@ class TestAdapterBudget:
         monkeypatch.setattr(
             fb_marketplace,
             "post_json",
-            lambda url, payload, timeout=280.0: (201, _dataset_text(items)),
+            lambda url, payload, timeout=280.0, headers=None: (201, _dataset_text(items)),
         )
         budget = FakeBudget(allow=True)
         config = {"token": TEST_TOKEN, "max_results": 2}
@@ -323,7 +357,9 @@ class TestAdapterBudget:
 
     def test_can_spend_is_checked_with_a_timezone_aware_now(self, monkeypatch):
         monkeypatch.setattr(
-            fb_marketplace, "post_json", lambda url, payload, timeout=280.0: (201, "[]")
+            fb_marketplace,
+            "post_json",
+            lambda url, payload, timeout=280.0, headers=None: (201, "[]"),
         )
         budget = FakeBudget(allow=True)
         config = {"token": TEST_TOKEN}
@@ -367,7 +403,7 @@ class TestAdapterBudget:
         monkeypatch.setattr(
             fb_marketplace,
             "post_json",
-            lambda url, payload, timeout=280.0: (201, _dataset_text(items)),
+            lambda url, payload, timeout=280.0, headers=None: (201, _dataset_text(items)),
         )
         budget = FakeBudget(allow=True)
         config = {"token": TEST_TOKEN, "max_age_days": 7}
