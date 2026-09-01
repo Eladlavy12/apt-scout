@@ -9,7 +9,8 @@ from ..models import Listing
 from .base import AdapterResult
 
 # Facebook Marketplace via the "curious_coder~facebook-marketplace" Apify
-# actor (pay-per-event: $0.0005 per listing item, see the actor's
+# actor (pay-per-event: ~$0.0015 per listing item measured with detail
+# fetches enabled, see the actor's
 # pricingInfos). Discovery on 2026-09-01, using the live APIFY_TOKEN secret:
 #
 #   GET https://api.apify.com/v2/acts/curious_coder~facebook-marketplace
