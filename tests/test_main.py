@@ -109,8 +109,30 @@ class TestProgSkipIds:
         build_runtime(repo, {}, dry_run=True)
 
 
+class TestFbMarketplaceToken:
+    def test_apify_token_env_var_is_injected_into_source_config(self, repo):
+        (repo / "config" / "sources.json").write_text(
+            json.dumps({"fb_marketplace": {"enabled": True}}), encoding="utf-8"
+        )
+        runtime = build_runtime(repo, {"APIFY_TOKEN": "secret-token"}, dry_run=True)
+        assert runtime.sources_config["fb_marketplace"]["token"] == "secret-token"
+
+    def test_missing_apify_token_env_var_becomes_none_not_a_crash(self, repo):
+        (repo / "config" / "sources.json").write_text(
+            json.dumps({"fb_marketplace": {"enabled": True}}), encoding="utf-8"
+        )
+        runtime = build_runtime(repo, {}, dry_run=True)
+        assert runtime.sources_config["fb_marketplace"]["token"] is None
+
+    def test_no_fb_marketplace_config_means_nothing_to_do(self, repo):
+        (repo / "config" / "sources.json").write_text(
+            json.dumps({"yad2": {"enabled": True}}), encoding="utf-8"
+        )
+        build_runtime(repo, {}, dry_run=True)
+
+
 class TestAdapterRegistration:
-    def test_all_five_adapters_are_registered(self, repo):
+    def test_all_six_adapters_are_registered(self, repo):
         runtime = build_runtime(repo, {}, dry_run=True)
         assert {adapter.name for adapter in runtime.adapters} == {
             "yad2",
@@ -118,6 +140,7 @@ class TestAdapterRegistration:
             "komo",
             "homeless",
             "prog",
+            "fb_marketplace",
         }
 
 

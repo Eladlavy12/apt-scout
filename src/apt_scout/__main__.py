@@ -9,11 +9,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from .adapters.fb_marketplace import FbMarketplaceAdapter
 from .adapters.homeless import HomelessAdapter
 from .adapters.komo import KomoAdapter
 from .adapters.onmap import OnmapAdapter
 from .adapters.prog import ProgAdapter
 from .adapters.yad2 import Yad2Adapter
+from .budget import BudgetGuard
 from .enrich.pipeline_enrichers import build_enrichers
 from .fetch import CurlTransport, Fetcher, HttpTransport
 from .filters import Filters
@@ -85,6 +87,12 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
             if seen_id.startswith(PROG_SEEN_PREFIX)
         )
 
+    # fb_marketplace is a paid Apify source; the token is a secret and must
+    # come from the environment, never from the committed sources.json.
+    fb_marketplace = sources_config.get("fb_marketplace")
+    if fb_marketplace is not None:
+        fb_marketplace["token"] = env.get("APIFY_TOKEN")
+
     if dry_run:
         notifier: Any = DryRunNotifier()
     else:
@@ -110,6 +118,7 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
         {"http": HttpTransport(), "curl": CurlTransport()},
         ["http", "curl", "browser", "apify"],
     )
+    budget = BudgetGuard(store, notifier=notifier)
     return Runtime(
         filters=filters,
         sources_config=sources_config,
@@ -122,6 +131,7 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
             KomoAdapter(),
             HomelessAdapter(),
             ProgAdapter(),
+            FbMarketplaceAdapter(budget),
         ],
         enrichers=build_enrichers(store, salt=salt),
         chat_id=env.get("TELEGRAM_CHAT_ID"),
