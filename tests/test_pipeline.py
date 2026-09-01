@@ -410,6 +410,154 @@ class TestCadenceGating:
         assert report.fetched == 1
 
 
+class TestPortalCarryForward:
+    class SelectiveGate:
+        """Refuses only the named sources; everything else is due."""
+
+        def __init__(self, refuse=()):
+            self.refuse = set(refuse)
+
+        def is_due(self, source, cadence_hours, now):
+            return source not in self.refuse
+
+        def mark_ran(self, source, now):
+            pass
+
+    SOURCES = {
+        "yad2": {"enabled": True, "cadence_hours": 1},
+        "fb_marketplace": {"enabled": True, "cadence_hours": 6},
+    }
+
+    def _fb_listing(self):
+        return listing(
+            source="fb_marketplace", source_id="f1", url="https://fb/f1"
+        )
+
+    def _run(self, adapters, store, notifier, gate, now=None):
+        return run_pipeline(
+            adapters=adapters,
+            fetcher=None,
+            sources_config=dict(self.SOURCES),
+            filters=Filters(),
+            store=store,
+            notifier=notifier,
+            gate=gate,
+            now=now,
+        )
+
+    def test_a_cadence_skipped_source_is_restored_from_the_cache(self, tmp_path):
+        from datetime import datetime, timezone
+
+        from apt_scout.__main__ import should_build_portal
+
+        store = StateStore(tmp_path)
+        first_run = datetime(2026, 8, 31, 10, 0, tzinfo=timezone.utc)
+        second_run = datetime(2026, 8, 31, 11, 0, tzinfo=timezone.utc)
+
+        self._run(
+            [StubAdapter("fb_marketplace", [self._fb_listing()])],
+            store,
+            RecordingNotifier(),
+            gate=self.SelectiveGate(),
+            now=first_run,
+        )
+
+        class ExplodingIfFetched:
+            name = "fb_marketplace"
+
+            def fetch(self, fetcher, config, since):
+                raise AssertionError("a gated source must not be fetched")
+
+        notifier = RecordingNotifier()
+        report = self._run(
+            [StubAdapter("yad2", [listing()]), ExplodingIfFetched()],
+            store,
+            notifier,
+            gate=self.SelectiveGate(refuse=["fb_marketplace"]),
+            now=second_run,
+        )
+
+        # The skipped source's listing is still in the portal's input...
+        by_source = {tuple(l.sources): l for l in report.listings}
+        assert ("fb_marketplace",) in by_source
+        restored = by_source[("fb_marketplace",)]
+        assert restored.stable_id() == "fb_marketplace:f1"
+        # ...with its enrichment-era first_seen_at intact...
+        assert restored.first_seen_at == first_run
+        # ...and it counts as neither fetched nor new.
+        assert report.fetched == 1
+        assert report.new == 1
+        assert report.attempted == ["yad2"]
+        # It was notified in run 1, so restoring must not re-alert it.
+        assert [l.stable_id() for l in notifier.sent] == ["yad2:1"]
+
+        assert should_build_portal(report, self.SOURCES) is True
+
+    def test_an_all_gated_run_does_not_build_the_portal(self, tmp_path):
+        from apt_scout.__main__ import should_build_portal
+
+        store = StateStore(tmp_path)
+        self._run(
+            [
+                StubAdapter("yad2", [listing()]),
+                StubAdapter("fb_marketplace", [self._fb_listing()]),
+            ],
+            store,
+            RecordingNotifier(),
+            gate=self.SelectiveGate(),
+        )
+
+        report = self._run(
+            [
+                StubAdapter("yad2", [listing()]),
+                StubAdapter("fb_marketplace", [self._fb_listing()]),
+            ],
+            store,
+            RecordingNotifier(),
+            gate=self.SelectiveGate(refuse=["yad2", "fb_marketplace"]),
+        )
+
+        assert report.attempted == []
+        assert report.fetched == 0
+        assert report.errors == {}
+        assert should_build_portal(report, self.SOURCES) is False
+
+    def test_a_re_fetched_source_replaces_its_cache_entry(self, tmp_path):
+        store = StateStore(tmp_path)
+
+        self._run(
+            [StubAdapter("fb_marketplace", [self._fb_listing()])],
+            store,
+            RecordingNotifier(),
+            gate=self.SelectiveGate(),
+        )
+        # The source runs again with a different listing: the cache entry is
+        # replaced, not appended to.
+        newer = listing(
+            source="fb_marketplace", source_id="f2", url="https://fb/f2"
+        )
+        self._run(
+            [StubAdapter("fb_marketplace", [newer])],
+            store,
+            RecordingNotifier(),
+            gate=self.SelectiveGate(),
+        )
+
+        report = self._run(
+            [StubAdapter("yad2", [listing()]), StubAdapter("fb_marketplace", [])],
+            store,
+            RecordingNotifier(),
+            gate=self.SelectiveGate(refuse=["fb_marketplace"]),
+        )
+
+        fb_ids = {
+            l.stable_id()
+            for l in report.listings
+            if l.sources == ["fb_marketplace"]
+        }
+        assert fb_ids == {"fb_marketplace:f2"}
+
+
 class TestClustering:
     def test_two_sources_same_phone_notify_once_with_pooled_fields(self, tmp_path):
         store = StateStore(tmp_path)

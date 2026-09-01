@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import dataclasses
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -8,10 +9,15 @@ from typing import Any
 from .cluster.engine import Cluster, ClusterEngine
 from .filters import Filters
 from .health import HealthTracker
-from .models import Listing
+from .models import Listing, Occupancy
 from .state import StateStore
 
 Enricher = Callable[[Listing], Listing]
+
+# State key for the carry-forward cache: each source's latest enriched
+# listings, persisted so a cadence-skipped source still contributes to
+# clustering and the portal (see run_pipeline's docstring).
+PORTAL_CACHE = "portal_cache"
 
 # Notifications are exactly-once and pooled at the cluster level, not the
 # per-listing level: one alert per apartment regardless of how many sources
@@ -29,6 +35,30 @@ class RunReport:
     notified: int = 0
     errors: dict[str, str] = field(default_factory=dict)
     listings: list[Listing] = field(default_factory=list)
+    # Enabled sources whose fetch was actually attempted this run (whether it
+    # succeeded, errored, or raised). A cadence-skipped source is NOT in here;
+    # should_build_portal uses that to tell "nothing ran" from "nothing found".
+    attempted: list[str] = field(default_factory=list)
+
+
+def _serialise_listing(listing: Listing) -> dict:
+    """Listing -> JSON-safe dict for the carry-forward cache."""
+    data = dataclasses.asdict(listing)
+    for key in ("posted_at", "first_seen_at"):
+        value = data[key]
+        data[key] = value.isoformat() if value is not None else None
+    data["occupancy"] = listing.occupancy.value
+    return data
+
+
+def _deserialise_listing(data: dict) -> Listing:
+    """Inverse of _serialise_listing; raises on a malformed cache entry."""
+    values = dict(data)
+    for key in ("posted_at", "first_seen_at"):
+        raw = values.get(key)
+        values[key] = datetime.fromisoformat(raw) if raw else None
+    values["occupancy"] = Occupancy(values.get("occupancy", Occupancy.UNSURE.value))
+    return Listing(**values)
 
 
 def run_pipeline(
@@ -57,6 +87,15 @@ def run_pipeline(
     without raising (whether it returns listings or an error result), so a
     persistently failing source is retried no more often than its cadence.
 
+    A cadence-skipped source must not vanish from the portal, though: the
+    portal is rebuilt from this run's listings only, so a 6h-cadence source
+    would otherwise disappear 5 runs out of 6. Each run persists every
+    successfully-fetched source's enriched listings into the `portal_cache`
+    state, and restores the cached listings of any source the gate skipped,
+    feeding them into clustering alongside the fresh ones. Restored listings
+    are not re-fetched, re-enriched, or re-counted: they do not contribute to
+    `report.fetched`/`report.new` and never re-stamp seen state.
+
     Listings are clustered (cross-source dedup) after enrichment and before
     filtering: filtering, notification, and the portal all operate on one
     canonical listing per apartment, never on a raw per-source post. A
@@ -71,6 +110,8 @@ def run_pipeline(
     report = RunReport()
 
     collected: list[Listing] = []
+    gate_skipped: list[str] = []
+    fetched_ok: set[str] = set()
     for adapter in adapters:
         config = sources_config.get(adapter.name, {})
         if not config.get("enabled", True):
@@ -79,8 +120,10 @@ def run_pipeline(
         cadence_hours = config.get("cadence_hours")
         if gate is not None and cadence_hours:
             if not gate.is_due(adapter.name, cadence_hours, now):
+                gate_skipped.append(adapter.name)
                 continue
 
+        report.attempted.append(adapter.name)
         try:
             result = adapter.fetch(fetcher, config, since=None)
         except Exception as exc:  # noqa: BLE001 - isolation is the whole point
@@ -98,6 +141,7 @@ def run_pipeline(
             continue
 
         health.record(adapter.name, ok=True)
+        fetched_ok.add(adapter.name)
         collected.extend(result.listings)
 
     report.fetched = len(collected)
@@ -143,7 +187,29 @@ def run_pipeline(
                 )
         enriched.append(listing)
 
-    clusters = ClusterEngine().cluster(enriched, cluster_salt)
+    # Carry-forward cache: replace only the sources that actually fetched
+    # this run; a skipped (or errored) source keeps its previous entry.
+    cache = store.load(PORTAL_CACHE, {})
+    for source in fetched_ok:
+        cache[source] = [
+            _serialise_listing(item) for item in enriched if item.source == source
+        ]
+    store.save(PORTAL_CACHE, cache)
+
+    # Restore cached listings for cadence-skipped sources. They are already
+    # enriched and already seen (their seen state was stamped the run they
+    # were fetched), so they merge in only AFTER the fetched/new counting -
+    # they never enter `new_seen`, so they can't inflate `new` or re-stamp
+    # seen state.
+    restored: list[Listing] = []
+    for source in gate_skipped:
+        for raw in cache.get(source, []):
+            try:
+                restored.append(_deserialise_listing(raw))
+            except (TypeError, ValueError, KeyError):
+                continue  # one corrupt cache entry must not fail the run
+
+    clusters = ClusterEngine().cluster(enriched + restored, cluster_salt)
 
     canonical_listings: list[Listing] = []
     candidates: list[Cluster] = []

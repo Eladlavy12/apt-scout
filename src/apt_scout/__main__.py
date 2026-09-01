@@ -146,6 +146,12 @@ def should_build_portal(report: RunReport, sources_config: dict) -> bool:
     A run in which every enabled source failed and nothing was fetched must
     not replace the live portal with an empty page; keeping the previous
     portal online is strictly better than showing a falsely quiet market.
+
+    The same goes for a run in which no enabled source even attempted a
+    fetch - e.g. a workflow_dispatch fired inside every source's cadence
+    window, gating them all. Nothing ran, so nothing can be newer than the
+    live portal; `report.attempted` (not the error map) is what tells that
+    apart from "everything ran and found nothing".
     """
     if report.fetched > 0:
         return True
@@ -156,6 +162,8 @@ def should_build_portal(report: RunReport, sources_config: dict) -> bool:
     ]
     if not enabled:
         return True
+    if not report.attempted:
+        return False
     return not all(name in report.errors for name in enabled)
 
 

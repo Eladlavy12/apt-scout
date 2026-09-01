@@ -150,20 +150,36 @@ class TestPortalDecision:
         assert should_build_portal(report, {"yad2": {"enabled": True}}) is True
 
     def test_skips_when_every_enabled_source_failed(self):
-        report = RunReport(fetched=0, errors={"yad2": "blocked", "madlan": "down"})
+        report = RunReport(
+            fetched=0,
+            errors={"yad2": "blocked", "madlan": "down"},
+            attempted=["yad2", "madlan"],
+        )
         sources = {"yad2": {"enabled": True}, "madlan": {"enabled": True}}
         assert should_build_portal(report, sources) is False
 
     def test_builds_when_one_enabled_source_was_merely_quiet(self):
         # One source erroring while the other genuinely found nothing is a
         # quiet market, not an outage.
-        report = RunReport(fetched=0, errors={"yad2": "blocked"})
+        report = RunReport(
+            fetched=0, errors={"yad2": "blocked"}, attempted=["yad2", "madlan"]
+        )
         sources = {"yad2": {"enabled": True}, "madlan": {"enabled": True}}
         assert should_build_portal(report, sources) is True
 
     def test_disabled_sources_do_not_count(self):
-        report = RunReport(fetched=0, errors={"yad2": "blocked"})
+        report = RunReport(
+            fetched=0, errors={"yad2": "blocked"}, attempted=["yad2"]
+        )
         sources = {"yad2": {"enabled": True}, "madlan": {"enabled": False}}
+        assert should_build_portal(report, sources) is False
+
+    def test_skips_when_no_enabled_source_attempted_a_fetch(self):
+        # A workflow_dispatch inside every source's cadence window gates ALL
+        # sources: nothing errored, but nothing ran either. The live portal
+        # must not be replaced by an empty page.
+        report = RunReport(fetched=0, errors={}, attempted=[])
+        sources = {"yad2": {"enabled": True}, "madlan": {"enabled": True}}
         assert should_build_portal(report, sources) is False
 
     def test_main_skips_the_portal_on_total_source_failure(
