@@ -207,7 +207,10 @@ def run_pipeline(
     # seen state.
     restored: list[Listing] = []
     for source in gate_skipped:
-        for raw in cache.get(source, []):
+        entries = cache.get(source, [])
+        if not isinstance(entries, list):
+            continue  # wrong-shaped cache value must not fail the run
+        for raw in entries:
             try:
                 restored.append(_deserialise_listing(raw))
             except (TypeError, ValueError, KeyError):
