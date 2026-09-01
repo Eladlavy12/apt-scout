@@ -29,6 +29,7 @@ def listing(**overrides) -> Listing:
         rooms=3.0,
         size_sqm=70.0,
         drive_minutes=11.4,
+        distance_km=3.4,
         city="תל אביב",
         address_text="הרצל 10 תל אביב",
         occupancy=Occupancy.WHOLE,
@@ -47,6 +48,15 @@ class TestFormatting:
 
     def test_shows_drive_time_rounded(self):
         assert "11 " in format_listing(listing()) or "11'" in format_listing(listing())
+
+    def test_shows_distance_when_known(self):
+        text = format_listing(listing(distance_km=3.4))
+        assert "📍" in text
+        assert "3.4" in text
+
+    def test_omits_distance_when_unknown(self):
+        text = format_listing(listing(distance_km=None))
+        assert "📍" not in text
 
     def test_marks_missing_price_explicitly(self):
         text = format_listing(listing(price=None))

@@ -32,6 +32,16 @@ class TestApplying:
         updated, _ = apply_command(Filters(), "radius", ["25"])
         assert updated.max_drive_minutes == 25
 
+    def test_km_sets_the_max_distance(self):
+        updated, _ = apply_command(Filters(), "km", ["8"])
+        assert updated.max_distance_km == 8
+
+    def test_km_bad_arguments_explain_the_usage_and_change_nothing(self):
+        original = Filters()
+        updated, reply = apply_command(original, "km", ["abc"])
+        assert updated.to_dict() == original.to_dict()
+        assert "/km" in reply
+
     def test_rooms_sets_the_minimum(self):
         updated, _ = apply_command(Filters(), "rooms", ["3"])
         assert updated.min_rooms == 3
@@ -65,7 +75,7 @@ class TestApplying:
 
     def test_an_unknown_command_lists_what_is_available(self):
         _, reply = apply_command(Filters(), "teleport", [])
-        assert "/price" in reply and "/radius" in reply
+        assert "/price" in reply and "/radius" in reply and "/km" in reply
 
 
 class TestPausedFiltersRejectEverything:

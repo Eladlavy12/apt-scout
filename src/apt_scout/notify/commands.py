@@ -14,6 +14,7 @@ USAGE = (
     "פקודות זמינות:\n"
     "/price <מינימום> <מקסימום>\n"
     "/radius <דקות נסיעה>\n"
+    "/km <ק\"מ>\n"
     "/rooms <מינימום חדרים>\n"
     "/size <מינימום מ\"ר>\n"
     "/pause — עצירת התראות\n"
@@ -38,6 +39,7 @@ def _describe(filters: Filters) -> str:
         f"סטטוס: {state}\n"
         f"מחיר: {filters.min_price:,}–{filters.max_price:,} ₪\n"
         f"נסיעה: עד {filters.max_drive_minutes:g} דק'\n"
+        f'מרחק: עד {filters.max_distance_km:g} ק"מ\n'
         f"חדרים: מ-{filters.min_rooms:g}\n"
         f'שטח: מ-{filters.min_size_sqm:g} מ"ר'
     )
@@ -83,6 +85,13 @@ def apply_command(
         if values is None:
             return filters, "שימוש: /radius 15"
         updated = replace(filters, max_drive_minutes=values[0])
+        return updated, _describe(updated)
+
+    if command == "km":
+        values = _numbers(args, 1)
+        if values is None:
+            return filters, "שימוש: /km 5"
+        updated = replace(filters, max_distance_km=values[0])
         return updated, _describe(updated)
 
     if command == "rooms":

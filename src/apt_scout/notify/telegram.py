@@ -33,6 +33,8 @@ def format_listing(listing: Listing) -> str:
 
     if listing.drive_minutes is not None:
         lines.append(f"🚗 {round(listing.drive_minutes)} דקות נסיעה")
+    if listing.distance_km is not None:
+        lines.append(f'📍 {listing.distance_km:g} ק"מ')
 
     lines.append(f"מקור: {listing.source}")
     lines.append(html.escape(listing.url))
