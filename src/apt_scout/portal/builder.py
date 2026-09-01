@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 from datetime import datetime
 from pathlib import Path
 
 from ..filters import Filters
 from ..models import Listing
+from ..normalise.text import strip_phones
 
 ASSETS = Path(__file__).parent / "assets"
 
@@ -31,12 +33,31 @@ PUBLIC_FIELDS = (
     "occupancy",
 )
 
+_WHITESPACE = re.compile(r"\s+")
+
+
+def _scrub_free_text(text: str | None) -> str | None:
+    """Strip phone numbers and collapse whitespace in free text fields.
+
+    Preserves None as None. Returns None if text is empty after scrubbing.
+    """
+    if text is None:
+        return None
+    scrubbed = strip_phones(text)
+    collapsed = _WHITESPACE.sub(" ", scrubbed).strip()
+    return collapsed if collapsed else None
+
 
 def listing_to_public_dict(listing: Listing) -> dict:
     """Project a Listing down to the fields safe to publish."""
     data: dict = {}
     for name in PUBLIC_FIELDS:
         value = getattr(listing, name)
+
+        # Scrub phones from free-text fields
+        if name in ("title", "address_text"):
+            value = _scrub_free_text(value) if isinstance(value, str) else value
+
         data[name] = value.value if hasattr(value, "value") else value
 
     for name in ("posted_at", "first_seen_at"):
