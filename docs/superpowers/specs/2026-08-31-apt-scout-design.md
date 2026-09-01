@@ -145,7 +145,7 @@ degraded source.
 | Adapter | Method | Notes |
 |---|---|---|
 | `yad2` | Internal JSON API, direct | Most bot-protected; highest maintenance risk. Built first because it is the highest-value and most likely to break. |
-| `madlan` | Internal API / HTML, direct | |
+| `madlan` | Apify actor | Blocks automated browsers (Cloudflare BM + PerimeterX); deferred — Apify actor is the only viable path. |
 | `komo` | Internal API / HTML, direct | |
 | `onmap` | Internal JSON API, direct | Modern SPA, so a JSON API almost certainly backs it. Rejected a plain HTTP probe during design; expected to need browser-like headers. |
 | `homeless` | HTML, direct | Long-established Israeli rental board with good landlord-direct volume. Rejected a plain HTTP probe; expected to need browser-like headers. |
@@ -226,7 +226,7 @@ stream is unusable, because popular apartments are cross-posted aggressively.
   The strongest available signal in the Israeli market, since the same landlord
   posts the same number everywhere.
 - `image_hash` — perceptual hashes (pHash) of listing photos. Robust to
-  re-uploading and rewritten text.
+  re-uploading and rewritten text. (Deferred — photo downloads too heavy for hourly CI; phone/exturl/weak-pair cover dominant patterns.)
 - `external_url` — a yad2/madlan link pasted into a Facebook post.
 - `source_id` — the source's own identifier, for same-source repeats.
 - `structural` — price + rooms + size, rounded.
