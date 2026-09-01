@@ -9,16 +9,25 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from .adapters.fb_marketplace import FbMarketplaceAdapter
+from .adapters.homeless import HomelessAdapter
+from .adapters.komo import KomoAdapter
+from .adapters.onmap import OnmapAdapter
+from .adapters.prog import ProgAdapter
 from .adapters.yad2 import Yad2Adapter
+from .budget import BudgetGuard
 from .enrich.pipeline_enrichers import build_enrichers
-from .fetch import Fetcher, HttpTransport
+from .fetch import CurlTransport, Fetcher, HttpTransport
 from .filters import Filters
 from .health import HealthTracker
 from .notify.commands import process_commands
 from .notify.telegram import TelegramNotifier
 from .pipeline import RunReport, run_pipeline
 from .portal.builder import build_portal
+from .scheduler import CadenceGate
 from .state import StateStore
+
+PROG_SEEN_PREFIX = "prog:"
 
 
 class DryRunNotifier:
@@ -45,6 +54,7 @@ class Runtime:
     fetcher: Fetcher
     adapters: list
     enrichers: list
+    cluster_salt: str
     chat_id: str | None = None
 
 
@@ -58,12 +68,31 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
 
     # The fetch window follows the alert filters (with a margin), so a
     # threshold changed over Telegram widens what is fetched on the next run
-    # instead of being clipped by a stale sources.json.
-    yad2 = sources_config.get("yad2")
-    if yad2 is not None:
-        yad2["price_min"] = max(0, filters.min_price - 500)
-        yad2["price_max"] = filters.max_price + 500
-        yad2["rooms_min"] = filters.min_rooms
+    # instead of being clipped by a stale sources.json. Applies to every
+    # source that declares "follows_filters": true (yad2, onmap, komo);
+    # sources with no such price/rooms params (homeless, prog) don't.
+    for config in sources_config.values():
+        if config.get("follows_filters"):
+            config["price_min"] = max(0, filters.min_price - 500)
+            config["price_max"] = filters.max_price + 500
+            config["rooms_min"] = filters.min_rooms
+
+    # prog has no query params to narrow its board by price/rooms, so
+    # instead it skips re-fetching detail pages for listings we've already
+    # recorded (bare ids, without the "source:" prefix state uses).
+    prog = sources_config.get("prog")
+    if prog is not None:
+        prog["skip_ids"] = sorted(
+            seen_id[len(PROG_SEEN_PREFIX) :]
+            for seen_id in store.seen_ids()
+            if seen_id.startswith(PROG_SEEN_PREFIX)
+        )
+
+    # fb_marketplace is a paid Apify source; the token is a secret and must
+    # come from the environment, never from the committed sources.json.
+    fb_marketplace = sources_config.get("fb_marketplace")
+    if fb_marketplace is not None:
+        fb_marketplace["token"] = env.get("APIFY_TOKEN")
 
     if dry_run:
         notifier: Any = DryRunNotifier()
@@ -86,15 +115,27 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
                 "phone hashes use the built-in default salt",
                 file=sys.stderr,
             )
-    fetcher = Fetcher({"http": HttpTransport()}, ["http", "browser", "apify"])
+    fetcher = Fetcher(
+        {"http": HttpTransport(), "curl": CurlTransport()},
+        ["http", "curl", "browser", "apify"],
+    )
+    budget = BudgetGuard(store, notifier=notifier)
     return Runtime(
         filters=filters,
         sources_config=sources_config,
         store=store,
         notifier=notifier,
         fetcher=fetcher,
-        adapters=[Yad2Adapter()],
+        adapters=[
+            Yad2Adapter(),
+            OnmapAdapter(),
+            KomoAdapter(),
+            HomelessAdapter(),
+            ProgAdapter(),
+            FbMarketplaceAdapter(budget),
+        ],
         enrichers=build_enrichers(store, salt=salt),
+        cluster_salt=salt,
         chat_id=env.get("TELEGRAM_CHAT_ID"),
     )
 
@@ -105,6 +146,12 @@ def should_build_portal(report: RunReport, sources_config: dict) -> bool:
     A run in which every enabled source failed and nothing was fetched must
     not replace the live portal with an empty page; keeping the previous
     portal online is strictly better than showing a falsely quiet market.
+
+    The same goes for a run in which no enabled source even attempted a
+    fetch - e.g. a workflow_dispatch fired inside every source's cadence
+    window, gating them all. Nothing ran, so nothing can be newer than the
+    live portal; `report.attempted` (not the error map) is what tells that
+    apart from "everything ran and found nothing".
     """
     if report.fetched > 0:
         return True
@@ -115,6 +162,8 @@ def should_build_portal(report: RunReport, sources_config: dict) -> bool:
     ]
     if not enabled:
         return True
+    if not report.attempted:
+        return False
     return not all(name in report.errors for name in enabled)
 
 
@@ -176,6 +225,8 @@ def main(argv: list[str] | None = None) -> int:
         store=runtime.store,
         notifier=runtime.notifier,
         enrichers=runtime.enrichers,
+        gate=CadenceGate(runtime.store),
+        cluster_salt=runtime.cluster_salt,
     )
 
     if not args.dry_run:

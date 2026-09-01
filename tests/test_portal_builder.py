@@ -58,6 +58,11 @@ class TestPublicDict:
         assert data["first_seen_at"] is None
 
 
+    def test_includes_sources(self):
+        data = listing_to_public_dict(listing(sources=["yad2", "fb_marketplace"]))
+        assert data["sources"] == ["yad2", "fb_marketplace"]
+
+
 class TestBuildPortal:
     def test_writes_the_data_file(self, tmp_path):
         build_portal(tmp_path, [listing()], {}, Filters(), NOW)
@@ -95,6 +100,33 @@ class TestBuildPortal:
         assert "052" not in published
         assert "9876543" not in published
         assert "abc123" not in published
+
+    def test_scrubs_phones_from_title_and_address(self, tmp_path):
+        # Phone numbers in free-text fields (title, address_text) must be
+        # scrubbed from the published output. Non-phone numbers like house
+        # numbers and prices must survive.
+        build_portal(
+            tmp_path,
+            [
+                listing(
+                    title="למכירה! חייגו 052-1234567 עכשיו",
+                    address_text="הרצל 10, 03-5551234",
+                    price=4500,
+                )
+            ],
+            {},
+            Filters(),
+            NOW,
+        )
+        published = (tmp_path / "data" / "listings.json").read_text("utf-8")
+        # Phone digits must not appear
+        assert "052" not in published
+        assert "1234567" not in published
+        assert "03-" not in published
+        assert "5551234" not in published
+        # House number and price must survive
+        assert "10" in published
+        assert "4500" in published
 
     def test_sorts_newest_first(self, tmp_path):
         older = listing(source_id="old", first_seen_at=datetime(2026, 8, 30, tzinfo=timezone.utc))

@@ -3,6 +3,7 @@
     "enabled": true,
     "min_tier": "http",
     "cadence_hours": 1,
+    "follows_filters": true,
     "url_template": "https://gw.yad2.co.il/realestate-feed/rent/map?region=3&area=1&minPrice={price_min}&maxPrice={price_max}&minRooms={rooms_min}",
     "page_url_template": "https://www.yad2.co.il/realestate/rent?minPrice={price_min}&maxPrice={price_max}&minRooms={rooms_min}&topArea=2&area=1",
     "browser_fallback": true,
@@ -10,5 +11,52 @@
     "price_max": 5500,
     "rooms_min": 2,
     "max_results": 200
+  },
+  "onmap": {
+    "enabled": true,
+    "min_tier": "http",
+    "cadence_hours": 1,
+    "follows_filters": true,
+    "url_template": "https://phoenix.onmap.co.il/v1/properties/mixed_search?option=rent,rent-short&city=tel-aviv-yafo&min={price_min}&max={price_max}&rooms[]=2&rooms[]=3&rooms[]=4&rooms[]=5&$limit=50&$skip=0",
+    "price_min": 4000,
+    "price_max": 5500,
+    "max_results": 200
+  },
+  "komo": {
+    "enabled": true,
+    "min_tier": "http",
+    "cadence_hours": 1,
+    "follows_filters": true,
+    "url_template": "https://www.komo.co.il/code/nadlan/apartments-for-rent.asp?nehes=1&cityName={city}&fromPrice={price_min}&toPrice={price_max}&fromRooms={rooms_min}",
+    "city": "תל אביב יפו",
+    "price_min": 4000,
+    "price_max": 5500,
+    "rooms_min": 2,
+    "max_pages": 2,
+    "max_results": 200
+  },
+  "homeless": {
+    "enabled": true,
+    "min_tier": "http",
+    "cadence_hours": 1,
+    "url_template": "https://www.homeless.co.il/rent/city={city}",
+    "cities": ["תל אביב", "גבעתיים", "רמת גן"],
+    "max_results": 200
+  },
+  "prog": {
+    "enabled": false,
+    "disabled_reason": "prog.co.il WAF blocks GitHub datacenter IPs (both httpx and curl, verified 2026-09-01); works locally at tier curl - re-enable if run from a residential IP",
+    "min_tier": "curl",
+    "cadence_hours": 1,
+    "board_url": "https://www.prog.co.il/classifieds/categories/%D7%9C%D7%95%D7%97-%D7%A0%D7%93%D7%9C-%D7%9F-%D7%9C%D7%94%D7%A9%D7%9B%D7%A8%D7%94.52/",
+    "max_details": 5
+  },
+  "fb_marketplace": {
+    "enabled": true,
+    "cadence_hours": 6,
+    "search_url": "https://www.facebook.com/marketplace/telaviv/propertyrentals?minPrice=4000&maxPrice=5500&sortBy=creation_time_descend&exact=false",
+    "max_items": 20,
+    "max_results": 20,
+    "max_age_days": 7
   }
 }

@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+import subprocess
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Callable, Protocol
 
 if TYPE_CHECKING:
     import httpx
@@ -9,6 +10,12 @@ if TYPE_CHECKING:
 # Israeli property sites routinely reject unrecognised user agents. These
 # headers make a plain HTTP request indistinguishable from a normal browser,
 # which is enough for most of them and far cheaper than launching a browser.
+#
+# No Accept-Encoding here on purpose: advertise only what the client can
+# actually decode. onmap's API responds with brotli whenever a request
+# claims "br" support, and httpx (no brotli package installed) then hands
+# back undecodable text instead of raising. Omitting the header lets httpx
+# negotiate its own (gzip), which it can always decode.
 DEFAULT_HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -16,11 +23,10 @@ DEFAULT_HEADERS = {
     ),
     "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Encoding": "gzip, deflate, br",
     "Connection": "keep-alive",
 }
 
-TIER_ORDER = ["http", "browser", "apify"]
+TIER_ORDER = ["http", "curl", "browser", "apify"]
 
 
 class FetchError(Exception):
@@ -62,6 +68,79 @@ class HttpTransport:
         return FetchResult(
             url=url, status=response.status_code, text=response.text, tier=self.name
         )
+
+
+class CurlTransport:
+    """Tier 1.5: shell out to curl.
+
+    Some WAFs fingerprint the TLS client stack itself and reject Python's
+    ssl while accepting curl (prog.co.il does exactly this). curl is present
+    on dev machines and GitHub runners, making it a cheap escalation that
+    needs no browser.
+    """
+
+    name = "curl"
+
+    def __init__(
+        self,
+        timeout: float = 20.0,
+        runner: Callable[..., "subprocess.CompletedProcess[str]"] = subprocess.run,
+    ) -> None:
+        self._timeout = timeout
+        self._runner = runner
+
+    def get(self, url: str, headers: dict | None = None) -> FetchResult:
+        merged_headers = dict(DEFAULT_HEADERS)
+        if headers:
+            merged_headers.update(headers)
+
+        argv = [
+            "curl",
+            "-sS",
+            "--location",
+            "--max-time",
+            str(self._timeout),
+            "--compressed",
+            "-w",
+            "\n%{http_code}",
+        ]
+        for key, value in merged_headers.items():
+            argv += ["-H", f"{key}: {value}"]
+        # "--" ends option parsing, so a URL can never be misread as a curl
+        # flag regardless of what a future config feeds this transport.
+        argv += ["--", url]
+
+        # Explicit UTF-8: without it Windows decodes subprocess output with
+        # the ANSI code page (cp1252), which chokes on Hebrew page bytes.
+        completed = self._runner(
+            argv,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=self._timeout + 10,
+        )
+        if completed.returncode != 0:
+            raise RuntimeError(
+                f"curl exited {completed.returncode} for {url}: "
+                f"{(completed.stderr or '').strip()}"
+            )
+
+        stdout = completed.stdout or ""
+        split_at = stdout.rfind("\n")
+        if split_at == -1:
+            raise RuntimeError(f"curl produced no parsable status line for {url}")
+
+        body = stdout[:split_at]
+        status_text = stdout[split_at + 1 :].strip()
+        try:
+            status = int(status_text)
+        except ValueError as exc:
+            raise RuntimeError(
+                f"curl produced an unparsable status code {status_text!r} for {url}"
+            ) from exc
+
+        return FetchResult(url=url, status=status, text=body, tier=self.name)
 
 
 class Fetcher:

@@ -4,11 +4,50 @@ const STORAGE_KEY = "apt-scout-filters";
 const CONTROLS = ["max-drive", "min-price", "max-price", "min-rooms", "min-size"];
 const TOGGLES = ["include-no-price", "include-unsure"];
 
+// Preference sort ranks by city desirability, then falls back to newest-first.
+const CITY_RANK = {
+  "תל אביב יפו": 0,
+  "תל אביב": 0,
+  "גבעתיים": 1,
+  "רמת גן": 2,
+};
+
 let listings = [];
 let defaults = {};
 let map = null;
 let markerLayer = null;
+let sourceToggleIds = [];
 const CENTRE = [32.056581, 34.804087];
+
+function itemSources(item) {
+  return item.sources && item.sources.length ? item.sources : [item.source];
+}
+
+function cityRank(item) {
+  const rank = CITY_RANK[item.city];
+  return rank === undefined ? 3 : rank;
+}
+
+function timestampValue(item) {
+  return item.first_seen_at ? Date.parse(item.first_seen_at) : -Infinity;
+}
+
+function nullsLast(a, b) {
+  if (a === null && b === null) return 0;
+  if (a === null) return 1;
+  if (b === null) return -1;
+  return a - b;
+}
+
+const SORT_COMPARATORS = {
+  newest: (a, b) => timestampValue(b) - timestampValue(a),
+  cheapest: (a, b) => nullsLast(a.price, b.price),
+  nearest: (a, b) => nullsLast(a.drive_minutes, b.drive_minutes),
+  preference: (a, b) => {
+    const rankDiff = cityRank(a) - cityRank(b);
+    return rankDiff !== 0 ? rankDiff : timestampValue(b) - timestampValue(a);
+  },
+};
 
 function safeHttpUrl(value) {
   try {
@@ -28,6 +67,10 @@ function readControls() {
   TOGGLES.forEach((id) => {
     state[id] = document.getElementById(id).checked;
   });
+  state.sort = document.getElementById("sort").value;
+  sourceToggleIds.forEach((id) => {
+    state[id] = document.getElementById(id).checked;
+  });
   return state;
 }
 
@@ -38,6 +81,35 @@ function applyControls(state) {
   });
   TOGGLES.forEach((id) => {
     if (state[id] !== undefined) document.getElementById(id).checked = state[id];
+  });
+  if (state.sort !== undefined) document.getElementById("sort").value = state.sort;
+  // Any source id absent from saved state (new source, or state predates the
+  // toggle) defaults to enabled so nothing is silently hidden.
+  sourceToggleIds.forEach((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.checked = state[id] !== undefined ? state[id] : true;
+  });
+}
+
+function buildSourceToggles(allListings) {
+  const distinct = Array.from(new Set(allListings.flatMap(itemSources))).sort();
+  const container = document.getElementById("source-toggles");
+  container.replaceChildren();
+  sourceToggleIds = distinct.map((source) => "source-" + source);
+
+  distinct.forEach((source) => {
+    const label = document.createElement("label");
+    label.className = "chip";
+
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.id = "source-" + source;
+    input.checked = true;
+    label.appendChild(input);
+
+    label.appendChild(document.createTextNode(source));
+    container.appendChild(label);
   });
 }
 
@@ -74,6 +146,13 @@ function matches(item, state) {
   if (item.drive_minutes !== null && item.drive_minutes > state["max-drive"]) {
     return false;
   }
+
+  // A listing survives if at least one of its sources is toggled on. An
+  // unrecognised source (toggle removed since the state was saved) defaults
+  // to enabled rather than disappearing silently.
+  const enabled = itemSources(item).some((source) => state["source-" + source] !== false);
+  if (!enabled) return false;
+
   return true;
 }
 
@@ -117,6 +196,14 @@ function card(item) {
   badgeSource.className = "badge source";
   badgeSource.textContent = item.source;
   body.appendChild(badgeSource);
+
+  const srcs = itemSources(item);
+  if (srcs.length > 1) {
+    const badgeMulti = document.createElement("span");
+    badgeMulti.className = "badge multi";
+    badgeMulti.textContent = srcs.length + " מקורות";
+    body.appendChild(badgeMulti);
+  }
 
   const h2 = document.createElement("h2");
   h2.textContent = price;
@@ -200,6 +287,9 @@ function render() {
   saveState(state);
 
   const visible = listings.filter((item) => matches(item, state));
+  const comparator = SORT_COMPARATORS[state.sort] || SORT_COMPARATORS.newest;
+  visible.sort(comparator);
+
   const results = document.getElementById("results");
   results.replaceChildren(...visible.map(card));
 
@@ -230,6 +320,10 @@ function wire() {
   CONTROLS.concat(TOGGLES).forEach((id) => {
     document.getElementById(id).addEventListener("input", render);
   });
+  document.getElementById("sort").addEventListener("input", render);
+  sourceToggleIds.forEach((id) => {
+    document.getElementById(id).addEventListener("input", render);
+  });
   document.getElementById("reset").addEventListener("click", () => {
     applyControls({
       "max-drive": defaults.max_drive_minutes,
@@ -239,6 +333,12 @@ function wire() {
       "min-size": defaults.min_size_sqm,
       "include-no-price": defaults.include_price_missing,
       "include-unsure": defaults.include_unsure_occupancy,
+      sort: "newest",
+    });
+    // Reset also re-enables every source chip.
+    sourceToggleIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.checked = true;
     });
     render();
   });
@@ -249,6 +349,7 @@ fetch("data/listings.json")
   .then((data) => {
     listings = data.listings || [];
     defaults = data.defaults || {};
+    buildSourceToggles(listings);
 
     const saved = loadState();
     applyControls({
@@ -259,6 +360,7 @@ fetch("data/listings.json")
       "min-size": defaults.min_size_sqm,
       "include-no-price": defaults.include_price_missing,
       "include-unsure": defaults.include_unsure_occupancy,
+      sort: "newest",
       ...saved,
     });
 

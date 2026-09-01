@@ -41,6 +41,19 @@
     <label class="toggle">
       <input type="checkbox" id="include-unsure"> הצג לא ודאי (שותפים?)
     </label>
+    <label>
+      מיון:
+      <select id="sort">
+        <option value="newest">החדשות ביותר</option>
+        <option value="cheapest">הזול ביותר</option>
+        <option value="nearest">הקרוב ביותר</option>
+        <option value="preference">העדפה</option>
+      </select>
+    </label>
+    <div>
+      <span class="controls-subtitle">מקורות</span>
+      <div id="source-toggles" class="chips"></div>
+    </div>
     <button type="button" id="reset">איפוס</button>
   </section>
 

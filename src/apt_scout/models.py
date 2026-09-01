@@ -47,6 +47,10 @@ class Listing:
     posted_at: datetime | None = None
     first_seen_at: datetime | None = None
 
+    # Populated by clustering: every source that advertised this apartment.
+    # Empty for a listing that hasn't gone through the cluster stage yet.
+    sources: list[str] = field(default_factory=list)
+
     def stable_id(self) -> str:
         """Identity of this advertisement, unique across sources."""
         return f"{self.source}:{self.source_id}"

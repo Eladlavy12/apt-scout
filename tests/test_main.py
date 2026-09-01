@@ -20,7 +20,8 @@ def repo(tmp_path):
         json.dumps({"min_price": 4000, "max_price": 5500}), encoding="utf-8"
     )
     (tmp_path / "config" / "sources.json").write_text(
-        json.dumps({"yad2": {"enabled": False}}), encoding="utf-8"
+        json.dumps({"yad2": {"enabled": False, "follows_filters": True}}),
+        encoding="utf-8",
     )
     return tmp_path
 
@@ -61,6 +62,87 @@ class TestFetchWindowFollowsFilters:
         runtime = build_runtime(repo, {}, dry_run=True)
         assert runtime.sources_config["yad2"]["price_min"] == 0
 
+    def test_every_follows_filters_source_gets_the_price_window(self, repo):
+        (repo / "config" / "filters.json").write_text(
+            json.dumps({"min_price": 5000, "max_price": 7000, "min_rooms": 3}),
+            encoding="utf-8",
+        )
+        (repo / "config" / "sources.json").write_text(
+            json.dumps(
+                {
+                    "yad2": {"enabled": True, "follows_filters": True},
+                    "onmap": {"enabled": True, "follows_filters": True},
+                    "komo": {"enabled": True, "follows_filters": True},
+                    "homeless": {"enabled": True},
+                    "prog": {"enabled": True},
+                }
+            ),
+            encoding="utf-8",
+        )
+        runtime = build_runtime(repo, {}, dry_run=True)
+        for name in ("yad2", "onmap", "komo"):
+            config = runtime.sources_config[name]
+            assert config["price_min"] == 4500
+            assert config["price_max"] == 7500
+            assert config["rooms_min"] == 3
+        assert "price_min" not in runtime.sources_config["homeless"]
+        assert "price_min" not in runtime.sources_config["prog"]
+
+
+class TestProgSkipIds:
+    def test_prog_receives_bare_ids_seen_so_far(self, repo):
+        (repo / "config" / "sources.json").write_text(
+            json.dumps({"prog": {"enabled": True}}), encoding="utf-8"
+        )
+        store = StateStore(repo / "state")
+        store.record_seen(
+            {"prog:123": "", "prog:456": "", "yad2:999": "", "onmap:1": ""}
+        )
+        runtime = build_runtime(repo, {}, dry_run=True)
+        assert sorted(runtime.sources_config["prog"]["skip_ids"]) == ["123", "456"]
+
+    def test_no_prog_config_means_nothing_to_do(self, repo):
+        (repo / "config" / "sources.json").write_text(
+            json.dumps({"yad2": {"enabled": True}}), encoding="utf-8"
+        )
+        # Must not raise when the source isn't configured at all.
+        build_runtime(repo, {}, dry_run=True)
+
+
+class TestFbMarketplaceToken:
+    def test_apify_token_env_var_is_injected_into_source_config(self, repo):
+        (repo / "config" / "sources.json").write_text(
+            json.dumps({"fb_marketplace": {"enabled": True}}), encoding="utf-8"
+        )
+        runtime = build_runtime(repo, {"APIFY_TOKEN": "secret-token"}, dry_run=True)
+        assert runtime.sources_config["fb_marketplace"]["token"] == "secret-token"
+
+    def test_missing_apify_token_env_var_becomes_none_not_a_crash(self, repo):
+        (repo / "config" / "sources.json").write_text(
+            json.dumps({"fb_marketplace": {"enabled": True}}), encoding="utf-8"
+        )
+        runtime = build_runtime(repo, {}, dry_run=True)
+        assert runtime.sources_config["fb_marketplace"]["token"] is None
+
+    def test_no_fb_marketplace_config_means_nothing_to_do(self, repo):
+        (repo / "config" / "sources.json").write_text(
+            json.dumps({"yad2": {"enabled": True}}), encoding="utf-8"
+        )
+        build_runtime(repo, {}, dry_run=True)
+
+
+class TestAdapterRegistration:
+    def test_all_six_adapters_are_registered(self, repo):
+        runtime = build_runtime(repo, {}, dry_run=True)
+        assert {adapter.name for adapter in runtime.adapters} == {
+            "yad2",
+            "onmap",
+            "komo",
+            "homeless",
+            "prog",
+            "fb_marketplace",
+        }
+
 
 class TestPortalDecision:
     def test_builds_when_anything_was_fetched(self):
@@ -68,20 +150,36 @@ class TestPortalDecision:
         assert should_build_portal(report, {"yad2": {"enabled": True}}) is True
 
     def test_skips_when_every_enabled_source_failed(self):
-        report = RunReport(fetched=0, errors={"yad2": "blocked", "madlan": "down"})
+        report = RunReport(
+            fetched=0,
+            errors={"yad2": "blocked", "madlan": "down"},
+            attempted=["yad2", "madlan"],
+        )
         sources = {"yad2": {"enabled": True}, "madlan": {"enabled": True}}
         assert should_build_portal(report, sources) is False
 
     def test_builds_when_one_enabled_source_was_merely_quiet(self):
         # One source erroring while the other genuinely found nothing is a
         # quiet market, not an outage.
-        report = RunReport(fetched=0, errors={"yad2": "blocked"})
+        report = RunReport(
+            fetched=0, errors={"yad2": "blocked"}, attempted=["yad2", "madlan"]
+        )
         sources = {"yad2": {"enabled": True}, "madlan": {"enabled": True}}
         assert should_build_portal(report, sources) is True
 
     def test_disabled_sources_do_not_count(self):
-        report = RunReport(fetched=0, errors={"yad2": "blocked"})
+        report = RunReport(
+            fetched=0, errors={"yad2": "blocked"}, attempted=["yad2"]
+        )
         sources = {"yad2": {"enabled": True}, "madlan": {"enabled": False}}
+        assert should_build_portal(report, sources) is False
+
+    def test_skips_when_no_enabled_source_attempted_a_fetch(self):
+        # A workflow_dispatch inside every source's cadence window gates ALL
+        # sources: nothing errored, but nothing ran either. The live portal
+        # must not be replaced by an empty page.
+        report = RunReport(fetched=0, errors={}, attempted=[])
+        sources = {"yad2": {"enabled": True}, "madlan": {"enabled": True}}
         assert should_build_portal(report, sources) is False
 
     def test_main_skips_the_portal_on_total_source_failure(

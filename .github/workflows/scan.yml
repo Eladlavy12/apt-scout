@@ -31,6 +31,7 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           PHONE_HASH_SALT: ${{ secrets.PHONE_HASH_SALT }}
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
           APT_SCOUT_BROWSER_HEADED: "1"
         # Headed Chrome (channel="chrome", the runner's stock install - no
         # `playwright install` download needed) requires a display; xvfb
