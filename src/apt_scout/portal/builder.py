@@ -31,6 +31,7 @@ PUBLIC_FIELDS = (
     "drive_minutes",
     "photos",
     "occupancy",
+    "sources",
 )
 
 _WHITESPACE = re.compile(r"\s+")

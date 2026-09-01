@@ -35,9 +35,14 @@ class RecordingNotifier:
     def __init__(self, ok=True):
         self.ok = ok
         self.sent = []
+        self.texts = []
 
     def send_listing(self, listing):
         self.sent.append(listing)
+        return self.ok
+
+    def send_text(self, text):
+        self.texts.append(text)
         return self.ok
 
 
@@ -403,6 +408,116 @@ class TestCadenceGating:
             notifier=RecordingNotifier(),
         )
         assert report.fetched == 1
+
+
+class TestClustering:
+    def test_two_sources_same_phone_notify_once_with_pooled_fields(self, tmp_path):
+        store = StateStore(tmp_path)
+        notifier = RecordingNotifier()
+        yad2_listing = listing(
+            source="yad2",
+            source_id="p1",
+            raw_text="דירה להשכרה, לפרטים 050-1234567",
+            price=None,
+        )
+        fb_listing = listing(
+            source="fb_marketplace",
+            source_id="p2",
+            url="https://fb/p2",
+            raw_text="אותה דירה! התקשרו 050-1234567",
+            price=4800,
+        )
+        report = run_pipeline(
+            adapters=[
+                StubAdapter("yad2", [yad2_listing]),
+                StubAdapter("fb_marketplace", [fb_listing]),
+            ],
+            fetcher=None,
+            sources_config={
+                "yad2": {"enabled": True},
+                "fb_marketplace": {"enabled": True},
+            },
+            filters=Filters(),
+            store=store,
+            notifier=notifier,
+            cluster_salt="test-salt",
+        )
+
+        assert report.notified == 1
+        assert len(notifier.sent) == 1
+        sent = notifier.sent[0]
+        assert sent.sources == ["yad2", "fb_marketplace"]
+        assert sent.price == 4800, "pooled from the member that actually has a price"
+
+        assert store.notified_ids() == {"yad2:p1", "fb_marketplace:p2"}
+
+        assert len(report.listings) == 1
+        assert report.listings[0].sources == ["yad2", "fb_marketplace"]
+
+    def test_a_cluster_with_one_previously_notified_member_is_not_re_alerted(
+        self, tmp_path
+    ):
+        store = StateStore(tmp_path)
+        store.mark_notified(["yad2:p1"])
+
+        notifier = RecordingNotifier()
+        yad2_listing = listing(
+            source="yad2",
+            source_id="p1",
+            raw_text="דירה להשכרה, לפרטים 050-1234567",
+        )
+        fb_listing = listing(
+            source="fb_marketplace",
+            source_id="p2",
+            url="https://fb/p2",
+            raw_text="אותה דירה! התקשרו 050-1234567",
+        )
+        report = run_pipeline(
+            adapters=[
+                StubAdapter("yad2", [yad2_listing]),
+                StubAdapter("fb_marketplace", [fb_listing]),
+            ],
+            fetcher=None,
+            sources_config={
+                "yad2": {"enabled": True},
+                "fb_marketplace": {"enabled": True},
+            },
+            filters=Filters(),
+            store=store,
+            notifier=notifier,
+            cluster_salt="test-salt",
+        )
+
+        assert report.notified == 0
+        assert notifier.sent == []
+
+
+class TestFloodCap:
+    def _singletons(self, count):
+        return [
+            listing(source_id=str(i), url=f"https://y/{i}") for i in range(count)
+        ]
+
+    def test_overflow_beyond_twelve_gets_one_summary_and_retries_next_run(
+        self, tmp_path
+    ):
+        store = StateStore(tmp_path)
+        notifier = RecordingNotifier()
+        adapters = [StubAdapter("yad2", self._singletons(15))]
+        report = run(adapters, store, notifier)
+
+        assert report.notified == 12
+        assert len(notifier.sent) == 12
+        assert notifier.texts == ["+ עוד 3 דירות תואמות — ראו בפורטל"]
+        assert len(store.notified_ids()) == 12
+
+        second_notifier = RecordingNotifier()
+        second_report = run(adapters, store, second_notifier)
+
+        assert second_report.notified == 3
+        assert len(second_notifier.sent) == 3
+        assert second_notifier.texts == []
+        assert len(store.notified_ids()) == 15
 
 
 class TestEnrichment:

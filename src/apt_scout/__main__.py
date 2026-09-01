@@ -54,6 +54,7 @@ class Runtime:
     fetcher: Fetcher
     adapters: list
     enrichers: list
+    cluster_salt: str
     chat_id: str | None = None
 
 
@@ -134,6 +135,7 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
             FbMarketplaceAdapter(budget),
         ],
         enrichers=build_enrichers(store, salt=salt),
+        cluster_salt=salt,
         chat_id=env.get("TELEGRAM_CHAT_ID"),
     )
 
@@ -216,6 +218,7 @@ def main(argv: list[str] | None = None) -> int:
         notifier=runtime.notifier,
         enrichers=runtime.enrichers,
         gate=CadenceGate(runtime.store),
+        cluster_salt=runtime.cluster_salt,
     )
 
     if not args.dry_run:

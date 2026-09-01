@@ -58,6 +58,11 @@ class TestPublicDict:
         assert data["first_seen_at"] is None
 
 
+    def test_includes_sources(self):
+        data = listing_to_public_dict(listing(sources=["yad2", "fb_marketplace"]))
+        assert data["sources"] == ["yad2", "fb_marketplace"]
+
+
 class TestBuildPortal:
     def test_writes_the_data_file(self, tmp_path):
         build_portal(tmp_path, [listing()], {}, Filters(), NOW)

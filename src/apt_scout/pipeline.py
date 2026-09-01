@@ -5,12 +5,20 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any
 
+from .cluster.engine import Cluster, ClusterEngine
 from .filters import Filters
 from .health import HealthTracker
 from .models import Listing
 from .state import StateStore
 
 Enricher = Callable[[Listing], Listing]
+
+# Notifications are exactly-once and pooled at the cluster level, not the
+# per-listing level: one alert per apartment regardless of how many sources
+# advertised it. This caps how many cluster alerts go out in a single run so
+# a burst of new listings never floods the chat; the rest wait for the next
+# run rather than being dropped.
+MAX_ALERTS_PER_RUN = 12
 
 
 @dataclass
@@ -33,8 +41,10 @@ def run_pipeline(
     enrichers: list[Enricher] | None = None,
     now: datetime | None = None,
     gate: Any | None = None,
+    cluster_salt: str = "",
+    max_alerts_per_run: int = MAX_ALERTS_PER_RUN,
 ) -> RunReport:
-    """Fetch, enrich, filter, and notify for one scheduled run.
+    """Fetch, enrich, cluster, filter, and notify for one scheduled run.
 
     Every adapter is isolated: a source that fails or raises is recorded and
     skipped, never allowed to end the run. A run in which one source breaks is
@@ -46,6 +56,14 @@ def run_pipeline(
     this cycle. `gate.mark_ran` is called for every source that *does* fetch
     without raising (whether it returns listings or an error result), so a
     persistently failing source is retried no more often than its cadence.
+
+    Listings are clustered (cross-source dedup) after enrichment and before
+    filtering: filtering, notification, and the portal all operate on one
+    canonical listing per apartment, never on a raw per-source post. A
+    cluster counts as already notified if ANY member's stable id was
+    previously notified - the pre-clustering, per-listing state - so
+    existing notified-state keeps suppressing alerts across the migration.
+    After a confirmed send, every member id is marked notified at once.
     """
     now = now or datetime.now(timezone.utc)
     enrichers = enrichers or []
@@ -125,19 +143,50 @@ def run_pipeline(
                 )
         enriched.append(listing)
 
-        if not filters.matches(listing):
+    clusters = ClusterEngine().cluster(enriched, cluster_salt)
+
+    canonical_listings: list[Listing] = []
+    candidates: list[Cluster] = []
+    for cluster in clusters:
+        canonical = cluster.canonical
+        canonical.sources = list(cluster.sources)
+
+        # The canonical's first-seen must be the earliest of any member's,
+        # not whichever field the pooling happened to pick - otherwise a
+        # long-known listing that just got cross-posted to a new source
+        # could show up with a dishonest "NEW" badge.
+        member_first_seen = [
+            member.first_seen_at
+            for member in cluster.members
+            if member.first_seen_at is not None
+        ]
+        if member_first_seen:
+            canonical.first_seen_at = min(member_first_seen)
+
+        canonical_listings.append(canonical)
+
+        if not filters.matches(canonical):
             continue
         report.matched += 1
 
-        if listing_id in already_notified:
+        member_ids = [member.stable_id() for member in cluster.members]
+        if any(member_id in already_notified for member_id in member_ids):
             continue
-        if notifier.send_listing(listing):
+        candidates.append(cluster)
+
+    to_send, overflow = candidates[:max_alerts_per_run], candidates[max_alerts_per_run:]
+
+    for cluster in to_send:
+        if notifier.send_listing(cluster.canonical):
             # Persisted immediately: a crash later in the loop must never
             # un-record an alert that was already delivered.
-            store.mark_notified([listing_id])
+            store.mark_notified([member.stable_id() for member in cluster.members])
             report.notified += 1
 
-    report.listings = enriched
+    if overflow:
+        notifier.send_text(f"+ עוד {len(overflow)} דירות תואמות — ראו בפורטל")
+
+    report.listings = canonical_listings
 
     store.record_seen(new_seen)
 
