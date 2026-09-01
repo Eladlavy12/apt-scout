@@ -335,6 +335,11 @@ function wire() {
       "include-unsure": defaults.include_unsure_occupancy,
       sort: "newest",
     });
+    // Reset also re-enables every source chip.
+    sourceToggleIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.checked = true;
+    });
     render();
   });
 }
