@@ -1,5 +1,5 @@
 from apt_scout.cluster.engine import Cluster, ClusterEngine
-from apt_scout.models import Listing
+from apt_scout.models import Listing, Occupancy
 
 SALT = "test-salt"
 
@@ -214,6 +214,117 @@ class TestScenario10ClusterIdStability:
         clusters_forward = cluster_of([a, b])
         clusters_backward = cluster_of([b, a])
         assert clusters_forward[0].cluster_id == clusters_backward[0].cluster_id
+
+
+class TestScenario12PoolingPhotos:
+    def test_photoless_top_priority_member_does_not_beat_member_with_photos(self):
+        yad2 = make_listing(
+            source="yad2",
+            source_id="y12",
+            photos=[],
+            raw_text="לפרטים 050-1234567",
+        )
+        fb = make_listing(
+            source="fb_marketplace",
+            source_id="f12",
+            photos=["u"],
+            raw_text="התקשרו 050-1234567",
+        )
+        clusters = cluster_of([yad2, fb])
+        assert len(clusters) == 1
+        assert clusters[0].canonical.photos == ["u"]
+
+    def test_no_member_has_photos_canonical_is_empty(self):
+        yad2 = make_listing(
+            source="yad2",
+            source_id="y12b",
+            photos=[],
+            raw_text="לפרטים 050-9990001",
+        )
+        fb = make_listing(
+            source="fb_marketplace",
+            source_id="f12b",
+            photos=[],
+            raw_text="התקשרו 050-9990001",
+        )
+        clusters = cluster_of([yad2, fb])
+        assert len(clusters) == 1
+        assert clusters[0].canonical.photos == []
+
+
+class TestScenario13PoolingOccupancy:
+    def test_roommates_from_lower_priority_member_wins_over_top_unsure(self):
+        yad2 = make_listing(
+            source="yad2",
+            source_id="y13",
+            occupancy=Occupancy.UNSURE,
+            raw_text="לפרטים 050-1230001",
+        )
+        komo = make_listing(
+            source="komo",
+            source_id="k13",
+            occupancy=Occupancy.ROOMMATES,
+            raw_text="התקשרו 050-1230001",
+        )
+        clusters = cluster_of([yad2, komo])
+        assert len(clusters) == 1
+        assert clusters[0].canonical.occupancy == Occupancy.ROOMMATES
+
+    def test_first_non_unsure_in_priority_order_wins_when_no_roommates(self):
+        yad2 = make_listing(
+            source="yad2",
+            source_id="y13b",
+            occupancy=Occupancy.UNSURE,
+            raw_text="לפרטים 050-1230002",
+        )
+        fb = make_listing(
+            source="fb_marketplace",
+            source_id="f13b",
+            occupancy=Occupancy.WHOLE,
+            raw_text="התקשרו 050-1230002",
+        )
+        clusters = cluster_of([yad2, fb])
+        assert len(clusters) == 1
+        assert clusters[0].canonical.occupancy == Occupancy.WHOLE
+
+    def test_all_members_unsure_canonical_is_unsure(self):
+        yad2 = make_listing(
+            source="yad2",
+            source_id="y13c",
+            occupancy=Occupancy.UNSURE,
+            raw_text="לפרטים 050-1230003",
+        )
+        fb = make_listing(
+            source="fb_marketplace",
+            source_id="f13c",
+            occupancy=Occupancy.UNSURE,
+            raw_text="התקשרו 050-1230003",
+        )
+        clusters = cluster_of([yad2, fb])
+        assert len(clusters) == 1
+        assert clusters[0].canonical.occupancy == Occupancy.UNSURE
+
+
+class TestScenario14SourcesDedup:
+    def test_two_yad2_members_and_one_fb_member_dedupe_sources(self):
+        yad2_a = make_listing(
+            source="yad2",
+            source_id="y14a",
+            raw_text="דירה להשכרה 050-1230004 גם: https://www.yad2.co.il/realestate/item/dup14",
+        )
+        yad2_b = make_listing(
+            source="yad2",
+            source_id="y14b",
+            raw_text="לצפייה בדירה: https://www.yad2.co.il/realestate/item/dup14",
+        )
+        fb = make_listing(
+            source="fb_marketplace",
+            source_id="f14",
+            raw_text="אותה דירה 050-1230004",
+        )
+        clusters = cluster_of([yad2_a, yad2_b, fb])
+        assert len(clusters) == 1
+        assert clusters[0].sources == ["yad2", "fb_marketplace"]
 
 
 class TestScenario11SaltedPhoneHash:

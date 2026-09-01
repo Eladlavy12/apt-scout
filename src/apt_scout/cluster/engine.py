@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from itertools import combinations
 
 from apt_scout.cluster.fingerprints import fingerprints
-from apt_scout.models import Listing
+from apt_scout.models import Listing, Occupancy
 
 # Members are ordered by "how much we trust this source's data" for
 # canonical-field pooling and for tie-breaking cluster ordering. Sources not
@@ -56,11 +56,57 @@ def _order_members(members: list[Listing]) -> list[Listing]:
     return sorted(members, key=lambda m: (_source_rank(m.source), m.stable_id()))
 
 
+def _pool_photos(ordered_members: list[Listing]) -> list[str]:
+    """First member (in priority order) with a non-empty photos list wins.
+
+    A never-None field like ``photos`` defaults to ``[]``, so "first
+    non-None" would let a top-priority member with no photos beat a
+    lower-priority member that actually has some. Pick the first non-empty
+    list instead, falling back to [] only when nobody has photos.
+    """
+    for member in ordered_members:
+        if member.photos:
+            return list(member.photos)
+    return []
+
+
+def _pool_occupancy(ordered_members: list[Listing]) -> Occupancy:
+    """Safety first: ROOMMATES beats everything, then priority order.
+
+    ``occupancy`` defaults to UNSURE, so "first non-None" would let a
+    top-priority UNSURE hide a lower-priority member's definite value -
+    in the worst case losing a ROOMMATES detection and letting a
+    roommates-ad slip past the roommates filter. So: if ANY member was
+    detected as ROOMMATES, the cluster is ROOMMATES, full stop - one
+    roommate-ad detection poisons the whole cluster. Otherwise take the
+    first non-UNSURE value in priority order, falling back to UNSURE only
+    if every member is UNSURE.
+    """
+    if any(member.occupancy == Occupancy.ROOMMATES for member in ordered_members):
+        return Occupancy.ROOMMATES
+    for member in ordered_members:
+        if member.occupancy != Occupancy.UNSURE:
+            return member.occupancy
+    return Occupancy.UNSURE
+
+
 def _pool_canonical(ordered_members: list[Listing]) -> Listing:
     """Build a synthetic Listing whose fields come from the first (highest
-    priority) member that has a non-None value for that field."""
+    priority) member that has a non-None value for that field.
+
+    ``photos`` and ``occupancy`` never take the value None (they default to
+    ``[]`` / ``Occupancy.UNSURE``), so "first non-None" can't distinguish
+    "unset" from "explicitly this value" for them - they get dedicated
+    pooling rules instead. See _pool_photos and _pool_occupancy.
+    """
     values: dict[str, object] = {}
     for field in dataclasses.fields(Listing):
+        if field.name == "photos":
+            values[field.name] = _pool_photos(ordered_members)
+            continue
+        if field.name == "occupancy":
+            values[field.name] = _pool_occupancy(ordered_members)
+            continue
         value = None
         for member in ordered_members:
             candidate = getattr(member, field.name)
@@ -120,12 +166,18 @@ class ClusterEngine:
         clusters: list[Cluster] = []
         for indices in groups.values():
             members = _order_members([listings[i] for i in indices])
+            sources: list[str] = []
+            seen_sources: set[str] = set()
+            for member in members:
+                if member.source not in seen_sources:
+                    seen_sources.add(member.source)
+                    sources.append(member.source)
             clusters.append(
                 Cluster(
                     cluster_id=_cluster_id(members),
                     members=members,
                     canonical=_pool_canonical(members),
-                    sources=[member.source for member in members],
+                    sources=sources,
                 )
             )
         return clusters
