@@ -17,6 +17,7 @@ def listing(**overrides) -> Listing:
         rooms=3.0,
         size_sqm=70.0,
         drive_minutes=11.4,
+        distance_km=3.4,
         city="תל אביב",
         address_text="הרצל 10",
         lat=32.07,
@@ -36,6 +37,7 @@ class TestPublicDict:
         assert data["price"] == 4800
         assert data["rooms"] == 3.0
         assert data["drive_minutes"] == 11.4
+        assert data["distance_km"] == 3.4
         assert data["url"] == "https://y/1"
 
     def test_never_includes_the_phone_hash(self):

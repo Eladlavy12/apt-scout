@@ -1,7 +1,7 @@
 "use strict";
 
 const STORAGE_KEY = "apt-scout-filters";
-const CONTROLS = ["max-drive", "min-price", "max-price", "min-rooms", "min-size"];
+const CONTROLS = ["max-drive", "min-price", "max-price", "min-rooms", "min-size", "max-km"];
 const TOGGLES = ["include-no-price", "include-unsure"];
 
 // Preference sort ranks by city desirability, then falls back to newest-first.
@@ -146,6 +146,9 @@ function matches(item, state) {
   if (item.drive_minutes !== null && item.drive_minutes > state["max-drive"]) {
     return false;
   }
+  if (item.distance_km !== null && item.distance_km > state["max-km"]) {
+    return false;
+  }
 
   // A listing survives if at least one of its sources is toggled on. An
   // unrecognised source (toggle removed since the state was saved) defaults
@@ -170,6 +173,7 @@ function card(item) {
   if (item.rooms !== null) facts.push(item.rooms + " חד'");
   if (item.size_sqm !== null) facts.push(item.size_sqm + ' מ"ר');
   if (item.drive_minutes !== null) facts.push("🚗 " + Math.round(item.drive_minutes) + " דק'");
+  if (item.distance_km !== null) facts.push("📍 " + item.distance_km + ' ק"מ');
 
   if (item.photos && item.photos.length) {
     const photoUrl = safeHttpUrl(item.photos[0]);
@@ -331,6 +335,7 @@ function wire() {
       "max-price": defaults.max_price,
       "min-rooms": defaults.min_rooms,
       "min-size": defaults.min_size_sqm,
+      "max-km": defaults.max_distance_km,
       "include-no-price": defaults.include_price_missing,
       "include-unsure": defaults.include_unsure_occupancy,
       sort: "newest",
@@ -358,6 +363,7 @@ fetch("data/listings.json")
       "max-price": defaults.max_price,
       "min-rooms": defaults.min_rooms,
       "min-size": defaults.min_size_sqm,
+      "max-km": defaults.max_distance_km,
       "include-no-price": defaults.include_price_missing,
       "include-unsure": defaults.include_unsure_occupancy,
       sort: "newest",

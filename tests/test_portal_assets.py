@@ -17,6 +17,7 @@ class TestHtml:
             "max-price",
             "min-rooms",
             "min-size",
+            "max-km",
             "include-no-price",
             "include-unsure",
         ):
@@ -40,7 +41,7 @@ class TestJavaScript:
 
     def test_filters_on_every_criterion(self):
         js = (ASSETS / "app.js").read_text(encoding="utf-8")
-        for field in ("drive_minutes", "price", "rooms", "size_sqm", "occupancy"):
+        for field in ("drive_minutes", "distance_km", "price", "rooms", "size_sqm", "occupancy"):
             assert field in js, f"filter logic missing {field}"
 
     def test_persists_the_users_choices(self):
@@ -56,6 +57,25 @@ class TestJavaScript:
         js = (ASSETS / "app.js").read_text(encoding="utf-8")
         assert "innerHTML" not in js, "scraped data must be DOM-built, not string-injected"
         assert "safeHttpUrl" in js, "URLs from scraped data must be scheme-validated"
+
+
+class TestDistanceControl:
+    def test_html_has_the_max_km_slider(self):
+        html = (ASSETS / "index.html").read_text(encoding="utf-8")
+        assert 'id="max-km"' in html
+        assert 'id="max-km-out"' in html
+
+    def test_js_uses_the_max_km_control(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        assert "max-km" in js
+
+    def test_js_maps_the_default_max_distance(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        assert "max_distance_km" in js
+
+    def test_card_shows_distance_when_known(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        assert "📍" in js
 
 
 class TestSortAndSources:

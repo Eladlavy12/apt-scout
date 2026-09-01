@@ -29,6 +29,7 @@ PUBLIC_FIELDS = (
     "lat",
     "lon",
     "drive_minutes",
+    "distance_km",
     "photos",
     "occupancy",
     "sources",
