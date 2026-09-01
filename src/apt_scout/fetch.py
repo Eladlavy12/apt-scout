@@ -97,6 +97,7 @@ class CurlTransport:
         argv = [
             "curl",
             "-sS",
+            "--location",
             "--max-time",
             str(self._timeout),
             "--compressed",
@@ -105,12 +106,19 @@ class CurlTransport:
         ]
         for key, value in merged_headers.items():
             argv += ["-H", f"{key}: {value}"]
-        argv.append(url)
+        # "--" ends option parsing, so a URL can never be misread as a curl
+        # flag regardless of what a future config feeds this transport.
+        argv += ["--", url]
 
         # Explicit UTF-8: without it Windows decodes subprocess output with
         # the ANSI code page (cp1252), which chokes on Hebrew page bytes.
         completed = self._runner(
-            argv, capture_output=True, text=True, encoding="utf-8", errors="replace"
+            argv,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=self._timeout + 10,
         )
         if completed.returncode != 0:
             raise RuntimeError(
