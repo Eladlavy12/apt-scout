@@ -107,7 +107,11 @@ class CurlTransport:
             argv += ["-H", f"{key}: {value}"]
         argv.append(url)
 
-        completed = self._runner(argv, capture_output=True, text=True)
+        # Explicit UTF-8: without it Windows decodes subprocess output with
+        # the ANSI code page (cp1252), which chokes on Hebrew page bytes.
+        completed = self._runner(
+            argv, capture_output=True, text=True, encoding="utf-8", errors="replace"
+        )
         if completed.returncode != 0:
             raise RuntimeError(
                 f"curl exited {completed.returncode} for {url}: "
