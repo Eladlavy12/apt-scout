@@ -38,6 +38,7 @@ class Listing:
     lat: float | None = None
     lon: float | None = None
     drive_minutes: float | None = None
+    distance_km: float | None = None
 
     photos: list[str] = field(default_factory=list)
     phone_hash: str | None = None

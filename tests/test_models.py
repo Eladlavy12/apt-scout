@@ -13,6 +13,7 @@ def test_listing_defaults_unknown_fields_to_none():
     assert listing.rooms is None
     assert listing.size_sqm is None
     assert listing.drive_minutes is None
+    assert listing.distance_km is None
     assert listing.photos == []
     assert listing.occupancy is Occupancy.UNSURE
 
