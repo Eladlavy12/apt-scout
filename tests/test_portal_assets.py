@@ -56,3 +56,33 @@ class TestJavaScript:
         js = (ASSETS / "app.js").read_text(encoding="utf-8")
         assert "innerHTML" not in js, "scraped data must be DOM-built, not string-injected"
         assert "safeHttpUrl" in js, "URLs from scraped data must be scheme-validated"
+
+
+class TestSortAndSources:
+    def test_has_sort_select_with_expected_options(self):
+        html = (ASSETS / "index.html").read_text(encoding="utf-8")
+        assert 'id="sort"' in html
+        for value in ("newest", "cheapest", "nearest", "preference"):
+            assert f'value="{value}"' in html, f"missing sort option {value}"
+
+    def test_has_source_toggles_container(self):
+        html = (ASSETS / "index.html").read_text(encoding="utf-8")
+        assert 'id="source-toggles"' in html
+
+    def test_references_sources_field(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        assert "sources" in js
+
+    def test_sorts_by_expected_fields(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        for field in ("drive_minutes", "price", "first_seen_at"):
+            assert field in js, f"sort logic missing {field}"
+
+    def test_has_city_ranking_table(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        for city in ("תל אביב", "גבעתיים", "רמת גן"):
+            assert city in js, f"preference ranking missing {city}"
+
+    def test_still_never_uses_innerhtml(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        assert "innerHTML" not in js
