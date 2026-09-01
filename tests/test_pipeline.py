@@ -363,7 +363,10 @@ class TestCadenceGating:
         assert "yad2" in report.errors
         assert gate.marked == ["yad2"]
 
-    def test_a_raised_exception_does_not_mark_ran(self, tmp_path):
+    def test_a_raised_exception_still_marks_ran(self, tmp_path):
+        # The fetch WAS attempted; a source that raises (rather than
+        # politely returning an error result) must not be retried faster
+        # than its cadence either.
         class Exploding:
             name = "bad"
 
@@ -381,7 +384,7 @@ class TestCadenceGating:
             gate=gate,
         )
         assert "bad" in report.errors
-        assert gate.marked == []
+        assert gate.marked == ["bad"]
 
     def test_a_source_without_a_cadence_always_runs_when_a_gate_is_present(
         self, tmp_path

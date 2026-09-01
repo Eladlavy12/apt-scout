@@ -13,6 +13,11 @@ pytest
 python -m apt_scout --repo . --dry-run
 ```
 
+> **Warning:** `--dry-run` skips notifications but still updates `state/`
+> (seen/notified/cadence/budget) — it is intended for seeding state before the
+> first real run. Copy `state/` aside first if you want a truly
+> side-effect-free rehearsal.
+
 ## Configuration
 
 - `config/filters.json` — alert thresholds

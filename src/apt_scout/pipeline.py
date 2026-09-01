@@ -83,9 +83,10 @@ def run_pipeline(
     When a `gate` (a `CadenceGate`) is supplied, a source whose cadence isn't
     due yet is skipped entirely before it is fetched: no health record, no
     error, and no effect on the portal-build decision - it simply didn't run
-    this cycle. `gate.mark_ran` is called for every source that *does* fetch
-    without raising (whether it returns listings or an error result), so a
-    persistently failing source is retried no more often than its cadence.
+    this cycle. `gate.mark_ran` is called for every source whose fetch was
+    attempted - whether it returned listings, returned an error result, or
+    raised - so a persistently failing source is retried no more often than
+    its cadence.
 
     A cadence-skipped source must not vanish from the portal, though: the
     portal is rebuilt from this run's listings only, so a 6h-cadence source
@@ -131,9 +132,12 @@ def run_pipeline(
             report.errors[adapter.name] = message
             health.record(adapter.name, ok=False, error=message)
             continue
-
-        if gate is not None:
-            gate.mark_ran(adapter.name, now)
+        finally:
+            # The fetch was attempted either way: a source that raises must
+            # not be retried faster than its cadence, exactly like one that
+            # returns an error result. Gate-skips never reach this point.
+            if gate is not None:
+                gate.mark_ran(adapter.name, now)
 
         if result.error:
             report.errors[adapter.name] = result.error
