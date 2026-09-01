@@ -271,6 +271,140 @@ class TestEnricherIsolation:
         assert report.errors["enrich:yad2:1"] == "ValueError: first"
 
 
+class TestCadenceGating:
+    class RefusingGate:
+        def is_due(self, source, cadence_hours, now):
+            return False
+
+        def mark_ran(self, source, now):
+            raise AssertionError("mark_ran must not be called on a gate-skip")
+
+    class RecordingGate:
+        def __init__(self, due=True):
+            self.due = due
+            self.marked = []
+
+        def is_due(self, source, cadence_hours, now):
+            return self.due
+
+        def mark_ran(self, source, now):
+            self.marked.append(source)
+
+    def test_a_gated_out_source_is_neither_fetched_nor_recorded(self, tmp_path):
+        store = StateStore(tmp_path)
+
+        class ExplodingIfFetched:
+            name = "onmap"
+
+            def fetch(self, fetcher, config, since):
+                raise AssertionError("fetch must not run when the source is gated out")
+
+        report = run_pipeline(
+            adapters=[ExplodingIfFetched()],
+            fetcher=None,
+            sources_config={"onmap": {"enabled": True, "cadence_hours": 1}},
+            filters=Filters(),
+            store=store,
+            notifier=RecordingNotifier(),
+            gate=self.RefusingGate(),
+        )
+
+        assert report.fetched == 0
+        assert report.errors == {}
+        assert HealthTracker(store).report() == {}
+
+    def test_a_gated_out_source_does_not_count_as_errored(self, tmp_path):
+        # A source that simply hasn't reached its cadence yet is not a
+        # failure; should_build_portal must not treat it as one.
+        store = StateStore(tmp_path)
+        report = run_pipeline(
+            adapters=[StubAdapter("onmap", [listing(source_id="1", source="onmap")])],
+            fetcher=None,
+            sources_config={"onmap": {"enabled": True, "cadence_hours": 1}},
+            filters=Filters(),
+            store=store,
+            notifier=RecordingNotifier(),
+            gate=self.RefusingGate(),
+        )
+        assert "onmap" not in report.errors
+
+    def test_a_due_source_runs_and_marks_ran_on_success(self, tmp_path):
+        gate = self.RecordingGate(due=True)
+        report = run_pipeline(
+            adapters=[StubAdapter("yad2", [listing()])],
+            fetcher=None,
+            sources_config={"yad2": {"enabled": True, "cadence_hours": 1}},
+            filters=Filters(),
+            store=StateStore(tmp_path),
+            notifier=RecordingNotifier(),
+            gate=gate,
+        )
+        assert report.fetched == 1
+        assert gate.marked == ["yad2"]
+
+    def test_an_error_result_still_marks_ran(self, tmp_path):
+        # A source that returns an error must not be retried faster than its
+        # cadence just because it failed.
+        gate = self.RecordingGate(due=True)
+        report = run_pipeline(
+            adapters=[StubAdapter("yad2", error="blocked")],
+            fetcher=None,
+            sources_config={"yad2": {"enabled": True, "cadence_hours": 1}},
+            filters=Filters(),
+            store=StateStore(tmp_path),
+            notifier=RecordingNotifier(),
+            gate=gate,
+        )
+        assert "yad2" in report.errors
+        assert gate.marked == ["yad2"]
+
+    def test_a_raised_exception_does_not_mark_ran(self, tmp_path):
+        class Exploding:
+            name = "bad"
+
+            def fetch(self, fetcher, config, since):
+                raise RuntimeError("kaboom")
+
+        gate = self.RecordingGate(due=True)
+        report = run_pipeline(
+            adapters=[Exploding()],
+            fetcher=None,
+            sources_config={"bad": {"enabled": True, "cadence_hours": 1}},
+            filters=Filters(),
+            store=StateStore(tmp_path),
+            notifier=RecordingNotifier(),
+            gate=gate,
+        )
+        assert "bad" in report.errors
+        assert gate.marked == []
+
+    def test_a_source_without_a_cadence_always_runs_when_a_gate_is_present(
+        self, tmp_path
+    ):
+        gate = self.RecordingGate(due=False)
+        report = run_pipeline(
+            adapters=[StubAdapter("yad2", [listing()])],
+            fetcher=None,
+            sources_config={"yad2": {"enabled": True}},
+            filters=Filters(),
+            store=StateStore(tmp_path),
+            notifier=RecordingNotifier(),
+            gate=gate,
+        )
+        assert report.fetched == 1
+
+    def test_no_gate_means_no_gating_at_all(self, tmp_path):
+        report = run_pipeline(
+            adapters=[StubAdapter("yad2", [listing()])],
+            fetcher=None,
+            sources_config={"yad2": {"enabled": True, "cadence_hours": 1}},
+            filters=Filters(),
+            store=StateStore(tmp_path),
+            notifier=RecordingNotifier(),
+        )
+        assert report.fetched == 1
+
+
 class TestEnrichment:
     def test_enrichers_run_before_filtering(self, tmp_path):
         # A listing 40 minutes away must be rejected, which can only happen if

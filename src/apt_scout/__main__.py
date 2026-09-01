@@ -9,6 +9,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from .adapters.homeless import HomelessAdapter
+from .adapters.komo import KomoAdapter
+from .adapters.onmap import OnmapAdapter
+from .adapters.prog import ProgAdapter
 from .adapters.yad2 import Yad2Adapter
 from .enrich.pipeline_enrichers import build_enrichers
 from .fetch import Fetcher, HttpTransport
@@ -18,7 +22,10 @@ from .notify.commands import process_commands
 from .notify.telegram import TelegramNotifier
 from .pipeline import RunReport, run_pipeline
 from .portal.builder import build_portal
+from .scheduler import CadenceGate
 from .state import StateStore
+
+PROG_SEEN_PREFIX = "prog:"
 
 
 class DryRunNotifier:
@@ -58,12 +65,25 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
 
     # The fetch window follows the alert filters (with a margin), so a
     # threshold changed over Telegram widens what is fetched on the next run
-    # instead of being clipped by a stale sources.json.
-    yad2 = sources_config.get("yad2")
-    if yad2 is not None:
-        yad2["price_min"] = max(0, filters.min_price - 500)
-        yad2["price_max"] = filters.max_price + 500
-        yad2["rooms_min"] = filters.min_rooms
+    # instead of being clipped by a stale sources.json. Applies to every
+    # source that declares "follows_filters": true (yad2, onmap, komo);
+    # sources with no such price/rooms params (homeless, prog) don't.
+    for config in sources_config.values():
+        if config.get("follows_filters"):
+            config["price_min"] = max(0, filters.min_price - 500)
+            config["price_max"] = filters.max_price + 500
+            config["rooms_min"] = filters.min_rooms
+
+    # prog has no query params to narrow its board by price/rooms, so
+    # instead it skips re-fetching detail pages for listings we've already
+    # recorded (bare ids, without the "source:" prefix state uses).
+    prog = sources_config.get("prog")
+    if prog is not None:
+        prog["skip_ids"] = sorted(
+            seen_id[len(PROG_SEEN_PREFIX) :]
+            for seen_id in store.seen_ids()
+            if seen_id.startswith(PROG_SEEN_PREFIX)
+        )
 
     if dry_run:
         notifier: Any = DryRunNotifier()
@@ -93,7 +113,13 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
         store=store,
         notifier=notifier,
         fetcher=fetcher,
-        adapters=[Yad2Adapter()],
+        adapters=[
+            Yad2Adapter(),
+            OnmapAdapter(),
+            KomoAdapter(),
+            HomelessAdapter(),
+            ProgAdapter(),
+        ],
         enrichers=build_enrichers(store, salt=salt),
         chat_id=env.get("TELEGRAM_CHAT_ID"),
     )
@@ -176,6 +202,7 @@ def main(argv: list[str] | None = None) -> int:
         store=runtime.store,
         notifier=runtime.notifier,
         enrichers=runtime.enrichers,
+        gate=CadenceGate(runtime.store),
     )
 
     if not args.dry_run:

@@ -32,12 +32,20 @@ def run_pipeline(
     notifier: Any,
     enrichers: list[Enricher] | None = None,
     now: datetime | None = None,
+    gate: Any | None = None,
 ) -> RunReport:
     """Fetch, enrich, filter, and notify for one scheduled run.
 
     Every adapter is isolated: a source that fails or raises is recorded and
     skipped, never allowed to end the run. A run in which one source breaks is
     a degraded success, not a failure.
+
+    When a `gate` (a `CadenceGate`) is supplied, a source whose cadence isn't
+    due yet is skipped entirely before it is fetched: no health record, no
+    error, and no effect on the portal-build decision - it simply didn't run
+    this cycle. `gate.mark_ran` is called for every source that *does* fetch
+    without raising (whether it returns listings or an error result), so a
+    persistently failing source is retried no more often than its cadence.
     """
     now = now or datetime.now(timezone.utc)
     enrichers = enrichers or []
@@ -49,6 +57,12 @@ def run_pipeline(
         config = sources_config.get(adapter.name, {})
         if not config.get("enabled", True):
             continue
+
+        cadence_hours = config.get("cadence_hours")
+        if gate is not None and cadence_hours:
+            if not gate.is_due(adapter.name, cadence_hours, now):
+                continue
+
         try:
             result = adapter.fetch(fetcher, config, since=None)
         except Exception as exc:  # noqa: BLE001 - isolation is the whole point
@@ -56,6 +70,9 @@ def run_pipeline(
             report.errors[adapter.name] = message
             health.record(adapter.name, ok=False, error=message)
             continue
+
+        if gate is not None:
+            gate.mark_ran(adapter.name, now)
 
         if result.error:
             report.errors[adapter.name] = result.error
