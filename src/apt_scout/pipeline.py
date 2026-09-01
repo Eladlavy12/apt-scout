@@ -171,6 +171,15 @@ def run_pipeline(
 
         member_ids = [member.stable_id() for member in cluster.members]
         if any(member_id in already_notified for member_id in member_ids):
+            # Suppression must self-heal the whole cluster's notified state,
+            # not just the member id that happened to trigger it - otherwise
+            # once the originally-notified source's listing expires and
+            # drops out of future fetches, a surviving member forms a fresh,
+            # unsuppressed cluster and fires a duplicate alert.
+            unrecorded = [mid for mid in member_ids if mid not in already_notified]
+            if unrecorded:
+                store.mark_notified(unrecorded)
+                already_notified.update(unrecorded)
             continue
         candidates.append(cluster)
 

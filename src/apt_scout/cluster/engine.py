@@ -107,6 +107,9 @@ def _pool_canonical(ordered_members: list[Listing]) -> Listing:
         if field.name == "occupancy":
             values[field.name] = _pool_occupancy(ordered_members)
             continue
+        if field.name == "sources":
+            # Populated by the pipeline from cluster.sources, not pooled here.
+            continue
         value = None
         for member in ordered_members:
             candidate = getattr(member, field.name)

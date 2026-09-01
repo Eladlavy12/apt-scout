@@ -491,6 +491,65 @@ class TestClustering:
         assert report.notified == 0
         assert notifier.sent == []
 
+    def test_suppression_self_heals_the_whole_clusters_notified_state(
+        self, tmp_path
+    ):
+        # A cluster suppressed because one member (yad2) was already
+        # notified must still record the *other* member (fb) as notified.
+        # Otherwise, once the yad2 listing expires and drops out of future
+        # fetches, the surviving fb listing forms a fresh, unsuppressed
+        # cluster and fires a duplicate alert.
+        store = StateStore(tmp_path)
+        store.mark_notified(["yad2:p1"])
+
+        yad2_listing = listing(
+            source="yad2",
+            source_id="p1",
+            raw_text="דירה להשכרה, לפרטים 050-1234567",
+        )
+        fb_listing = listing(
+            source="fb_marketplace",
+            source_id="p2",
+            url="https://fb/p2",
+            raw_text="אותה דירה! התקשרו 050-1234567",
+        )
+
+        notifier = RecordingNotifier()
+        report = run_pipeline(
+            adapters=[
+                StubAdapter("yad2", [yad2_listing]),
+                StubAdapter("fb_marketplace", [fb_listing]),
+            ],
+            fetcher=None,
+            sources_config={
+                "yad2": {"enabled": True},
+                "fb_marketplace": {"enabled": True},
+            },
+            filters=Filters(),
+            store=store,
+            notifier=notifier,
+            cluster_salt="test-salt",
+        )
+
+        assert report.notified == 0
+        assert store.notified_ids() == {"yad2:p1", "fb_marketplace:p2"}
+
+        # Now the yad2 source stops re-posting (listing expired) and only
+        # fb still advertises it - the surviving member must stay suppressed.
+        second_notifier = RecordingNotifier()
+        second_report = run_pipeline(
+            adapters=[StubAdapter("fb_marketplace", [fb_listing])],
+            fetcher=None,
+            sources_config={"fb_marketplace": {"enabled": True}},
+            filters=Filters(),
+            store=store,
+            notifier=second_notifier,
+            cluster_salt="test-salt",
+        )
+
+        assert second_report.notified == 0
+        assert second_notifier.sent == []
+
 
 class TestFloodCap:
     def _singletons(self, count):
