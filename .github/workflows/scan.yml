@@ -3,7 +3,7 @@ name: scan
 # Hourly apartment scan: fetch, filter, alert, publish portal, commit state.
 on:
   schedule:
-    - cron: "5 * * * *"
+    - cron: "43 * * * *"
   workflow_dispatch:
 
 permissions:
