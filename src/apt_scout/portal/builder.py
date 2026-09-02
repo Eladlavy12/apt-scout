@@ -32,6 +32,7 @@ PUBLIC_FIELDS = (
     "distance_km",
     "photos",
     "occupancy",
+    "is_sublet",
     "sources",
 )
 

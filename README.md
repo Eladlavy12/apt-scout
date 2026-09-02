@@ -2,7 +2,8 @@
 
 Continuously scouts Tel Aviv rental listings, filters them by price, rooms,
 size, real driving time from a fixed centre point, and a 5 km straight-line
-cap from that same point, and alerts on Telegram.
+cap from that same point, and alerts on Telegram. Sublet and short-term ads
+are detected and excluded by default.
 
 Design: [`docs/superpowers/specs/2026-08-31-apt-scout-design.md`](docs/superpowers/specs/2026-08-31-apt-scout-design.md)
 
@@ -83,6 +84,7 @@ Message the bot; changes apply on the next hourly run and are committed to
 | `/km 5` | Set the maximum straight-line distance from the centre point (km) |
 | `/rooms 2` | Set the minimum room count |
 | `/size 50` | Set the minimum size in m² |
+| `/sublets on\|off` | Show (`on`) or hide (`off`, default) sublet/short-term ads |
 | `/pause` / `/resume` | Stop and restart alerts |
 | `/status` | Show the current thresholds |
 

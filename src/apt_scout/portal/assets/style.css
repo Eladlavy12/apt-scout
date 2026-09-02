@@ -132,6 +132,7 @@ header h1 { margin: 0 0 .25rem; font-size: 1.3rem; }
 
 .badge.new { background: var(--accent); border-color: var(--accent); color: #fff; }
 .badge.multi { background: var(--good); border-color: var(--good); color: #fff; }
+.badge.sublet { background: var(--bad); border-color: var(--bad); color: #fff; }
 
 #health {
   margin-top: 1.5rem;

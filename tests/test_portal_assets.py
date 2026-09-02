@@ -20,6 +20,7 @@ class TestHtml:
             "max-km",
             "include-no-price",
             "include-unsure",
+            "include-sublets",
         ):
             assert f'id="{control}"' in html, f"missing control {control}"
 
@@ -41,7 +42,15 @@ class TestJavaScript:
 
     def test_filters_on_every_criterion(self):
         js = (ASSETS / "app.js").read_text(encoding="utf-8")
-        for field in ("drive_minutes", "distance_km", "price", "rooms", "size_sqm", "occupancy"):
+        for field in (
+            "drive_minutes",
+            "distance_km",
+            "price",
+            "rooms",
+            "size_sqm",
+            "occupancy",
+            "is_sublet",
+        ):
             assert field in js, f"filter logic missing {field}"
 
     def test_persists_the_users_choices(self):
@@ -76,6 +85,28 @@ class TestDistanceControl:
     def test_card_shows_distance_when_known(self):
         js = (ASSETS / "app.js").read_text(encoding="utf-8")
         assert "📍" in js
+
+
+class TestSubletControl:
+    def test_html_has_the_include_sublets_toggle(self):
+        html = (ASSETS / "index.html").read_text(encoding="utf-8")
+        assert 'id="include-sublets"' in html
+
+    def test_js_uses_the_include_sublets_control(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        assert "include-sublets" in js
+
+    def test_js_maps_the_default_exclude_sublets(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        assert "exclude_sublets" in js
+
+    def test_card_shows_a_sublet_badge(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        assert "badge sublet" in js
+
+    def test_still_never_uses_innerhtml(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        assert "innerHTML" not in js
 
 
 class TestSortAndSources:

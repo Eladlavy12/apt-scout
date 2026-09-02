@@ -2,7 +2,7 @@
 
 const STORAGE_KEY = "apt-scout-filters";
 const CONTROLS = ["max-drive", "min-price", "max-price", "min-rooms", "min-size", "max-km"];
-const TOGGLES = ["include-no-price", "include-unsure"];
+const TOGGLES = ["include-no-price", "include-unsure", "include-sublets"];
 
 // Preference sort ranks by city desirability, then falls back to newest-first.
 const CITY_RANK = {
@@ -135,6 +135,8 @@ function matches(item, state) {
   if (item.occupancy === "roommates") return false;
   if (item.occupancy === "unsure" && !state["include-unsure"]) return false;
 
+  if (item.is_sublet && !state["include-sublets"]) return false;
+
   if (item.price === null) {
     if (!state["include-no-price"]) return false;
   } else if (item.price < state["min-price"] || item.price > state["max-price"]) {
@@ -194,6 +196,13 @@ function card(item) {
     badgeNew.className = "badge new";
     badgeNew.textContent = "חדש";
     body.appendChild(badgeNew);
+  }
+
+  if (item.is_sublet) {
+    const badgeSublet = document.createElement("span");
+    badgeSublet.className = "badge sublet";
+    badgeSublet.textContent = "סאבלט";
+    body.appendChild(badgeSublet);
   }
 
   const badgeSource = document.createElement("span");
@@ -338,6 +347,7 @@ function wire() {
       "max-km": defaults.max_distance_km,
       "include-no-price": defaults.include_price_missing,
       "include-unsure": defaults.include_unsure_occupancy,
+      "include-sublets": !defaults.exclude_sublets,
       sort: "newest",
     });
     // Reset also re-enables every source chip.
@@ -366,6 +376,7 @@ fetch("data/listings.json")
       "max-km": defaults.max_distance_km,
       "include-no-price": defaults.include_price_missing,
       "include-unsure": defaults.include_unsure_occupancy,
+      "include-sublets": !defaults.exclude_sublets,
       sort: "newest",
       ...saved,
     });

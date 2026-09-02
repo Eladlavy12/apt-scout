@@ -60,6 +60,10 @@ class TestPublicDict:
         assert data["first_seen_at"] is None
 
 
+    def test_includes_is_sublet(self):
+        data = listing_to_public_dict(listing(is_sublet=True))
+        assert data["is_sublet"] is True
+
     def test_includes_sources(self):
         data = listing_to_public_dict(listing(sources=["yad2", "fb_marketplace"]))
         assert data["sources"] == ["yad2", "fb_marketplace"]
