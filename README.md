@@ -72,6 +72,26 @@ python -m apt_scout --repo . --dry-run --build-portal
 python -m http.server 8000 --directory site
 ```
 
+## Hourly trigger (external pinger)
+
+GitHub only runs the `schedule` cron on this free repo a few times a day, with
+delays of 20-40 minutes. To get a genuinely hourly scan, an external cron
+service calls the workflow-dispatch API once an hour:
+
+```
+POST https://api.github.com/repos/Eladlavy12/apt-scout/actions/workflows/scan.yml/dispatches
+Accept: application/vnd.github+json
+Authorization: Bearer <fine-grained PAT: repository apt-scout, Actions: Read and write>
+X-GitHub-Api-Version: 2022-11-28
+
+{"ref":"master"}
+```
+
+A successful call returns HTTP 204 with an empty body. Schedule it at an odd
+minute (e.g. :20). Runs that arrive inside a source's cadence window are
+gated and cost nothing, so overlapping triggers (pinger, GitHub cron, the PC
+feed task) are safe.
+
 ## Local yad2 feed (PC helper)
 
 yad2 blocks GitHub's servers at every fetch tier, but works fine from a real
