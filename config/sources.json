@@ -19,7 +19,7 @@
     "min_tier": "http",
     "cadence_hours": 1,
     "follows_filters": true,
-    "url_template": "https://phoenix.onmap.co.il/v1/properties/mixed_search?option=rent,rent-short&city=tel-aviv-yafo&min={price_min}&max={price_max}&rooms[]=2&rooms[]=3&rooms[]=4&rooms[]=5&$limit=50&$skip=0",
+    "url_template": "https://phoenix.onmap.co.il/v1/properties/mixed_search?option=rent,rent-short&city=tel-aviv-yafo&min={price_min}&max={price_max}&rooms[]=2&rooms[]=3&rooms[]=4&rooms[]=5&$limit=100&$skip=0",
     "price_min": 4000,
     "price_max": 5500,
     "max_results": 200
@@ -34,7 +34,7 @@
     "price_min": 4000,
     "price_max": 5500,
     "rooms_min": 2,
-    "max_pages": 2,
+    "max_pages": 4,
     "max_results": 200
   },
   "homeless": {
@@ -42,7 +42,11 @@
     "min_tier": "http",
     "cadence_hours": 1,
     "url_template": "https://www.homeless.co.il/rent/city={city}",
-    "cities": ["תל אביב", "גבעתיים", "רמת גן"],
+    "cities": [
+      "תל אביב",
+      "גבעתיים",
+      "רמת גן"
+    ],
     "max_results": 200
   },
   "prog": {

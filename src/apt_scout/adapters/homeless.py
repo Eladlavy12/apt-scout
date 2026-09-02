@@ -17,9 +17,9 @@ BASE_URL = "https://www.homeless.co.il"
 # within a run (rate limiting). A short pause between per-city fetches
 # keeps us under that threshold; it costs a couple of seconds across the
 # whole city list, which is negligible next to an hourly cadence.
-# 3s between city fetches: 1s still tripped homeless.co.il's rate limit on
+# 8s between city fetches: 1s and 3s still tripped homeless.co.il's rate limit on
 # the third rapid request from GitHub runners (CI check, 2026-09-01).
-_CITY_DELAY_SECONDS = 3.0
+_CITY_DELAY_SECONDS = 8.0
 
 # Column keys, in the fixed order they appear in the results table (both the
 # header row's `<th orderfield=...>` attributes and each data row's `<td>`

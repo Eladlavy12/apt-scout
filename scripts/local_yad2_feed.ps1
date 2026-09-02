@@ -103,6 +103,14 @@ for ($attempt = 1; $attempt -le 3; $attempt++) {
 }
 
 if ($pushed) {
+    # GitHub throttles cron schedules on free repos to a few runs a day, so
+    # trigger the cloud scan explicitly whenever a fresh feed has been pushed.
+    try {
+        $kick = (& gh workflow run scan --repo Eladlavy12/apt-scout 2>&1 | Out-String).Trim()
+        Write-Log "cloud scan triggered: $kick"
+    } catch {
+        Write-Log "cloud scan trigger skipped: $($_.Exception.Message)"
+    }
     Write-Log "=== run end: success ==="
     exit 0
 } else {
