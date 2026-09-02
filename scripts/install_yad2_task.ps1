@@ -51,8 +51,7 @@ $Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument (
 # One trigger, anchored at today's :45, repeating every hour indefinitely.
 $StartBoundary = (Get-Date).Date.AddMinutes(45)
 $Trigger = New-ScheduledTaskTrigger -Once -At $StartBoundary `
-    -RepetitionInterval (New-TimeSpan -Hours 1) `
-    -RepetitionDuration ([TimeSpan]::MaxValue)
+    -RepetitionInterval (New-TimeSpan -Hours 1)
 
 $Settings = New-ScheduledTaskSettingsSet `
     -MultipleInstances IgnoreNew `
@@ -64,8 +63,19 @@ $Principal = New-ScheduledTaskPrincipal `
     -LogonType Interactive `
     -RunLevel Limited
 
-Register-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Trigger `
-    -Settings $Settings -Principal $Principal -Force | Out-Null
+try {
+
+    Register-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Trigger `
+
+        -Settings $Settings -Principal $Principal -Force -ErrorAction Stop | Out-Null
+
+} catch {
+
+    Write-Error "Task registration failed: $($_.Exception.Message)"
+
+    exit 1
+
+}
 
 Write-Host "Registered scheduled task '$TaskName': hourly at :45, while logged on."
 Write-Host "Log file: $env:LOCALAPPDATA\apt-scout\feed.log"
