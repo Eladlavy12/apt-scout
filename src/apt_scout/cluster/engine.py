@@ -98,14 +98,26 @@ def _pool_occupancy(ordered_members: list[Listing]) -> Occupancy:
     return Occupancy.UNSURE
 
 
+def _pool_sublet(ordered_members: list[Listing]) -> bool:
+    """Safety first, same as occupancy: any member flagged sublet wins.
+
+    ``is_sublet`` defaults to False, so "first non-None" would let a
+    top-priority False hide a lower-priority member's True detection - in
+    the worst case letting a sublet ad slip past the sublet filter. So: if
+    ANY member was flagged as a sublet, the cluster is a sublet, full stop.
+    """
+    return any(member.is_sublet for member in ordered_members)
+
+
 def _pool_canonical(ordered_members: list[Listing]) -> Listing:
     """Build a synthetic Listing whose fields come from the first (highest
     priority) member that has a non-None value for that field.
 
-    ``photos`` and ``occupancy`` never take the value None (they default to
-    ``[]`` / ``Occupancy.UNSURE``), so "first non-None" can't distinguish
-    "unset" from "explicitly this value" for them - they get dedicated
-    pooling rules instead. See _pool_photos and _pool_occupancy.
+    ``photos``, ``occupancy``, and ``is_sublet`` never take the value None
+    (they default to ``[]`` / ``Occupancy.UNSURE`` / ``False``), so "first
+    non-None" can't distinguish "unset" from "explicitly this value" for
+    them - they get dedicated pooling rules instead. See _pool_photos,
+    _pool_occupancy, and _pool_sublet.
     """
     values: dict[str, object] = {}
     for field in dataclasses.fields(Listing):
@@ -114,6 +126,9 @@ def _pool_canonical(ordered_members: list[Listing]) -> Listing:
             continue
         if field.name == "occupancy":
             values[field.name] = _pool_occupancy(ordered_members)
+            continue
+        if field.name == "is_sublet":
+            values[field.name] = _pool_sublet(ordered_members)
             continue
         if field.name == "sources":
             # Populated by the pipeline from cluster.sources, not pooled here.

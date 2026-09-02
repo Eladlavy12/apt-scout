@@ -13,6 +13,7 @@ from .distance import distance_from_centre_km
 from .drivetime import DriveTimeCalculator
 from .geocode import Geocoder
 from .occupancy import classify_occupancy
+from .sublet import is_sublet_text
 
 Enricher = Callable[[Listing], Listing]
 
@@ -41,6 +42,18 @@ def _classify(listing: Listing) -> Listing:
     if listing.occupancy is Occupancy.UNSURE:
         text = " ".join(filter(None, [listing.title, listing.raw_text]))
         listing.occupancy = classify_occupancy(text)
+    return listing
+
+
+def _flag_sublet(listing: Listing) -> Listing:
+    """Detect sublet/short-term ads from text, but only to set the flag.
+
+    An adapter may one day recognise a sublet from structured data before
+    text ever runs; this step must never clear that, only confirm it.
+    """
+    if not listing.is_sublet:
+        text = " ".join(filter(None, [listing.title, listing.raw_text]))
+        listing.is_sublet = is_sublet_text(text)
     return listing
 
 
@@ -104,6 +117,7 @@ def build_enrichers(
     return [
         _fill_from_text,
         _classify,
+        _flag_sublet,
         _make_phone_hasher(salt),
         _make_geocoder_step(geocoder),
         _add_distance,

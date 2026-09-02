@@ -316,6 +316,42 @@ class TestScenario13PoolingOccupancy:
         assert clusters[0].canonical.occupancy == Occupancy.UNSURE
 
 
+class TestScenario17PoolingSublet:
+    def test_sublet_from_lower_priority_member_wins_over_top_priority_false(self):
+        yad2 = make_listing(
+            source="yad2",
+            source_id="y17",
+            is_sublet=False,
+            raw_text="לפרטים 050-1230010",
+        )
+        komo = make_listing(
+            source="komo",
+            source_id="k17",
+            is_sublet=True,
+            raw_text="התקשרו 050-1230010",
+        )
+        clusters = cluster_of([yad2, komo])
+        assert len(clusters) == 1
+        assert clusters[0].canonical.is_sublet is True
+
+    def test_no_member_is_a_sublet_canonical_is_false(self):
+        yad2 = make_listing(
+            source="yad2",
+            source_id="y17b",
+            is_sublet=False,
+            raw_text="לפרטים 050-1230011",
+        )
+        fb = make_listing(
+            source="fb_marketplace",
+            source_id="f17b",
+            is_sublet=False,
+            raw_text="התקשרו 050-1230011",
+        )
+        clusters = cluster_of([yad2, fb])
+        assert len(clusters) == 1
+        assert clusters[0].canonical.is_sublet is False
+
+
 class TestScenario14SourcesDedup:
     def test_two_yad2_members_and_one_fb_member_dedupe_sources(self):
         yad2_a = make_listing(

@@ -119,6 +119,22 @@ class TestOccupancy:
         assert result.occupancy is Occupancy.WHOLE
 
 
+class TestSubletFlag:
+    def test_flags_a_sublet_from_its_text(self, tmp_path):
+        result = enrich(base(raw_text="דירה לסאבלט לחודשיים"), tmp_path)
+        assert result.is_sublet is True
+
+    def test_leaves_an_ordinary_listing_unflagged(self, tmp_path):
+        result = enrich(base(raw_text="דירה 3 חדרים להשכרה"), tmp_path)
+        assert result.is_sublet is False
+
+    def test_never_clears_a_flag_the_adapter_already_set(self, tmp_path):
+        result = enrich(
+            base(raw_text="דירה 3 חדרים להשכרה", is_sublet=True), tmp_path
+        )
+        assert result.is_sublet is True
+
+
 class TestPhoneHandling:
     def test_stores_a_hash_never_the_number(self, tmp_path):
         result = enrich(base(raw_text="לפרטים 050-1234567"), tmp_path)

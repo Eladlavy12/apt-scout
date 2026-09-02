@@ -44,6 +44,7 @@ class Listing:
     phone_hash: str | None = None
 
     occupancy: Occupancy = Occupancy.UNSURE
+    is_sublet: bool = False
 
     posted_at: datetime | None = None
     first_seen_at: datetime | None = None
