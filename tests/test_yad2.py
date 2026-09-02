@@ -1,4 +1,5 @@
 import json
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import apt_scout.adapters.yad2 as yad2_module
@@ -6,6 +7,7 @@ from apt_scout.adapters.base import AdapterResult
 from apt_scout.adapters.yad2 import Yad2Adapter, parse_yad2_payload
 from apt_scout.fetch import FetchError, FetchResult
 from apt_scout.models import Occupancy
+from apt_scout.serialise import serialise_listing
 
 FIXTURE = Path(__file__).parent / "fixtures" / "yad2_search.json"
 
@@ -219,3 +221,120 @@ class TestBrowserFallback:
         assert called == []
         assert result.error is None
         assert len(result.listings) == 1
+
+
+class TestLocalFeed:
+    def _write_feed(self, tmp_path, fetched_at, listings=None):
+        feed_dir = tmp_path / "state" / "feeds"
+        feed_dir.mkdir(parents=True, exist_ok=True)
+        listings = listings if listings is not None else parse_yad2_payload(sample_payload())
+        (feed_dir / "yad2.json").write_text(
+            json.dumps(
+                {
+                    "source": "yad2",
+                    "fetched_at": fetched_at,
+                    "listings": [serialise_listing(item) for item in listings],
+                }
+            ),
+            encoding="utf-8",
+        )
+
+    def _config(self, tmp_path, **overrides):
+        config = {
+            "url_template": "https://gw.yad2.co.il/x",
+            "min_tier": "http",
+            "repo_root": str(tmp_path),
+            "feed_file": "state/feeds/yad2.json",
+        }
+        config.update(overrides)
+        return config
+
+    def test_fresh_feed_is_used_without_touching_the_network(self, tmp_path):
+        fetched_at = datetime.now(timezone.utc).isoformat()
+        self._write_feed(tmp_path, fetched_at)
+        fetcher = FakeFetcher(text=json.dumps(sample_payload()))
+
+        result = Yad2Adapter().fetch(fetcher, self._config(tmp_path), since=None)
+
+        assert result.error is None
+        assert len(result.listings) == 1
+        assert result.detail == f"local feed from {fetched_at}"
+        assert fetcher.requested == []
+
+    def test_stale_feed_falls_back_to_the_network(self, tmp_path):
+        fetched_at = (datetime.now(timezone.utc) - timedelta(hours=7)).isoformat()
+        self._write_feed(tmp_path, fetched_at)
+        fetcher = FakeFetcher(text=json.dumps(sample_payload()))
+
+        result = Yad2Adapter().fetch(fetcher, self._config(tmp_path), since=None)
+
+        assert result.error is None
+        assert len(fetcher.requested) == 1
+        assert result.detail is None
+
+    def test_custom_max_age_is_honoured(self, tmp_path):
+        fetched_at = (datetime.now(timezone.utc) - timedelta(hours=2)).isoformat()
+        self._write_feed(tmp_path, fetched_at)
+        fetcher = FakeFetcher(text=json.dumps(sample_payload()))
+
+        result = Yad2Adapter().fetch(
+            fetcher, self._config(tmp_path, feed_max_age_hours=1), since=None
+        )
+
+        assert len(fetcher.requested) == 1
+
+        result = Yad2Adapter().fetch(
+            fetcher, self._config(tmp_path, feed_max_age_hours=3), since=None
+        )
+        assert len(result.listings) == 1
+        assert result.detail is not None
+
+    def test_corrupt_feed_falls_back_to_the_network(self, tmp_path):
+        feed_dir = tmp_path / "state" / "feeds"
+        feed_dir.mkdir(parents=True, exist_ok=True)
+        (feed_dir / "yad2.json").write_text("{not json", encoding="utf-8")
+        fetcher = FakeFetcher(text=json.dumps(sample_payload()))
+
+        result = Yad2Adapter().fetch(fetcher, self._config(tmp_path), since=None)
+
+        assert result.error is None
+        assert len(fetcher.requested) == 1
+
+    def test_missing_feed_falls_back_to_the_network(self, tmp_path):
+        fetcher = FakeFetcher(text=json.dumps(sample_payload()))
+
+        result = Yad2Adapter().fetch(fetcher, self._config(tmp_path), since=None)
+
+        assert result.error is None
+        assert len(fetcher.requested) == 1
+
+    def test_no_feed_file_configured_goes_straight_to_the_network(self, tmp_path):
+        fetcher = FakeFetcher(text=json.dumps(sample_payload()))
+        config = self._config(tmp_path)
+        del config["feed_file"]
+
+        result = Yad2Adapter().fetch(fetcher, config, since=None)
+
+        assert result.error is None
+        assert len(fetcher.requested) == 1
+
+    def test_max_results_still_applied_to_feed_listings(self, tmp_path):
+        payload = {
+            "data": {
+                "markers": [
+                    {"token": "aaa", "price": 5000},
+                    {"token": "bbb", "price": 5200},
+                ]
+            }
+        }
+        listings = parse_yad2_payload(payload)
+        fetched_at = datetime.now(timezone.utc).isoformat()
+        self._write_feed(tmp_path, fetched_at, listings=listings)
+        fetcher = FakeFetcher(text=json.dumps(sample_payload()))
+
+        result = Yad2Adapter().fetch(
+            fetcher, self._config(tmp_path, max_results=1), since=None
+        )
+
+        assert len(result.listings) == 1
+        assert fetcher.requested == []

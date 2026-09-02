@@ -35,6 +35,12 @@ class TestHtml:
         assert 'id="health"' in html
 
 
+class TestHealthDetail:
+    def test_renders_a_sources_detail_when_present(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        assert "entry.detail" in js
+
+
 class TestJavaScript:
     def test_fetches_the_data_file(self):
         js = (ASSETS / "app.js").read_text(encoding="utf-8")

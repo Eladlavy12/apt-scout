@@ -18,7 +18,9 @@ class HealthTracker:
         self._store = store
         self._data: dict = store.load(HEALTH, {})
 
-    def record(self, source: str, ok: bool, error: str | None = None) -> None:
+    def record(
+        self, source: str, ok: bool, error: str | None = None, detail: str | None = None
+    ) -> None:
         now = datetime.now(timezone.utc).isoformat()
         entry = self._data.setdefault(
             source,
@@ -27,16 +29,19 @@ class HealthTracker:
                 "last_failure": None,
                 "consecutive_failures": 0,
                 "last_error": None,
+                "detail": None,
             },
         )
         if ok:
             entry["last_success"] = now
             entry["consecutive_failures"] = 0
             entry["last_error"] = None
+            entry["detail"] = detail
         else:
             entry["last_failure"] = now
             entry["consecutive_failures"] += 1
             entry["last_error"] = error
+            entry["detail"] = None
         self._store.save(HEALTH, self._data)
 
     def report(self) -> dict:

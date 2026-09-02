@@ -44,6 +44,22 @@ class TestRuntimeConstruction:
         assert runtime.notifier.sent == [None]
 
 
+class TestRepoRootInjection:
+    def test_every_source_config_gets_the_repo_root(self, repo):
+        (repo / "config" / "sources.json").write_text(
+            json.dumps(
+                {
+                    "yad2": {"enabled": True},
+                    "homeless": {"enabled": True},
+                }
+            ),
+            encoding="utf-8",
+        )
+        runtime = build_runtime(repo, {}, dry_run=True)
+        assert runtime.sources_config["yad2"]["repo_root"] == str(repo)
+        assert runtime.sources_config["homeless"]["repo_root"] == str(repo)
+
+
 class TestFetchWindowFollowsFilters:
     def test_yad2_window_is_derived_from_the_filters_with_a_margin(self, repo):
         (repo / "config" / "filters.json").write_text(

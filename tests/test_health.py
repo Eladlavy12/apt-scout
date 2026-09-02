@@ -17,6 +17,23 @@ class TestRecording:
         assert entry["consecutive_failures"] == 1
         assert entry["last_error"] == "blocked"
 
+    def test_records_a_detail_on_success(self, tmp_path):
+        tracker = HealthTracker(StateStore(tmp_path))
+        tracker.record("yad2", ok=True, detail="local feed from 2026-09-02T18:45Z")
+        entry = tracker.report()["yad2"]
+        assert entry["detail"] == "local feed from 2026-09-02T18:45Z"
+
+    def test_detail_defaults_to_none(self, tmp_path):
+        tracker = HealthTracker(StateStore(tmp_path))
+        tracker.record("yad2", ok=True)
+        assert tracker.report()["yad2"]["detail"] is None
+
+    def test_a_failure_clears_the_previous_detail(self, tmp_path):
+        tracker = HealthTracker(StateStore(tmp_path))
+        tracker.record("yad2", ok=True, detail="local feed from 2026-09-02T18:45Z")
+        tracker.record("yad2", ok=False, error="blocked")
+        assert tracker.report()["yad2"]["detail"] is None
+
     def test_failures_accumulate(self, tmp_path):
         tracker = HealthTracker(StateStore(tmp_path))
         for _ in range(3):

@@ -1,12 +1,18 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from typing import Any
 
 from ..fetch_browser import sniff_json
 from ..models import Listing, Occupancy
+from ..serialise import deserialise_listing
 from .base import AdapterResult
+
+# How long a local feed file is trusted before a fetch falls back to the
+# network, when the source config doesn't override it.
+DEFAULT_FEED_MAX_AGE_HOURS = 6
 
 LISTING_URL = "https://www.yad2.co.il/realestate/item/{source_id}"
 
@@ -112,6 +118,58 @@ def parse_yad2_payload(payload: dict) -> list[Listing]:
 class Yad2Adapter:
     name = "yad2"
 
+    def _load_feed(self, config: dict) -> tuple[list[Listing], str] | None:
+        """Read `config["feed_file"]` if it is present and fresh enough.
+
+        The feed is produced by a PC-side job (yad2 blocks GitHub's IPs at
+        every tier, but works from a real Chrome on the user's machine) and
+        committed to the repo. Returns None for anything that should fall
+        back to the normal network fetch: no feed configured, the file is
+        missing, unreadable, or its `fetched_at` is too old.
+        """
+        feed_file = config.get("feed_file")
+        if not feed_file:
+            return None
+
+        repo_root = Path(config.get("repo_root", "."))
+        path = repo_root / feed_file
+        if not path.exists():
+            return None
+
+        try:
+            raw = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+            return None
+        if not isinstance(raw, dict):
+            return None
+
+        fetched_at_str = raw.get("fetched_at")
+        if not isinstance(fetched_at_str, str):
+            return None
+        try:
+            fetched_at = datetime.fromisoformat(fetched_at_str)
+        except ValueError:
+            return None
+        if fetched_at.tzinfo is None:
+            fetched_at = fetched_at.replace(tzinfo=timezone.utc)
+
+        max_age_hours = config.get("feed_max_age_hours", DEFAULT_FEED_MAX_AGE_HOURS)
+        if datetime.now(timezone.utc) - fetched_at > timedelta(hours=max_age_hours):
+            return None
+
+        entries = raw.get("listings")
+        if not isinstance(entries, list):
+            return None
+
+        listings: list[Listing] = []
+        for entry in entries:
+            try:
+                listings.append(deserialise_listing(entry))
+            except (TypeError, ValueError, KeyError):
+                continue  # one corrupt entry must not discard the whole feed
+
+        return listings, fetched_at_str
+
     def _browser_fallback(self, config: dict) -> tuple[dict | None, bool]:
         """Tier 2: drive a real browser through the search page and sniff the
         JSON it requests.
@@ -145,6 +203,18 @@ class Yad2Adapter:
             return None, True
 
     def fetch(self, fetcher, config: dict, since: datetime | None) -> AdapterResult:
+        feed = self._load_feed(config)
+        if feed is not None:
+            listings, fetched_at_str = feed
+            limit = config.get("max_results")
+            if limit:
+                listings = listings[:limit]
+            return AdapterResult(
+                source=self.name,
+                listings=listings,
+                detail=f"local feed from {fetched_at_str}",
+            )
+
         try:
             url = config["url_template"].format(
                 price_min=config.get("price_min", 0),

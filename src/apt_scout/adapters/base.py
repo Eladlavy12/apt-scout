@@ -19,6 +19,10 @@ class AdapterResult:
     source: str
     listings: list[Listing] = field(default_factory=list)
     error: str | None = None
+    # Informational, non-error context about how the fetch was satisfied
+    # (e.g. "local feed from 2026-09-02T18:45Z"). Surfaced in health so a
+    # feed-backed run is visibly distinct from a live one.
+    detail: str | None = None
 
     @property
     def ok(self) -> bool:

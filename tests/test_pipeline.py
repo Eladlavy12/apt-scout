@@ -21,10 +21,10 @@ def listing(source_id="1", **overrides) -> Listing:
 
 
 class StubAdapter:
-    def __init__(self, name, listings=None, error=None):
+    def __init__(self, name, listings=None, error=None, detail=None):
         self.name = name
         self._result = AdapterResult(
-            source=name, listings=listings or [], error=error
+            source=name, listings=listings or [], error=error, detail=detail
         )
 
     def fetch(self, fetcher, config, since):
@@ -134,6 +134,16 @@ class TestFailureIsolation:
         report = HealthTracker(store).report()
         assert report["yad2"]["consecutive_failures"] == 1
         assert report["madlan"]["consecutive_failures"] == 0
+
+    def test_an_adapters_detail_is_recorded_in_health(self, tmp_path):
+        store = StateStore(tmp_path)
+        run(
+            [StubAdapter("yad2", [listing()], detail="local feed from 2026-09-02T18:45Z")],
+            store,
+            RecordingNotifier(),
+        )
+        report = HealthTracker(store).report()
+        assert report["yad2"]["detail"] == "local feed from 2026-09-02T18:45Z"
 
 
 class TestSourceToggles:

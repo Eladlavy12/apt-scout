@@ -66,6 +66,11 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
     )
     store = StateStore(repo_root / "state")
 
+    # Some adapters (yad2's local feed) need to resolve a repo-relative path
+    # themselves, so every source config carries the repo root.
+    for config in sources_config.values():
+        config["repo_root"] = str(repo_root)
+
     # The fetch window follows the alert filters (with a margin), so a
     # threshold changed over Telegram widens what is fetched on the next run
     # instead of being clipped by a stale sources.json. Applies to every

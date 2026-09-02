@@ -323,7 +323,8 @@ function renderHealth(health, generatedAt) {
     if (index > 0) nodes.push(document.createTextNode(" "));
     const span = document.createElement("span");
     span.className = broken ? "bad" : "good";
-    span.textContent = source + (broken ? " ✕" : " ✓");
+    span.textContent =
+      source + (broken ? " ✕" : " ✓") + (entry.detail ? ` (${entry.detail})` : "");
     nodes.push(span);
   });
   document.getElementById("health").replaceChildren(...nodes);
