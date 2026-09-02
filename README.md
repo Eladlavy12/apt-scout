@@ -87,7 +87,9 @@ X-GitHub-Api-Version: 2022-11-28
 {"ref":"master"}
 ```
 
-A successful call returns HTTP 204 with an empty body. Schedule it at an odd
+A successful call returns HTTP 204 with an empty body.
+Note: GitHub has deprecated API version `2022-11-28` (sunset 2028-03-10); update
+the `X-GitHub-Api-Version` header before then. Schedule it at an odd
 minute (e.g. :20). Runs that arrive inside a source's cadence window are
 gated and cost nothing, so overlapping triggers (pinger, GitHub cron, the PC
 feed task) are safe.
