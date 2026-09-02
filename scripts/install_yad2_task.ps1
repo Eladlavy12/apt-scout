@@ -63,11 +63,27 @@ $Principal = New-ScheduledTaskPrincipal `
     -LogonType Interactive `
     -RunLevel Limited
 
+$registration = @{
+
+    TaskName    = $TaskName
+
+    Action      = $Action
+
+    Trigger     = $Trigger
+
+    Settings    = $Settings
+
+    Principal   = $Principal
+
+    Force       = $true
+
+    ErrorAction = 'Stop'
+
+}
+
 try {
 
-    Register-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Trigger `
-
-        -Settings $Settings -Principal $Principal -Force -ErrorAction Stop | Out-Null
+    Register-ScheduledTask @registration | Out-Null
 
 } catch {
 
