@@ -8,17 +8,15 @@ from ..normalise.text import normalise_text
 # occupancy classifier, which answers a different question (whole apartment
 # vs. a room in one).
 #
-# "מסבלט" is listed as a prefix rather than every inflection spelled out: it
-# already covers מסבלט/מסבלטת/מסבלטים/מסבלטת as substrings.
+# Substring matching means the shortest stem suffices: "סבלט" already covers
+# מסבלט/מסבלטת/מסבלטים, and "טווח קצר" covers לטווח קצר.
 SUBLET_TERMS = [
     "סאבלט",
     "סבלט",
-    "מסבלט",
     "sublet",
     "sub-let",
     "sublease",
     "השכרת משנה",
-    "לטווח קצר",
     "לתקופה קצרה",
     "טווח קצר",
 ]
