@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import dataclasses
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -9,7 +8,8 @@ from typing import Any
 from .cluster.engine import Cluster, ClusterEngine
 from .filters import Filters
 from .health import HealthTracker
-from .models import Listing, Occupancy
+from .models import Listing
+from .serialise import deserialise_listing, serialise_listing
 from .state import StateStore
 
 Enricher = Callable[[Listing], Listing]
@@ -39,26 +39,6 @@ class RunReport:
     # succeeded, errored, or raised). A cadence-skipped source is NOT in here;
     # should_build_portal uses that to tell "nothing ran" from "nothing found".
     attempted: list[str] = field(default_factory=list)
-
-
-def _serialise_listing(listing: Listing) -> dict:
-    """Listing -> JSON-safe dict for the carry-forward cache."""
-    data = dataclasses.asdict(listing)
-    for key in ("posted_at", "first_seen_at"):
-        value = data[key]
-        data[key] = value.isoformat() if value is not None else None
-    data["occupancy"] = listing.occupancy.value
-    return data
-
-
-def _deserialise_listing(data: dict) -> Listing:
-    """Inverse of _serialise_listing; raises on a malformed cache entry."""
-    values = dict(data)
-    for key in ("posted_at", "first_seen_at"):
-        raw = values.get(key)
-        values[key] = datetime.fromisoformat(raw) if raw else None
-    values["occupancy"] = Occupancy(values.get("occupancy", Occupancy.UNSURE.value))
-    return Listing(**values)
 
 
 def run_pipeline(
@@ -144,7 +124,7 @@ def run_pipeline(
             health.record(adapter.name, ok=False, error=result.error)
             continue
 
-        health.record(adapter.name, ok=True)
+        health.record(adapter.name, ok=True, detail=result.detail)
         fetched_ok.add(adapter.name)
         collected.extend(result.listings)
 
@@ -196,7 +176,7 @@ def run_pipeline(
     cache = store.load(PORTAL_CACHE, {})
     for source in fetched_ok:
         cache[source] = [
-            _serialise_listing(item) for item in enriched if item.source == source
+            serialise_listing(item) for item in enriched if item.source == source
         ]
     store.save(PORTAL_CACHE, cache)
 
@@ -212,7 +192,7 @@ def run_pipeline(
             continue  # wrong-shaped cache value must not fail the run
         for raw in entries:
             try:
-                restored.append(_deserialise_listing(raw))
+                restored.append(deserialise_listing(raw))
             except (TypeError, ValueError, KeyError):
                 continue  # one corrupt cache entry must not fail the run
 
