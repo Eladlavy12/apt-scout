@@ -64,33 +64,19 @@ $Principal = New-ScheduledTaskPrincipal `
     -RunLevel Limited
 
 $registration = @{
-
     TaskName    = $TaskName
-
     Action      = $Action
-
     Trigger     = $Trigger
-
     Settings    = $Settings
-
     Principal   = $Principal
-
     Force       = $true
-
     ErrorAction = 'Stop'
-
 }
-
 try {
-
     Register-ScheduledTask @registration | Out-Null
-
 } catch {
-
     Write-Error "Task registration failed: $($_.Exception.Message)"
-
     exit 1
-
 }
 
 Write-Host "Registered scheduled task '$TaskName': hourly at :45, while logged on."
