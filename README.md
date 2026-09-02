@@ -112,6 +112,16 @@ $env:APT_SCOUT_BROWSER_HEADED = "1"
 .venv\Scripts\python.exe -m apt_scout.local_feed --repo .
 ```
 
+### Known limitations
+
+If pushes fail for many consecutive hours (e.g. the PC is offline, or a
+conflicting change lands upstream), `scripts\local_yad2_feed.ps1` self-heals:
+it detects a rebase left stuck by a failed `git pull --rebase` and runs
+`git rebase --abort` so the repo is never left mid-rebase for the next run.
+Nothing is lost in the meantime - the feed is always regenerated from
+scratch on each run, so the next successful push simply overwrites
+`state/feeds/yad2.json` with the latest listings.
+
 ## Changing alert thresholds from your phone
 
 Message the bot; changes apply on the next hourly run and are committed to

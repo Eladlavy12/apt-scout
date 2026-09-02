@@ -28,6 +28,19 @@ function Write-Log {
     Add-Content -Path $LogFile -Encoding utf8 -Value "$stamp  $Message"
 }
 
+# A failed "git pull --rebase" (or "git pull --rebase -X theirs") can leave
+# the repo sitting mid-rebase, which would block every future run's pull and
+# push until someone notices and cleans it up by hand. If either rebase
+# state directory is present, abort it so the next attempt starts clean.
+function Resolve-StuckRebase {
+    $rebaseMerge = Join-Path $RepoRoot ".git\rebase-merge"
+    $rebaseApply = Join-Path $RepoRoot ".git\rebase-apply"
+    if ((Test-Path $rebaseMerge) -or (Test-Path $rebaseApply)) {
+        $abortOutput = (git rebase --abort 2>&1 | Out-String).Trim()
+        Write-Log "detected a stuck rebase; ran git rebase --abort: $abortOutput"
+    }
+}
+
 Write-Log "=== run start ==="
 Set-Location $RepoRoot
 
@@ -40,6 +53,7 @@ if ($LASTEXITCODE -eq 0) {
     Write-Log "git pull ok: $pullOutput"
 } else {
     Write-Log "git pull failed (continuing anyway): $pullOutput"
+    Resolve-StuckRebase
 }
 
 # Enables the tier-2 browser fallback in adapters/yad2.py to use a real,
@@ -48,9 +62,16 @@ $env:APT_SCOUT_BROWSER_HEADED = "1"
 
 $PythonExe = Join-Path $RepoRoot ".venv\Scripts\python.exe"
 Write-Log "fetching yad2 via $PythonExe -m apt_scout.local_feed"
-$fetchOutput = (& $PythonExe -m apt_scout.local_feed --repo $RepoRoot 2>&1 | Out-String).Trim()
-$fetchExit = $LASTEXITCODE
-Write-Log "local_feed exit=$fetchExit output: $fetchOutput"
+$fetchOutput = ""
+$fetchExit = 1
+try {
+    $fetchOutput = (& $PythonExe -m apt_scout.local_feed --repo $RepoRoot 2>&1 | Out-String).Trim()
+    $fetchExit = $LASTEXITCODE
+    Write-Log "local_feed exit=$fetchExit output: $fetchOutput"
+} catch {
+    Write-Log "failed to run $PythonExe (missing venv/python?): $($_.Exception.Message)"
+    $fetchExit = 1
+}
 
 if ($fetchExit -ne 0) {
     Write-Log "fetch failed; leaving the existing feed file untouched. === run end (failure) ==="
@@ -78,6 +99,7 @@ for ($attempt = 1; $attempt -le 3; $attempt++) {
     Write-Log "git push failed on attempt $attempt : $pushOutput"
     $rebaseOutput = (git pull --rebase -X theirs 2>&1 | Out-String).Trim()
     Write-Log "git pull --rebase -X theirs (attempt $attempt): $rebaseOutput"
+    Resolve-StuckRebase
 }
 
 if ($pushed) {

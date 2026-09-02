@@ -142,6 +142,8 @@ class Yad2Adapter:
             return None
         if not isinstance(raw, dict):
             return None
+        if raw.get("source") != "yad2":
+            return None
 
         fetched_at_str = raw.get("fetched_at")
         if not isinstance(fetched_at_str, str):

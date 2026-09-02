@@ -300,6 +300,27 @@ class TestLocalFeed:
         assert result.error is None
         assert len(fetcher.requested) == 1
 
+    def test_feed_with_wrong_source_falls_back_to_the_network(self, tmp_path):
+        feed_dir = tmp_path / "state" / "feeds"
+        feed_dir.mkdir(parents=True, exist_ok=True)
+        listings = parse_yad2_payload(sample_payload())
+        (feed_dir / "yad2.json").write_text(
+            json.dumps(
+                {
+                    "source": "onmap",
+                    "fetched_at": datetime.now(timezone.utc).isoformat(),
+                    "listings": [serialise_listing(item) for item in listings],
+                }
+            ),
+            encoding="utf-8",
+        )
+        fetcher = FakeFetcher(text=json.dumps(sample_payload()))
+
+        result = Yad2Adapter().fetch(fetcher, self._config(tmp_path), since=None)
+
+        assert result.error is None
+        assert len(fetcher.requested) == 1
+
     def test_missing_feed_falls_back_to_the_network(self, tmp_path):
         fetcher = FakeFetcher(text=json.dumps(sample_payload()))
 
