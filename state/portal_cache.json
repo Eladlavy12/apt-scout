@@ -650,6 +650,32 @@
   ],
   "komo": [
     {
+      "address_text": "תל אביב יפו, קריית שלום, קמינסקה 6",
+      "city": "תל אביב יפו",
+      "distance_km": 3.21,
+      "drive_minutes": 7.9,
+      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
+      "floor": 1,
+      "is_sublet": false,
+      "lat": 32.04054,
+      "lon": 34.775744,
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33030645&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 4500,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 50.0,
+      "source": "komo",
+      "source_id": "4890313",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4890313"
+    },
+    {
       "address_text": "תל אביב יפו, כרם התימנים, אלנבי 14",
       "city": "תל אביב יפו",
       "distance_km": 4.0,
@@ -832,32 +858,6 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4902563"
     },
     {
-      "address_text": "תל אביב יפו, קריית שלום, קמינסקה 6",
-      "city": "תל אביב יפו",
-      "distance_km": 3.21,
-      "drive_minutes": 7.9,
-      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
-      "floor": 1,
-      "is_sublet": false,
-      "lat": 32.04054,
-      "lon": 34.775744,
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33000657&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 4500,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 50.0,
-      "source": "komo",
-      "source_id": "4890313",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4890313"
-    },
-    {
       "address_text": "תל אביב יפו, שכונת התקווה, ששון 11",
       "city": "תל אביב יפו",
       "distance_km": 1.41,
@@ -988,6 +988,32 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4888859"
     },
     {
+      "address_text": "תל אביב יפו, יפו ד', קהילת קנדה 3",
+      "city": "תל אביב יפו",
+      "distance_km": 5.45,
+      "drive_minutes": 10.8,
+      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
+      "floor": 1,
+      "is_sublet": false,
+      "lat": 32.033137,
+      "lon": 34.753333,
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=32918461&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 5500,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 65.0,
+      "source": "komo",
+      "source_id": "4906207",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4906207"
+    },
+    {
       "address_text": "תל אביב יפו, יד אליהו, עיינות 1",
       "city": "תל אביב יפו",
       "distance_km": 1.14,
@@ -1090,32 +1116,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4904801"
-    },
-    {
-      "address_text": "תל אביב יפו, נווה גולן, סהרון 16",
-      "city": "תל אביב יפו",
-      "distance_km": null,
-      "drive_minutes": null,
-      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
-      "floor": 2,
-      "is_sublet": false,
-      "lat": null,
-      "lon": null,
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=32471539&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 4000,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 50.0,
-      "source": "komo",
-      "source_id": "4906008",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4906008"
     },
     {
       "address_text": "תל אביב יפו, פלורנטין, אלוף בצלות 10",
