@@ -1,4 +1,5 @@
 {
+  "exclude_sublets": true,
   "include_price_missing": true,
   "include_unsure_occupancy": true,
   "max_distance_km": 5,

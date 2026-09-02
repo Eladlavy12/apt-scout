@@ -72,6 +72,14 @@ class TestFormatting:
         )
         assert "None" not in text
 
+    def test_marks_a_sublet_with_a_prefix_line(self):
+        text = format_listing(listing(is_sublet=True))
+        assert text.startswith("🔁 סאבלט")
+
+    def test_omits_the_sublet_line_for_an_ordinary_listing(self):
+        text = format_listing(listing(is_sublet=False))
+        assert "סאבלט" not in text
+
     def test_escapes_ampersands_in_the_url_for_html_mode(self):
         text = format_listing(listing(url="https://y/item?a=1&b=2"))
         assert "a=1&amp;b=2" in text

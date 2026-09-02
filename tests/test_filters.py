@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 from apt_scout.filters import Filters
 from apt_scout.models import Listing, Occupancy
@@ -14,6 +15,7 @@ def default_filters(**overrides) -> Filters:
         max_distance_km=5.0,
         include_price_missing=True,
         include_unsure_occupancy=True,
+        exclude_sublets=True,
     )
     base.update(overrides)
     return Filters(**base)
@@ -109,6 +111,30 @@ class TestOccupancy:
         assert default_filters().matches(unsure) is True
         strict = default_filters(include_unsure_occupancy=False)
         assert strict.matches(unsure) is False
+
+
+class TestSublets:
+    def test_rejects_sublets_by_default(self):
+        assert default_filters().matches(listing(is_sublet=True)) is False
+
+    def test_toggle_off_allows_sublets(self):
+        lenient = default_filters(exclude_sublets=False)
+        assert lenient.matches(listing(is_sublet=True)) is True
+
+    def test_non_sublet_is_unaffected(self):
+        assert default_filters().matches(listing(is_sublet=False)) is True
+
+
+class TestConfigFile:
+    def test_config_json_matches_defaults_and_is_sorted(self):
+        # Keeps config/filters.json honest: every default lives there, and
+        # the file's own key order is verified sorted (the repo's convention
+        # for this file) rather than just re-derived from json.dumps.
+        path = Path(__file__).resolve().parent.parent / "config" / "filters.json"
+        raw_text = path.read_text(encoding="utf-8")
+        raw = json.loads(raw_text)
+        assert raw == Filters().to_dict()
+        assert json.dumps(raw, sort_keys=True) == json.dumps(raw)
 
 
 class TestLoading:

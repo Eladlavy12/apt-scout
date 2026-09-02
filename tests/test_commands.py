@@ -50,6 +50,28 @@ class TestApplying:
         updated, _ = apply_command(Filters(), "size", ["60"])
         assert updated.min_size_sqm == 60
 
+    def test_sublets_on_shows_sublets(self):
+        updated, reply = apply_command(Filters(), "sublets", ["on"])
+        assert updated.exclude_sublets is False
+        assert "מוצגים" in reply
+
+    def test_sublets_off_hides_sublets(self):
+        updated, reply = apply_command(Filters(exclude_sublets=False), "sublets", ["off"])
+        assert updated.exclude_sublets is True
+        assert "מוסתרים" in reply
+
+    def test_sublets_bad_arguments_explain_the_usage_and_change_nothing(self):
+        original = Filters()
+        updated, reply = apply_command(original, "sublets", ["maybe"])
+        assert updated.to_dict() == original.to_dict()
+        assert "/sublets" in reply
+
+    def test_sublets_missing_arguments_explain_the_usage(self):
+        original = Filters()
+        updated, reply = apply_command(original, "sublets", [])
+        assert updated.to_dict() == original.to_dict()
+        assert "/sublets" in reply
+
     def test_pause_and_resume_toggle_alerting(self):
         paused, _ = apply_command(Filters(), "pause", [])
         assert paused.paused is True

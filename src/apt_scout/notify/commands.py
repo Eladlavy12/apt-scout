@@ -17,6 +17,7 @@ USAGE = (
     "/km <ק\"מ>\n"
     "/rooms <מינימום חדרים>\n"
     "/size <מינימום מ\"ר>\n"
+    "/sublets on|off\n"
     "/pause — עצירת התראות\n"
     "/resume — חידוש התראות\n"
     "/status — הצגת ההגדרות"
@@ -41,7 +42,8 @@ def _describe(filters: Filters) -> str:
         f"נסיעה: עד {filters.max_drive_minutes:g} דק'\n"
         f'מרחק: עד {filters.max_distance_km:g} ק"מ\n'
         f"חדרים: מ-{filters.min_rooms:g}\n"
-        f'שטח: מ-{filters.min_size_sqm:g} מ"ר'
+        f'שטח: מ-{filters.min_size_sqm:g} מ"ר\n'
+        f"סאבלטים: {'מוסתרים' if filters.exclude_sublets else 'מוצגים'}"
     )
 
 
@@ -92,6 +94,12 @@ def apply_command(
         if values is None:
             return filters, "שימוש: /km 5"
         updated = replace(filters, max_distance_km=values[0])
+        return updated, _describe(updated)
+
+    if command == "sublets":
+        if len(args) != 1 or args[0] not in ("on", "off"):
+            return filters, "שימוש: /sublets on|off"
+        updated = replace(filters, exclude_sublets=(args[0] == "off"))
         return updated, _describe(updated)
 
     if command == "rooms":

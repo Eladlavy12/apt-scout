@@ -14,7 +14,10 @@ def format_listing(listing: Listing) -> str:
     public portal, which must never carry contact information.
     """
     price = f"{listing.price:,} ₪" if listing.price is not None else "מחיר לא צוין"
-    lines = [f"<b>{price}</b>"]
+    lines = []
+    if listing.is_sublet:
+        lines.append("🔁 סאבלט")
+    lines.append(f"<b>{price}</b>")
 
     facts = []
     if listing.rooms is not None:

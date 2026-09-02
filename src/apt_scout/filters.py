@@ -24,6 +24,7 @@ class Filters:
     max_distance_km: float = 5.0
     include_price_missing: bool = True
     include_unsure_occupancy: bool = True
+    exclude_sublets: bool = True
     paused: bool = False
 
     @classmethod
@@ -48,6 +49,9 @@ class Filters:
         if listing.occupancy is Occupancy.ROOMMATES:
             return False
         if listing.occupancy is Occupancy.UNSURE and not self.include_unsure_occupancy:
+            return False
+
+        if listing.is_sublet and self.exclude_sublets:
             return False
 
         if listing.price is None:
