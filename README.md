@@ -29,7 +29,7 @@ python -m apt_scout --repo . --dry-run
 
 | Source | Status | Notes |
 |---|---|---|
-| yad2 | Enabled | Blocked from GitHub datacenter IPs at all tiers. Browser fallback attempts each run; fresh data currently only from local runs. |
+| yad2 | Enabled | Blocked from GitHub datacenter IPs at all tiers. Fed by a PC-side helper (see "Local yad2 feed" below) when its feed file is fresh; otherwise falls back to the (usually failing) direct fetch. |
 | onmap | Working | JSON API, runs on all tiers. |
 | komo | Working | HTML scraping, runs on all tiers. |
 | homeless | Working | Tel Aviv, Givatayim, Ramat Gan. Occasional rate-limiting on third city. |
@@ -70,6 +70,46 @@ Build it locally with:
 ```bash
 python -m apt_scout --repo . --dry-run --build-portal
 python -m http.server 8000 --directory site
+```
+
+## Local yad2 feed (PC helper)
+
+yad2 blocks GitHub's servers at every fetch tier, but works fine from a real
+Chrome on a residential connection. Rather than run the whole pipeline
+locally, a small helper on your PC does exactly one thing: fetch yad2 fresh
+through a real browser and commit the raw listings to
+`state/feeds/yad2.json`. The cloud's hourly run treats that file as yad2's
+input whenever it's fresh (within `feed_max_age_hours`, default 6h, see
+`config/sources.json`) and does everything else - enrich, cluster, alert,
+build the portal - as usual. No secrets need to live on the PC, and the
+local job owns exactly one file, so there is no state conflict with the
+cloud run.
+
+Install the scheduled task (runs hourly at :45, only while you're logged
+in - it needs a real desktop session for the browser):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\install_yad2_task.ps1
+```
+
+Check on it:
+
+```powershell
+Get-ScheduledTask -TaskName "APT-Scout yad2 feed"
+Get-Content "$env:LOCALAPPDATA\apt-scout\feed.log" -Tail 20
+```
+
+Remove it:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\install_yad2_task.ps1 -Unregister
+```
+
+You can also run the fetch by hand at any time:
+
+```powershell
+$env:APT_SCOUT_BROWSER_HEADED = "1"
+.venv\Scripts\python.exe -m apt_scout.local_feed --repo .
 ```
 
 ## Changing alert thresholds from your phone
