@@ -7,10 +7,10 @@
     "last_success": "2026-09-03T02:01:25.806525+00:00"
   },
   "homeless": {
-    "consecutive_failures": 18,
+    "consecutive_failures": 19,
     "detail": null,
     "last_error": "רמת גן: fetch failed: All tiers failed for https://www.homeless.co.il/rent/city=%D7%A8%D7%9E%D7%AA%20%D7%92%D7%9F (http: HTTP 403; curl: HTTP 403)",
-    "last_failure": "2026-09-03T03:01:13.125495+00:00",
+    "last_failure": "2026-09-03T04:01:22.292869+00:00",
     "last_success": "2026-09-01T17:23:44.215720+00:00"
   },
   "komo": {
@@ -18,14 +18,14 @@
     "detail": null,
     "last_error": null,
     "last_failure": null,
-    "last_success": "2026-09-03T03:00:56.765057+00:00"
+    "last_success": "2026-09-03T04:01:05.743730+00:00"
   },
   "onmap": {
     "consecutive_failures": 0,
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-01T15:51:49.120648+00:00",
-    "last_success": "2026-09-03T03:00:54.064665+00:00"
+    "last_success": "2026-09-03T04:01:02.566668+00:00"
   },
   "prog": {
     "consecutive_failures": 1,
@@ -34,10 +34,10 @@
     "last_success": "2026-09-01T15:58:42.284471+00:00"
   },
   "yad2": {
-    "consecutive_failures": 1,
+    "consecutive_failures": 2,
     "detail": null,
     "last_error": "response was not JSON (tier http): Expecting value: line 1 column 1 (char 0); browser fallback also failed",
-    "last_failure": "2026-09-03T03:00:53.474156+00:00",
+    "last_failure": "2026-09-03T04:01:01.960699+00:00",
     "last_success": "2026-09-03T02:00:33.482121+00:00"
   }
 }

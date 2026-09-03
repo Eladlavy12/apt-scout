@@ -650,6 +650,32 @@
   ],
   "komo": [
     {
+      "address_text": "תל אביב יפו, שכונת התקווה, לבלוב 4",
+      "city": "תל אביב יפו",
+      "distance_km": 1.18,
+      "drive_minutes": 5.2,
+      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
+      "floor": 1,
+      "is_sublet": false,
+      "lat": 32.052236,
+      "lon": 34.792614,
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=32917906&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 4500,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 40.0,
+      "source": "komo",
+      "source_id": "4906010",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4906010"
+    },
+    {
       "address_text": "תל אביב יפו, קריית שלום, קמינסקה 6",
       "city": "תל אביב יפו",
       "distance_km": 3.21,
@@ -700,32 +726,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4905616"
-    },
-    {
-      "address_text": "תל אביב יפו, נווה אליעזר, צוקרמן יצחק 5",
-      "city": "תל אביב יפו",
-      "distance_km": null,
-      "drive_minutes": null,
-      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
-      "floor": null,
-      "is_sublet": false,
-      "lat": null,
-      "lon": null,
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33025627&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 4200,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 57.0,
-      "source": "komo",
-      "source_id": "4865934",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4865934"
     },
     {
       "address_text": "תל אביב יפו, פלורנטין, המשביר 5",
@@ -780,30 +780,30 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4882936"
     },
     {
-      "address_text": "תל אביב יפו, שכונת התקווה, לבלוב 4",
+      "address_text": "תל אביב יפו, נווה אליעזר, צוקרמן יצחק 5",
       "city": "תל אביב יפו",
-      "distance_km": 1.18,
-      "drive_minutes": 5.2,
+      "distance_km": null,
+      "drive_minutes": null,
       "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
-      "floor": 1,
+      "floor": null,
       "is_sublet": false,
-      "lat": 32.052236,
-      "lon": 34.792614,
+      "lat": null,
+      "lon": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=32917906&luachNum=2&picSize=1"
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33025627&luachNum=2&picSize=1"
       ],
       "posted_at": null,
-      "price": 4500,
+      "price": 4200,
       "raw_text": null,
       "rooms": 2.0,
-      "size_sqm": 40.0,
+      "size_sqm": 57.0,
       "source": "komo",
-      "source_id": "4906010",
+      "source_id": "4865934",
       "sources": [],
       "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4906010"
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4865934"
     },
     {
       "address_text": "תל אביב יפו, יד אליהו, קלמר משה 2",
