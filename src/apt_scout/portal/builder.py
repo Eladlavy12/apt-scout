@@ -30,6 +30,7 @@ PUBLIC_FIELDS = (
     "lon",
     "drive_minutes",
     "distance_km",
+    "neighborhood",
     "photos",
     "occupancy",
     "is_sublet",

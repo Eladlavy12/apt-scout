@@ -39,6 +39,10 @@ class Listing:
     lon: float | None = None
     drive_minutes: float | None = None
     distance_km: float | None = None
+    # Knowledge-base id of the neighborhood (see data/neighborhoods.json),
+    # resolved from coordinates by the neighborhood enricher. None until
+    # resolved, or when the point lies outside every known boundary.
+    neighborhood: str | None = None
 
     photos: list[str] = field(default_factory=list)
     phone_hash: str | None = None

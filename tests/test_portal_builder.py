@@ -68,6 +68,9 @@ class TestPublicDict:
         data = listing_to_public_dict(listing(sources=["yad2", "fb_marketplace"]))
         assert data["sources"] == ["yad2", "fb_marketplace"]
 
+    def test_publishes_the_neighborhood_id(self):
+        assert listing_to_public_dict(listing(neighborhood="bavli"))["neighborhood"] == "bavli"
+
 
 class TestBuildPortal:
     def test_writes_the_data_file(self, tmp_path):
