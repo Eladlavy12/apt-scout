@@ -144,3 +144,17 @@ class TestPhoneHandling:
 
     def test_no_phone_leaves_the_hash_empty(self, tmp_path):
         assert enrich(base(raw_text="דירה יפה"), tmp_path).phone_hash is None
+
+
+class TestCityNormalisation:
+    def test_rewrites_a_variant_to_the_canonical_city(self, tmp_path):
+        result = enrich(base(city="Tel Aviv-Yafo", lat=32.07, lon=34.79), tmp_path)
+        assert result.city == "תל אביב יפו"
+
+    def test_leaves_an_unknown_city_untouched(self, tmp_path):
+        result = enrich(base(city="חולון", lat=32.02, lon=34.77), tmp_path)
+        assert result.city == "חולון"
+
+    def test_leaves_a_missing_city_missing(self, tmp_path):
+        result = enrich(base(city=None, lat=32.07, lon=34.79), tmp_path)
+        assert result.city is None
