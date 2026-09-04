@@ -645,6 +645,32 @@
   ],
   "komo": [
     {
+      "address_text": "תל אביב יפו, קריית שלום, בורמה 38",
+      "city": "תל אביב יפו",
+      "distance_km": 3.33,
+      "drive_minutes": 9.7,
+      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
+      "floor": 4,
+      "is_sublet": false,
+      "lat": 32.042061,
+      "lon": 34.773234,
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33044610&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 4500,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 60.0,
+      "source": "komo",
+      "source_id": "4882936",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4882936"
+    },
+    {
       "address_text": "תל אביב יפו, קריית שלום, קמינסקה 6",
       "city": "תל אביב יפו",
       "distance_km": 3.21,
@@ -721,32 +747,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4779844"
-    },
-    {
-      "address_text": "תל אביב יפו, קריית שלום, בורמה 38",
-      "city": "תל אביב יפו",
-      "distance_km": 3.33,
-      "drive_minutes": 9.7,
-      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
-      "floor": 4,
-      "is_sublet": false,
-      "lat": 32.042061,
-      "lon": 34.773234,
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33044610&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 4500,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 60.0,
-      "source": "komo",
-      "source_id": "4882936",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4882936"
     },
     {
       "address_text": "תל אביב יפו, שפירא, שד חכמי ישראל 70",
