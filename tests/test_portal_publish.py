@@ -1,4 +1,6 @@
 import json
+import shutil
+from pathlib import Path
 
 import pytest
 
@@ -60,6 +62,7 @@ def repo(tmp_path):
     (tmp_path / "config" / "sources.json").write_text(
         json.dumps({"yad2": {"enabled": False}}), encoding="utf-8"
     )
+    shutil.copytree(Path("data"), tmp_path / "data")
     return tmp_path
 
 

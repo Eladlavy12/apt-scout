@@ -119,6 +119,7 @@ def build_enrichers(
     salt: str,
     geocoder: Any = None,
     drive: Any = None,
+    neighborhood: Enricher | None = None,
 ) -> list[Enricher]:
     """Assemble the enrichment chain, in dependency order.
 
@@ -127,7 +128,7 @@ def build_enrichers(
     """
     geocoder = geocoder or Geocoder(store)
     drive = drive or DriveTimeCalculator(store)
-    return [
+    steps: list[Enricher] = [
         _fill_from_text,
         _normalise_city_step,
         _classify,
@@ -137,3 +138,6 @@ def build_enrichers(
         _add_distance,
         _make_drive_step(drive),
     ]
+    if neighborhood is not None:
+        steps.append(neighborhood)
+    return steps

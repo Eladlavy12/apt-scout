@@ -16,6 +16,7 @@ from .adapters.onmap import OnmapAdapter
 from .adapters.prog import ProgAdapter
 from .adapters.yad2 import Yad2Adapter
 from .budget import BudgetGuard
+from .enrich.neighborhood import NeighborhoodEnricher, load_neighborhood_data
 from .enrich.pipeline_enrichers import build_enrichers
 from .fetch import CurlTransport, Fetcher, HttpTransport
 from .filters import Filters
@@ -139,7 +140,11 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
             ProgAdapter(),
             FbMarketplaceAdapter(budget),
         ],
-        enrichers=build_enrichers(store, salt=salt),
+        enrichers=build_enrichers(
+            store,
+            salt=salt,
+            neighborhood=NeighborhoodEnricher(store, *load_neighborhood_data(repo_root / "data")),
+        ),
         cluster_salt=salt,
         chat_id=env.get("TELEGRAM_CHAT_ID"),
     )

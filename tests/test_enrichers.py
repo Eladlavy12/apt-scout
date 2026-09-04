@@ -146,6 +146,22 @@ class TestPhoneHandling:
         assert enrich(base(raw_text="דירה יפה"), tmp_path).phone_hash is None
 
 
+class TestNeighborhoodStep:
+    def test_runs_the_neighborhood_step_when_given(self, tmp_path):
+        def fake(listing):
+            listing.neighborhood = "fake"
+            return listing
+
+        enrichers = build_enrichers(StateStore(tmp_path), salt="s", geocoder=StubGeocoder(), drive=StubDrive(), neighborhood=fake)
+        result = base(lat=32.07, lon=34.79)
+        for step in enrichers:
+            result = step(result)
+        assert result.neighborhood == "fake"
+
+    def test_skips_the_neighborhood_step_when_absent(self, tmp_path):
+        assert enrich(base(lat=32.07, lon=34.79), tmp_path).neighborhood is None
+
+
 class TestCityNormalisation:
     def test_rewrites_a_variant_to_the_canonical_city(self, tmp_path):
         result = enrich(base(city="Tel Aviv-Yafo", lat=32.07, lon=34.79), tmp_path)
