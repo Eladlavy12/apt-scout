@@ -249,3 +249,103 @@ class TestProcessing:
         )
 
         assert result.max_drive_minutes == 25
+
+
+from apt_scout.neighborhoods.knowledge import KnowledgeBase
+
+
+def knowledge() -> KnowledgeBase:
+    def entry(names, city):
+        return {"names": names, "city": city, "reputation": "mixed", "summary": "s",
+                "pros": ["a", "b"], "cons": ["c", "d"], "tags": ["noisy"], "sources": ["x"]}
+
+    return KnowledgeBase.from_dict(
+        {"florentin": entry(["פלורנטין", "Florentin"], "תל אביב יפו"),
+         "hatikva": entry(["התקווה", "HaTikva"], "תל אביב יפו")}
+    )
+
+
+class TestCities:
+    def test_sets_the_city_list_from_hebrew_names(self):
+        updated, reply = apply_command(Filters(), "cities", ["תל", "אביב,", "גבעתיים"])
+        assert updated.cities == ["תל אביב יפו", "גבעתיים"]
+        assert "גבעתיים" in reply
+
+    def test_accepts_english_and_odd_spacing(self):
+        updated, _ = apply_command(Filters(), "cities", ["Ramat", "Gan", ",", "tel-aviv"])
+        assert updated.cities == ["רמת גן", "תל אביב יפו"]
+
+    def test_all_clears_the_restriction(self):
+        updated, reply = apply_command(Filters(), "cities", ["all"])
+        assert updated.cities == []
+        assert "כל הערים" in reply
+
+    def test_unknown_city_changes_nothing_and_lists_the_options(self):
+        original = Filters()
+        updated, reply = apply_command(original, "cities", ["חולון"])
+        assert updated.to_dict() == original.to_dict()
+        assert "רמת גן" in reply and "חולון" in reply
+
+    def test_no_arguments_explains_the_usage(self):
+        _, reply = apply_command(Filters(), "cities", [])
+        assert "/cities" in reply
+
+
+class TestExcludeInclude:
+    def test_exclude_adds_by_any_alias(self):
+        updated, reply = apply_command(Filters(), "exclude", ["florentin"], knowledge())
+        assert updated.excluded_neighborhoods == ["florentin"]
+        assert "פלורנטין" in reply
+
+    def test_exclude_is_idempotent(self):
+        once, _ = apply_command(Filters(), "exclude", ["פלורנטין"], knowledge())
+        twice, _ = apply_command(once, "exclude", ["פלורנטין"], knowledge())
+        assert twice.excluded_neighborhoods == ["florentin"]
+
+    def test_include_removes(self):
+        excluded = Filters(excluded_neighborhoods=["florentin", "hatikva"])
+        updated, _ = apply_command(excluded, "include", ["התקווה"], knowledge())
+        assert updated.excluded_neighborhoods == ["florentin"]
+
+    def test_unknown_name_changes_nothing(self):
+        original = Filters()
+        updated, reply = apply_command(original, "exclude", ["נרניה"], knowledge())
+        assert updated.to_dict() == original.to_dict()
+        assert "נרניה" in reply
+
+    def test_without_a_knowledge_base_the_command_is_refused(self):
+        original = Filters()
+        updated, reply = apply_command(original, "exclude", ["florentin"])
+        assert updated.to_dict() == original.to_dict()
+        assert reply
+
+
+class TestStatusShowsNeighborhoods:
+    def test_status_lists_cities_and_exclusions(self):
+        f = Filters(cities=["גבעתיים"], excluded_neighborhoods=["florentin"])
+        _, reply = apply_command(f, "status", [], knowledge())
+        assert "גבעתיים" in reply
+        assert "פלורנטין" in reply
+
+    def test_status_with_no_restriction(self):
+        _, reply = apply_command(Filters(cities=[]), "status", [])
+        assert "כל הערים" in reply
+
+
+def test_process_commands_forwards_the_knowledge_base(tmp_path):
+    class Notifier:
+        def __init__(self):
+            self.sent = []
+
+        def get_updates(self, offset=None):
+            return [{"update_id": 1, "message": {"chat": {"id": 7}, "text": "/exclude florentin"}}]
+
+        def send_text(self, text):
+            self.sent.append(text)
+            return True
+
+    store = StateStore(tmp_path)
+    path = tmp_path / "filters.json"
+    result = process_commands(Notifier(), store, Filters(), path, chat_id="7", knowledge=knowledge())
+    assert result.excluded_neighborhoods == ["florentin"]
+    assert json.loads(path.read_text(encoding="utf-8"))["excluded_neighborhoods"] == ["florentin"]

@@ -140,3 +140,26 @@ class TestSending:
 
         notifier = TelegramNotifier("T", "C", client=Boom())
         assert notifier.send_listing(listing()) is False
+
+
+from apt_scout.neighborhoods.knowledge import KnowledgeBase
+from apt_scout.notify.telegram import format_listing
+
+
+def test_format_adds_a_neighborhood_line_when_resolved():
+    from apt_scout.models import Listing
+
+    kb = KnowledgeBase.from_dict(
+        {"bavli": {"names": ["בבלי"], "city": "תל אביב יפו", "reputation": "sought_after", "summary": "s",
+                   "pros": ["a", "b"], "cons": ["c", "d"], "tags": ["quiet", "green", "expensive"], "sources": ["x"]}}
+    )
+    item = Listing(source="yad2", source_id="1", url="https://y/1", address_text="בבלי 5", neighborhood="bavli")
+    text = format_listing(item, kb)
+    assert "🏘 בבלי · מבוקשת מאוד · שקטה, ירוקה" in text
+
+
+def test_format_without_a_neighborhood_is_unchanged():
+    from apt_scout.models import Listing
+
+    item = Listing(source="yad2", source_id="1", url="https://y/1", address_text="בבלי 5")
+    assert "🏘" not in format_listing(item, None)

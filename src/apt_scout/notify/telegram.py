@@ -3,11 +3,12 @@ from __future__ import annotations
 import html
 
 from ..models import Listing
+from ..neighborhoods.labels import REPUTATION_LABELS, TAG_LABELS
 
 API_BASE = "https://api.telegram.org/bot{token}/{method}"
 
 
-def format_listing(listing: Listing) -> str:
+def format_listing(listing: Listing, knowledge=None) -> str:
     """Build the Telegram message body for one listing.
 
     Telegram is private to the user, so full detail is safe here — unlike the
@@ -34,6 +35,14 @@ def format_listing(listing: Listing) -> str:
     elif listing.city:
         lines.append(html.escape(listing.city))
 
+    profile = knowledge.get(listing.neighborhood) if (knowledge and listing.neighborhood) else None
+    if profile is not None:
+        parts = [html.escape(profile.display_name), REPUTATION_LABELS.get(profile.reputation, profile.reputation)]
+        tags = [TAG_LABELS.get(tag, tag) for tag in profile.tags[:2]]
+        if tags:
+            parts.append(", ".join(tags))
+        lines.append("🏘 " + " · ".join(parts))
+
     if listing.drive_minutes is not None:
         lines.append(f"🚗 {round(listing.drive_minutes)} דקות נסיעה")
     if listing.distance_km is not None:
@@ -48,7 +57,12 @@ class TelegramNotifier:
     """Sends listing alerts to a single Telegram chat."""
 
     def __init__(
-        self, token: str, chat_id: str, client: object | None = None, timeout: float = 15.0
+        self,
+        token: str,
+        chat_id: str,
+        client: object | None = None,
+        timeout: float = 15.0,
+        knowledge=None,
     ) -> None:
         self._token = token
         self._chat_id = chat_id
@@ -57,6 +71,7 @@ class TelegramNotifier:
 
             client = httpx.Client(timeout=timeout)
         self._client = client
+        self._knowledge = knowledge
 
     def _call(self, method: str, payload: dict) -> bool:
         url = API_BASE.format(token=self._token, method=method)
@@ -96,7 +111,7 @@ class TelegramNotifier:
         return response.json().get("result", [])
 
     def send_listing(self, listing: Listing) -> bool:
-        caption = format_listing(listing)
+        caption = format_listing(listing, self._knowledge)
         if listing.photos:
             sent = self._call(
                 "sendPhoto",
