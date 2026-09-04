@@ -137,18 +137,33 @@ Useful for reading the profiles: the budget is for **2+ rooms Israeli count**
   station serves Neve Shaanan / Shapira / HaTikva. (`magdilim-east`, `diytlv`)
 - Givatayim and Ramat Gan run limited Saturday bus service ("Sababus" in Ramat
   Gan since 2019); most of Tel Aviv does not. (`wiki-he`)
-- **`light_rail` tag policy (added 2026-09-05, review finding I4).** The tag
-  is applied only when an entry's own summary/pros/cons name a specific line
-  (הקו האדום / הסגול / הירוק or "רכבת קלה") that is described as **operating**
-  — not merely planned or under construction. A heavy-rail station (Israel
-  Railways) never earns this tag on its own. This is why `givatayim` and
-  `merkaz_hayeridim` lost the tag (no operating station named in their text;
-  `merkaz_hayeridim`'s "station" is the Israel Railways University stop), why
-  `neve_hen` and `new_north_south` lost it (Purple Line station "planned", and
-  a heavy-rail "central station" respectively), and why `florentin`, `aliot`,
-  `harishonim`, `ajami_and_givat_aliyah` and `givatayim_city` gained it (their
-  text now names the operating Red Line, or the operating Bialik/Abba Hillel
-  stations, explicitly).
+- **`light_rail` tag policy (added 2026-09-05, review finding I4; corrected
+  2026-09-05 follow-up review, findings N1a-N1d).** The tag is applied only
+  when an entry's own summary/pros/cons name a specific line (הקו האדום /
+  הסגול / הירוק or "רכבת קלה") that is described as **operating** — not
+  merely planned or under construction, and not merely "nearby" in general
+  terms. A heavy-rail station (Israel Railways) never earns this tag on its
+  own. This is why `givatayim` and `merkaz_hayeridim` lost the tag (no
+  operating station named in their text; `merkaz_hayeridim`'s "station" is
+  the Israel Railways University stop) and why `neve_hen` lost it (Purple
+  Line station "planned"). The follow-up review caught two more problems:
+  `aliot` had gained the tag from a vague "תחבורה ציבורית טובה וקרבה לרכבת
+  הקלה" pro that names no line or station, while its polygon sits ~1.2 km
+  from the nearest stop (Bialik) — the tag was removed and the pro rewritten
+  to an honest walking-distance claim; conversely `hashmonaim` and
+  `new_north_south` were missing the tag despite an operating station
+  actually sitting inside their polygons (Bialik, and Sha'ul HaMelech
+  respectively) — both were given the tag plus a pro naming the in-polygon
+  station explicitly. As of this fix the tag is carried by twelve entries,
+  each with a named operating station or line in its own text: `hashmonaim`,
+  `bursa` and `ramat_gan` (Bialik and/or Abba Hillel, in central Ramat Gan —
+  `hashmonaim`'s polygon contains the Bialik stop itself); `yahalom` and
+  `givatayim_city` (the Abba Hillel stop, ~900 m for `givatayim_city`);
+  `new_north_south` (the Sha'ul HaMelech stop, inside its polygon);
+  `harishonim` (near the Bursa, close to the Red Line); and `florentin`,
+  `ajami_and_givat_aliyah`, `northern_jaffa`, `tzahalon` and `tel_aviv_yafo`
+  (the Red Line running through Salame/Elifelet or Sderot Yerushalayim,
+  named explicitly in their text).
 
 ## Notes by neighborhood
 
@@ -212,9 +227,11 @@ Holocaust survivors and immigrants from Yemen and Egypt, and the area was
 briefly seen as a luxury neighborhood before being reclassified a workers'
 neighborhood in 1953 amid complaints of neglected sanitation and street
 lighting. Rehabilitated in the late 1970s; the Bulgarian quarter has been almost
-entirely replaced by dense high-rise. ~8,700 residents (2017). Named in the
-municipality's neighborhood-by-neighborhood renewal planning. (`wiki-he`,
-`rg-muni`)
+entirely replaced by dense high-rise. ~8,700 residents (2017). Presumably swept
+up in the citywide renewal push described in `nadlancenter-rg` (roughly a
+fifth of Israel's approved TAMA 38 projects sit in Ramat Gan) — this was not
+independently confirmed for Ramat Amidar specifically, so the profile treats
+it as inference rather than a documented fact. (`wiki-he`, `nadlancenter-rg`)
 
 **ramat_efal — רמת אפעל.** Far eastern Ramat Gan in the Ono valley, on the land
 of the dissolved Kibbutz Efal; developed from 1969 as villas and cottages, with
