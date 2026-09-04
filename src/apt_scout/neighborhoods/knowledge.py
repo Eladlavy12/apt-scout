@@ -107,7 +107,9 @@ class KnowledgeBase:
         self._by_alias: dict[str, list[Neighborhood]] = {}
         for item in entries.values():
             for name in item.names:
-                self._by_alias.setdefault(_alias_key(name), []).append(item)
+                key = _alias_key(name)
+                if key:
+                    self._by_alias.setdefault(key, []).append(item)
 
     @classmethod
     def from_dict(cls, raw: dict) -> "KnowledgeBase":

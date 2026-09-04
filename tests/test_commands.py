@@ -290,6 +290,11 @@ class TestCities:
         _, reply = apply_command(Filters(), "cities", [])
         assert "/cities" in reply
 
+    def test_unknown_city_is_html_escaped(self):
+        _, reply = apply_command(Filters(), "cities", ["<b"])
+        assert "&lt;b" in reply
+        assert "<b" not in reply
+
 
 class TestExcludeInclude:
     def test_exclude_adds_by_any_alias(self):
@@ -318,6 +323,29 @@ class TestExcludeInclude:
         updated, reply = apply_command(original, "exclude", ["florentin"])
         assert updated.to_dict() == original.to_dict()
         assert reply
+
+    def test_unknown_name_is_html_escaped(self):
+        # The Telegram send uses parse_mode=HTML; an unescaped "<b" in the
+        # reply is invalid HTML and Telegram silently rejects the message.
+        updated, reply = apply_command(Filters(), "exclude", ["<b"], knowledge())
+        assert updated.excluded_neighborhoods == []
+        assert "&lt;b" in reply
+        assert "<b" not in reply
+
+    def test_ambiguous_name_is_html_escaped(self):
+        ambiguous = KnowledgeBase.from_dict(
+            {
+                "a": {"names": ["<b"], "city": "תל אביב יפו", "reputation": "mixed", "summary": "s",
+                      "pros": ["a", "b"], "cons": ["c", "d"], "tags": ["noisy"], "sources": ["x"]},
+                "b": {"names": ["<b"], "city": "רמת גן", "reputation": "mixed", "summary": "s",
+                      "pros": ["a", "b"], "cons": ["c", "d"], "tags": ["noisy"], "sources": ["x"]},
+            }
+        )
+        updated, reply = apply_command(Filters(), "exclude", ["<b"], ambiguous)
+        assert updated.excluded_neighborhoods == []
+        # The user-typed name is escaped; the KB's own (curated) display
+        # names in the options list are not, by design.
+        assert reply.startswith("'&lt;b' לא חד-משמעי")
 
 
 class TestStatusShowsNeighborhoods:

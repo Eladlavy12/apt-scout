@@ -79,3 +79,12 @@ class TestKnowledgeBaseFile:
         base = KnowledgeBase.load(KB_PATH)
         for nid in ("orot", "florentin", "bavli", "givatayim", "tel_aviv_yafo", "ramat_gan"):
             assert nid in base, nid
+
+    def test_risky_aliases_do_not_false_match_ordinary_text(self):
+        # "City", "סיטי", "לב העיר" and bare "עליות" used to be aliases broad
+        # enough to hijack unrelated sentences (see final-review-fixes F1).
+        base = KnowledgeBase.load(KB_PATH)
+        assert base.match_in_text("Bright apartment in the City center", None) is None
+        assert base.match_in_text("New apartment, great city views", None) is None
+        assert base.match_in_text("דירה בלב העיר", None) is None
+        assert base.match_in_text("רחוב עליות הנוער", None) is None

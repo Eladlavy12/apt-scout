@@ -12,6 +12,12 @@ const CITY_RANK = {
   "רמת גן": 2,
 };
 
+// The canonical city set (see enrich.city.CANONICAL_CITIES). Distinct from
+// CITY_RANK, which also carries "תל אביב" purely so an un-normalised
+// listing still sorts sensibly; chip grouping must not treat that as its
+// own city or a stray "תל אביב" chip would appear next to "תל אביב יפו".
+const CANONICAL_CITIES = new Set(["תל אביב יפו", "גבעתיים", "רמת גן"]);
+
 let listings = [];
 let defaults = {};
 let map = null;
@@ -52,7 +58,7 @@ function itemSources(item) {
 }
 
 function cityKey(item) {
-  return item.city && CITY_RANK[item.city] !== undefined ? item.city : OTHER_CITY;
+  return item.city && CANONICAL_CITIES.has(item.city) ? item.city : OTHER_CITY;
 }
 
 function profileOf(item) {

@@ -84,10 +84,29 @@ class TestTextFallback:
         result = enricher(tmp_path)(listing(title="דירה מקסימה ברמת חן", city="רמת גן"))
         assert result.neighborhood == "hood"
 
-    def test_a_miss_without_coordinates_is_not_cached(self, tmp_path):
+    def test_a_text_hit_does_not_overwrite_the_source_city(self, tmp_path):
+        # A polygon can outrank a mislabelled border-street city, but a text
+        # guess must not: the source's own city stays put even though the
+        # matched neighborhood profile belongs to a different city.
+        result = enricher(tmp_path)(
+            listing(title="דירה מקסימה ברמת חן", city="תל אביב יפו")
+        )
+        assert result.neighborhood == "hood"
+        assert result.city == "תל אביב יפו"
+
+    def test_a_text_miss_is_not_cached(self, tmp_path):
         store = StateStore(tmp_path)
         step = NeighborhoodEnricher(store, index(), knowledge())
         assert step(listing(address_text="הרצל 1")).neighborhood is None
+        assert "yad2:1" not in store.load(CACHE, {})
+
+    def test_a_text_hit_is_not_cached_either(self, tmp_path):
+        # A text guess must not outrank geometry forever once coordinates
+        # arrive on a later run: the cache is consulted before the geometry
+        # branch, so caching a text hit would make it permanent.
+        store = StateStore(tmp_path)
+        step = NeighborhoodEnricher(store, index(), knowledge())
+        assert step(listing(address_text="שכונת אורות", city="תל אביב יפו")).neighborhood == "orot"
         assert "yad2:1" not in store.load(CACHE, {})
 
 

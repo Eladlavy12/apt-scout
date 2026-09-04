@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import html
 import json
 from dataclasses import replace
 from pathlib import Path
@@ -99,10 +100,13 @@ def _resolve_neighborhood(args: list[str], knowledge: KnowledgeBase | None) -> t
     matches = knowledge.find_by_name(name)
     if len(matches) == 1:
         return matches[0].id, ""
+    safe_name = html.escape(name)
     if not matches:
-        return None, f"לא מצאתי שכונה בשם '{name}'."
+        return None, f"לא מצאתי שכונה בשם '{safe_name}'."
+    # Display names and cities come from the curated knowledge base, not
+    # user input, so they are not escaped.
     options = ", ".join(f"{m.display_name} ({m.city})" for m in matches)
-    return None, f"'{name}' לא חד-משמעי: {options}. ציין את השם המלא."
+    return None, f"'{safe_name}' לא חד-משמעי: {options}. ציין את השם המלא."
 
 
 def apply_command(
@@ -173,8 +177,9 @@ def apply_command(
             return updated, _describe(updated, knowledge)
         canonical, unknown = _parse_cities(args)
         if unknown or not canonical:
+            bad = html.escape(", ".join(unknown) or " ".join(args))
             return filters, (
-                f"לא מזהה: {', '.join(unknown) or ' '.join(args)}. "
+                f"לא מזהה: {bad}. "
                 f"ערים אפשריות: {', '.join(CANONICAL_CITIES)}"
             )
         updated = replace(filters, cities=canonical)

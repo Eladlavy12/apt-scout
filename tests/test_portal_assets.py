@@ -144,6 +144,16 @@ class TestSortAndSources:
         for city in ("תל אביב", "גבעתיים", "רמת גן"):
             assert city in js, f"preference ranking missing {city}"
 
+    def test_city_key_uses_a_canonical_set_not_the_rank_table(self):
+        # CITY_RANK also carries "תל אביב" (a non-normalised spelling, kept
+        # only so it still sorts) alongside the real canonical "תל אביב
+        # יפו". If cityKey() keyed off CITY_RANK, an un-normalised listing
+        # would spawn a stray "תל אביב" chip instead of landing in "אחר".
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        match = re.search(r"function cityKey\(item\) \{(.*?)\n\}", js, re.S)
+        assert match, "cityKey() not found"
+        assert "CITY_RANK" not in match.group(1)
+
     def test_still_never_uses_innerhtml(self):
         js = (ASSETS / "app.js").read_text(encoding="utf-8")
         assert "innerHTML" not in js

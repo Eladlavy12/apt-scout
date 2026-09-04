@@ -4,7 +4,7 @@ import json
 from dataclasses import dataclass, field, fields
 from pathlib import Path
 
-from .enrich.city import CANONICAL_CITIES
+from .enrich.city import CANONICAL_CITIES, normalise_city
 from .models import Listing, Occupancy
 
 
@@ -84,7 +84,8 @@ class Filters:
         ):
             return False
 
-        if self.cities and listing.city is not None and listing.city not in self.cities:
+        city = normalise_city(listing.city) or listing.city
+        if self.cities and city is not None and city not in self.cities:
             return False
 
         if (

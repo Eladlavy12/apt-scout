@@ -107,6 +107,13 @@ class TestLookup:
         assert base.match_in_text("שכונת אורות", None) == "orot"
         assert base.match_in_text(None, None) is None
 
+    def test_a_punctuation_only_alias_does_not_match_everything(self):
+        # An alias made entirely of the noise characters _ALIAS_NOISE strips
+        # (hyphens, quotes, Hebrew geresh/gershayim) keys to "" once
+        # normalised, and an empty key would match the start of every text.
+        base = kb(weird=entry(names=["פלורנטין", "׳"], city="תל אביב יפו"))
+        assert base.match_in_text("רחוב הרצל 5, חולון", None) is None
+
 
 class TestPublicProjection:
     def test_strips_notes_and_sources(self):

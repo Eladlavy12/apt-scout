@@ -55,14 +55,16 @@ an overflow summary if that limit is exceeded.
 ## Neighborhoods
 
 Every listing is assigned a neighborhood by point-in-polygon against
-`data/neighborhoods.geojson` (OpenStreetMap `place=suburb` boundaries for
-Tel Aviv-Yafo, Givatayim and Ramat Gan, plus the city boundaries as a
-fallback). `data/neighborhoods.json` holds a hand-curated profile per
-neighborhood: a consensus reputation tier (`sought_after` / `solid` /
-`mixed` / `weak`), a summary, pros, cons and tags. Sources for each call are
-listed in `docs/neighborhoods-sources.md`. The profile appears on portal
-cards and as one line in Telegram alerts; it is opinion distilled from
-public guides, not a score, and the JSON is meant to be edited.
+`data/neighborhoods.geojson` (OpenStreetMap `place=suburb`/`neighbourhood`/
+`quarter` boundaries for Tel Aviv-Yafo, Givatayim and Ramat Gan, plus the
+city boundaries as a fallback). `data/neighborhoods.json` holds a
+hand-curated profile per neighborhood: a consensus reputation tier
+(`sought_after` / `solid` / `mixed` / `weak`), a summary, pros, cons and
+tags. Sources for each call are listed in `docs/neighborhoods-sources.md`.
+The profile appears on portal cards and as one line in Telegram alerts; it
+is opinion distilled from public guides, not a score, and the JSON is
+meant to be edited — a malformed `data/neighborhoods.json` fails the run
+loudly at startup, and `tests/test_neighborhood_data.py` validates it.
 
 Rebuild the boundaries with `scripts/build_neighborhoods_geojson.py`; every
 polygon must have a profile (a test enforces it).
@@ -167,6 +169,11 @@ scratch on each run, so the next successful push simply overwrites
 
 Message the bot; changes apply on the next hourly run and are committed to
 `config/filters.json`.
+
+Alerts are restricted to Tel Aviv-Yafo, Givatayim and Ramat Gan by
+default — the committed `config/filters.json` ships that restriction. This
+drops listings that used to be eligible (e.g. Holon, Bat Yam); send
+`/cities all` to lift it.
 
 | Command | Effect |
 |---|---|

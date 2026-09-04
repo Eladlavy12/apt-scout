@@ -38,10 +38,9 @@
   },
   "givatayim_city": {
     "names": [
-      "סיטי",
       "מתחם הסיטי",
       "Givatayim City",
-      "City"
+      "סיטי גבעתיים"
     ],
     "city": "גבעתיים",
     "reputation": "mixed",
@@ -106,7 +105,6 @@
   },
   "aliot": {
     "names": [
-      "עליות",
       "שכונת עליות",
       "Aliot",
       "Aliyot"
@@ -1258,7 +1256,6 @@
   "lev_tel_aviv": {
     "names": [
       "לב תל אביב",
-      "לב העיר",
       "לב תל-אביב",
       "Lev Tel Aviv",
       "Lev Hair"

@@ -177,6 +177,13 @@ class TestCities:
     def test_empty_list_means_no_restriction(self):
         assert default_filters(cities=[]).matches(listing(city="חולון"))
 
+    def test_normalises_a_carry_forward_listings_raw_city_spelling(self):
+        # Restored listings from state/portal_cache.json are never enriched,
+        # so their raw city strings must still pass the check.
+        assert default_filters().matches(listing(city="Tel Aviv-Yafo"))
+        assert default_filters().matches(listing(city="תל אביב - יפו"))
+        assert default_filters().matches(listing(city="תל אביב, TA"))
+
 
 class TestExcludedNeighborhoods:
     def test_defaults_to_none_excluded(self):
