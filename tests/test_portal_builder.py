@@ -143,3 +143,34 @@ class TestBuildPortal:
         build_portal(tmp_path, [older, newer], {}, Filters(), NOW)
         data = json.loads((tmp_path / "data" / "listings.json").read_text("utf-8"))
         assert data["listings"][0]["source_id"] == "new"
+
+
+from apt_scout.neighborhoods.knowledge import KnowledgeBase
+
+
+def knowledge():
+    return KnowledgeBase.from_dict(
+        {"bavli": {"names": ["בבלי"], "city": "תל אביב יפו", "reputation": "sought_after", "summary": "s",
+                   "pros": ["a", "b"], "cons": ["c", "d"], "tags": ["quiet"], "sources": ["x"],
+                   "notes": "private"}}
+    )
+
+
+class TestNeighborhoodsFile:
+    def test_publishes_profiles_without_notes_or_sources(self, tmp_path):
+        build_portal(tmp_path, [listing()], {}, Filters(), NOW, knowledge=knowledge())
+        data = json.loads((tmp_path / "data" / "neighborhoods.json").read_text(encoding="utf-8"))
+        assert data["bavli"]["names"] == ["בבלי"]
+        assert "notes" not in data["bavli"]
+        assert "sources" not in data["bavli"]
+        assert "private" not in (tmp_path / "data" / "neighborhoods.json").read_text(encoding="utf-8")
+
+    def test_writes_an_empty_object_without_a_knowledge_base(self, tmp_path):
+        build_portal(tmp_path, [listing()], {}, Filters(), NOW)
+        assert json.loads((tmp_path / "data" / "neighborhoods.json").read_text(encoding="utf-8")) == {}
+
+    def test_defaults_carry_the_new_filter_fields(self, tmp_path):
+        build_portal(tmp_path, [listing()], {}, Filters(excluded_neighborhoods=["bavli"]), NOW)
+        payload = json.loads((tmp_path / "data" / "listings.json").read_text(encoding="utf-8"))
+        assert payload["defaults"]["cities"] == ["תל אביב יפו", "גבעתיים", "רמת גן"]
+        assert payload["defaults"]["excluded_neighborhoods"] == ["bavli"]

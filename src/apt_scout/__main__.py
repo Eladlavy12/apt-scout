@@ -255,6 +255,7 @@ def main(argv: list[str] | None = None) -> int:
                 health=HealthTracker(runtime.store).report(),
                 filters=runtime.filters,
                 generated_at=datetime.now(timezone.utc),
+                knowledge=runtime.knowledge,
             )
         else:
             reason = (

@@ -8,6 +8,7 @@ from pathlib import Path
 
 from ..filters import Filters
 from ..models import Listing
+from ..neighborhoods.knowledge import KnowledgeBase
 from ..normalise.text import strip_phones
 
 ASSETS = Path(__file__).parent / "assets"
@@ -77,6 +78,7 @@ def build_portal(
     health: dict,
     filters: Filters,
     generated_at: datetime,
+    knowledge: KnowledgeBase | None = None,
 ) -> Path:
     """Generate the static portal into output_dir."""
     output_dir = Path(output_dir)
@@ -97,6 +99,12 @@ def build_portal(
 
     (output_dir / "data" / "listings.json").write_text(
         json.dumps(payload, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+    # Profiles are joined client-side by id; notes/sources stay private.
+    (output_dir / "data" / "neighborhoods.json").write_text(
+        json.dumps(knowledge.public_dict() if knowledge else {}, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
 
