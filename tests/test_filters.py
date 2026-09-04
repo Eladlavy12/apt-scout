@@ -158,3 +158,51 @@ class TestLoading:
             json.dumps({"min_price": 3000, "future_option": True}), encoding="utf-8"
         )
         assert Filters.load(path).min_price == 3000
+
+
+class TestCities:
+    def test_defaults_to_the_three_cities(self):
+        assert Filters().cities == ["תל אביב יפו", "גבעתיים", "רמת גן"]
+
+    def test_rejects_a_listing_from_another_city(self):
+        assert not default_filters().matches(listing(city="חולון"))
+
+    def test_accepts_a_listed_city(self):
+        assert default_filters(cities=["גבעתיים"]).matches(listing(city="גבעתיים"))
+        assert not default_filters(cities=["גבעתיים"]).matches(listing(city="תל אביב יפו"))
+
+    def test_unknown_city_fails_open(self):
+        assert default_filters(cities=["גבעתיים"]).matches(listing(city=None))
+
+    def test_empty_list_means_no_restriction(self):
+        assert default_filters(cities=[]).matches(listing(city="חולון"))
+
+
+class TestExcludedNeighborhoods:
+    def test_defaults_to_none_excluded(self):
+        assert Filters().excluded_neighborhoods == []
+
+    def test_rejects_an_excluded_neighborhood(self):
+        f = default_filters(excluded_neighborhoods=["florentin"])
+        assert not f.matches(listing(neighborhood="florentin"))
+        assert f.matches(listing(neighborhood="bavli"))
+
+    def test_unknown_neighborhood_fails_open(self):
+        assert default_filters(excluded_neighborhoods=["florentin"]).matches(listing(neighborhood=None))
+
+
+class TestPersistence:
+    def test_legacy_file_without_new_keys_loads_defaults(self, tmp_path):
+        path = tmp_path / "filters.json"
+        path.write_text(json.dumps({"min_price": 4000, "max_price": 5500}), encoding="utf-8")
+        loaded = Filters.load(path)
+        assert loaded.cities == ["תל אביב יפו", "גבעתיים", "רמת גן"]
+        assert loaded.excluded_neighborhoods == []
+
+    def test_round_trips_the_new_fields(self, tmp_path):
+        original = default_filters(cities=["רמת גן"], excluded_neighborhoods=["hatikva"])
+        path = tmp_path / "filters.json"
+        path.write_text(json.dumps(original.to_dict(), ensure_ascii=False), encoding="utf-8")
+        loaded = Filters.load(path)
+        assert loaded.cities == ["רמת גן"]
+        assert loaded.excluded_neighborhoods == ["hatikva"]
