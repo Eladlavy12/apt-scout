@@ -1,4 +1,8 @@
+import json
+import re
 from pathlib import Path
+
+from apt_scout.neighborhoods.labels import REPUTATION_LABELS, TAG_LABELS
 
 ASSETS = Path("src/apt_scout/portal/assets")
 
@@ -143,3 +147,39 @@ class TestSortAndSources:
     def test_still_never_uses_innerhtml(self):
         js = (ASSETS / "app.js").read_text(encoding="utf-8")
         assert "innerHTML" not in js
+
+
+class TestNeighborhoodUi:
+    def test_html_has_city_and_neighborhood_chip_containers(self):
+        html = (ASSETS / "index.html").read_text(encoding="utf-8")
+        assert 'id="city-toggles"' in html
+        assert 'id="neighborhood-toggles"' in html
+
+    def test_js_loads_the_profiles_file(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        assert 'fetch("data/neighborhoods.json")' in js
+
+    def test_js_never_uses_innerhtml(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        assert "innerHTML" not in js
+
+    def test_js_labels_match_the_python_labels(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+
+        def block(name):
+            match = re.search(name + r"\s*=\s*(\{.*?\});", js, re.S)
+            assert match, name
+            body = re.sub(r",\s*}", "}", match.group(1))  # tolerate a trailing comma
+            return json.loads(body)
+
+        assert block("REPUTATION_LABELS") == REPUTATION_LABELS
+        assert block("TAG_LABELS") == TAG_LABELS
+
+    def test_street_view_link_uses_the_google_maps_pattern(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        assert "https://www.google.com/maps?layer=c&cbll=" in js
+
+    def test_css_styles_the_reputation_tiers(self):
+        css = (ASSETS / "style.css").read_text(encoding="utf-8")
+        for tier in ("sought_after", "solid", "mixed", "weak"):
+            assert f".rep-{tier}" in css, tier

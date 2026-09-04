@@ -19,8 +19,111 @@ let markerLayer = null;
 let sourceToggleIds = [];
 const CENTRE = [32.056581, 34.804087];
 
+const OTHER_CITY = "other";
+const REPUTATION_LABELS = {
+  "sought_after": "מבוקשת מאוד",
+  "solid": "טובה",
+  "mixed": "מעורבת",
+  "weak": "פחות מומלצת"
+};
+const TAG_LABELS = {
+  "quiet": "שקטה",
+  "nightlife": "חיי לילה",
+  "family": "משפחתית",
+  "young": "צעירה",
+  "beach": "קרוב לים",
+  "green": "ירוקה",
+  "light_rail": "רכבת קלה",
+  "renewal": "התחדשות עירונית",
+  "old_buildings": "בניינים ישנים",
+  "noisy": "רועשת",
+  "parking_hard": "חניה קשה",
+  "expensive": "יקרה",
+  "value": "תמורה למחיר",
+  "religious": "אופי דתי",
+  "industrial_edge": "צמוד לאזור תעשייה"
+};
+let profiles = {};
+let cityToggleIds = [];
+let hoodToggleIds = [];
+
 function itemSources(item) {
   return item.sources && item.sources.length ? item.sources : [item.source];
+}
+
+function cityKey(item) {
+  return item.city && CITY_RANK[item.city] !== undefined ? item.city : OTHER_CITY;
+}
+
+function profileOf(item) {
+  return item.neighborhood ? profiles[item.neighborhood] || null : null;
+}
+
+function makeChip(id, text, count) {
+  const label = document.createElement("label");
+  label.className = "chip";
+  const input = document.createElement("input");
+  input.type = "checkbox";
+  input.id = id;
+  input.checked = true;
+  label.appendChild(input);
+  label.appendChild(document.createTextNode(count === undefined ? text : text + " (" + count + ")"));
+  return label;
+}
+
+function buildCityToggles(allListings) {
+  const counts = new Map();
+  allListings.forEach((item) => {
+    const key = cityKey(item);
+    counts.set(key, (counts.get(key) || 0) + 1);
+  });
+  const keys = Array.from(counts.keys()).sort((a, b) => {
+    const ra = a === OTHER_CITY ? 99 : CITY_RANK[a];
+    const rb = b === OTHER_CITY ? 99 : CITY_RANK[b];
+    return ra - rb;
+  });
+  const container = document.getElementById("city-toggles");
+  container.replaceChildren();
+  cityToggleIds = keys.map((key) => "city-" + key);
+  keys.forEach((key) => {
+    container.appendChild(makeChip("city-" + key, key === OTHER_CITY ? "אחר" : key, counts.get(key)));
+  });
+}
+
+function buildNeighborhoodToggles(allListings) {
+  const counts = new Map();
+  allListings.forEach((item) => {
+    if (item.neighborhood && profiles[item.neighborhood]) {
+      counts.set(item.neighborhood, (counts.get(item.neighborhood) || 0) + 1);
+    }
+  });
+  const byCity = new Map();
+  counts.forEach((count, id) => {
+    const city = profiles[id].city;
+    if (!byCity.has(city)) byCity.set(city, []);
+    byCity.get(city).push(id);
+  });
+  const container = document.getElementById("neighborhood-toggles");
+  container.replaceChildren();
+  hoodToggleIds = [];
+  Array.from(byCity.keys())
+    .sort((a, b) => (CITY_RANK[a] ?? 99) - (CITY_RANK[b] ?? 99))
+    .forEach((city) => {
+      const details = document.createElement("details");
+      const summary = document.createElement("summary");
+      summary.textContent = city;
+      details.appendChild(summary);
+      const chips = document.createElement("div");
+      chips.className = "chips";
+      byCity.get(city)
+        .sort((a, b) => counts.get(b) - counts.get(a))
+        .forEach((id) => {
+          hoodToggleIds.push("hood-" + id);
+          chips.appendChild(makeChip("hood-" + id, profiles[id].names[0], counts.get(id)));
+        });
+      details.appendChild(chips);
+      container.appendChild(details);
+    });
 }
 
 function cityRank(item) {
@@ -71,6 +174,12 @@ function readControls() {
   sourceToggleIds.forEach((id) => {
     state[id] = document.getElementById(id).checked;
   });
+  cityToggleIds.forEach((id) => {
+    state[id] = document.getElementById(id).checked;
+  });
+  hoodToggleIds.forEach((id) => {
+    state[id] = document.getElementById(id).checked;
+  });
   return state;
 }
 
@@ -86,6 +195,16 @@ function applyControls(state) {
   // Any source id absent from saved state (new source, or state predates the
   // toggle) defaults to enabled so nothing is silently hidden.
   sourceToggleIds.forEach((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.checked = state[id] !== undefined ? state[id] : true;
+  });
+  cityToggleIds.forEach((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.checked = state[id] !== undefined ? state[id] : true;
+  });
+  hoodToggleIds.forEach((id) => {
     const el = document.getElementById(id);
     if (!el) return;
     el.checked = state[id] !== undefined ? state[id] : true;
@@ -157,6 +276,9 @@ function matches(item, state) {
   // to enabled rather than disappearing silently.
   const enabled = itemSources(item).some((source) => state["source-" + source] !== false);
   if (!enabled) return false;
+
+  if (state["city-" + cityKey(item)] === false) return false;
+  if (item.neighborhood && state["hood-" + item.neighborhood] === false) return false;
 
   return true;
 }
@@ -231,6 +353,61 @@ function card(item) {
   addrP.textContent = item.address_text || item.city || "";
   body.appendChild(addrP);
 
+  const profile = profileOf(item);
+  if (profile) {
+    const hood = document.createElement("p");
+    hood.className = "hood";
+    const name = document.createElement("span");
+    name.className = "hood-name";
+    name.textContent = profile.names[0];
+    hood.appendChild(name);
+    const pill = document.createElement("span");
+    pill.className = "pill rep-" + profile.reputation;
+    pill.textContent = REPUTATION_LABELS[profile.reputation] || profile.reputation;
+    hood.appendChild(pill);
+    profile.tags.slice(0, 3).forEach((tag) => {
+      const chip = document.createElement("span");
+      chip.className = "tag";
+      chip.textContent = TAG_LABELS[tag] || tag;
+      hood.appendChild(chip);
+    });
+    body.appendChild(hood);
+
+    const details = document.createElement("details");
+    details.className = "hood-details";
+    const summary = document.createElement("summary");
+    summary.textContent = "פרטים על השכונה";
+    details.appendChild(summary);
+    const summaryP = document.createElement("p");
+    summaryP.textContent = profile.summary;
+    details.appendChild(summaryP);
+    [["יתרונות", profile.pros], ["חסרונות", profile.cons]].forEach(([title, items]) => {
+      const h = document.createElement("strong");
+      h.textContent = title;
+      details.appendChild(h);
+      const ul = document.createElement("ul");
+      items.forEach((text) => {
+        const li = document.createElement("li");
+        li.textContent = text;
+        ul.appendChild(li);
+      });
+      details.appendChild(ul);
+    });
+    body.appendChild(details);
+  }
+
+  if (item.lat !== null && item.lon !== null) {
+    const sv = document.createElement("a");
+    sv.className = "streetview";
+    sv.textContent = "Street View";
+    sv.target = "_blank";
+    sv.rel = "noopener noreferrer";
+    const svUrl = safeHttpUrl("https://www.google.com/maps?layer=c&cbll=" + item.lat + "," + item.lon);
+    if (svUrl) sv.href = svUrl;
+    body.appendChild(sv);
+    body.appendChild(document.createTextNode(" · "));
+  }
+
   const link = document.createElement("a");
   link.textContent = "למודעה המקורית";
   link.target = "_blank";
@@ -251,6 +428,11 @@ function popupContent(item) {
   priceEl.textContent = item.price === null ? "מחיר לא צוין" : item.price.toLocaleString("he-IL") + " ₪";
   wrap.appendChild(priceEl);
   wrap.appendChild(document.createElement("br"));
+  const profile = profileOf(item);
+  if (profile) {
+    wrap.appendChild(document.createTextNode(profile.names[0]));
+    wrap.appendChild(document.createElement("br"));
+  }
   const link = document.createElement("a");
   link.textContent = "למודעה";
   const url = safeHttpUrl(item.url);
@@ -338,6 +520,12 @@ function wire() {
   sourceToggleIds.forEach((id) => {
     document.getElementById(id).addEventListener("input", render);
   });
+  cityToggleIds.forEach((id) => {
+    document.getElementById(id).addEventListener("input", render);
+  });
+  hoodToggleIds.forEach((id) => {
+    document.getElementById(id).addEventListener("input", render);
+  });
   document.getElementById("reset").addEventListener("click", () => {
     applyControls({
       "max-drive": defaults.max_drive_minutes,
@@ -351,8 +539,16 @@ function wire() {
       "include-sublets": !defaults.exclude_sublets,
       sort: "newest",
     });
-    // Reset also re-enables every source chip.
+    // Reset also re-enables every source, city, and neighborhood chip.
     sourceToggleIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.checked = true;
+    });
+    cityToggleIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.checked = true;
+    });
+    hoodToggleIds.forEach((id) => {
       const el = document.getElementById(id);
       if (el) el.checked = true;
     });
@@ -360,12 +556,17 @@ function wire() {
   });
 }
 
-fetch("data/listings.json")
-  .then((response) => response.json())
-  .then((data) => {
+Promise.all([
+  fetch("data/listings.json").then((response) => response.json()),
+  fetch("data/neighborhoods.json").then((response) => (response.ok ? response.json() : {})).catch(() => ({})),
+])
+  .then(([data, loadedProfiles]) => {
+    profiles = loadedProfiles || {};
     listings = data.listings || [];
     defaults = data.defaults || {};
     buildSourceToggles(listings);
+    buildCityToggles(listings);
+    buildNeighborhoodToggles(listings);
 
     const saved = loadState();
     applyControls({
