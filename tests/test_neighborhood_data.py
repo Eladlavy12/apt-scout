@@ -46,3 +46,36 @@ class TestGeoJson:
         assert index.lookup(32.0970, 34.7990) == "bavli"
         assert index.lookup(32.0720, 34.8110) == "givatayim"  # outside mapped hoods
         assert index.lookup(32.0100, 34.7600) is None  # Bat Yam: out of scope
+
+
+from apt_scout.neighborhoods.knowledge import KnowledgeBase
+
+KB_PATH = Path("data/neighborhoods.json")
+SOURCES_DOC = Path("docs/neighborhoods-sources.md")
+
+
+class TestKnowledgeBaseFile:
+    def test_loads_and_validates(self):
+        assert len(KnowledgeBase.load(KB_PATH).ids()) >= 40
+
+    def test_every_geojson_feature_has_a_profile(self):
+        base = KnowledgeBase.load(KB_PATH)
+        missing = [f["properties"]["id"] for f in load_geojson()["features"] if f["properties"]["id"] not in base]
+        assert missing == []
+
+    def test_profile_city_matches_the_polygon_city(self):
+        base = KnowledgeBase.load(KB_PATH)
+        for feature in load_geojson()["features"]:
+            props = feature["properties"]
+            assert base.get(props["id"]).city == props["city"], props["id"]
+
+    def test_every_source_key_is_documented(self):
+        doc = SOURCES_DOC.read_text(encoding="utf-8")
+        base = KnowledgeBase.load(KB_PATH)
+        undocumented = sorted({key for item in base.entries() for key in item.sources if f"`{key}`" not in doc})
+        assert undocumented == []
+
+    def test_key_ids_exist(self):
+        base = KnowledgeBase.load(KB_PATH)
+        for nid in ("orot", "florentin", "bavli", "givatayim", "tel_aviv_yafo", "ramat_gan"):
+            assert nid in base, nid
