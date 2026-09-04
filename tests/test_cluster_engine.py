@@ -441,3 +441,16 @@ class TestScenario11SaltedPhoneHash:
         clusters = cluster_of([a, b])
         assert len(clusters) == 1
         assert len(clusters[0].members) == 2
+
+
+def test_canonical_takes_the_first_member_with_a_neighborhood():
+    from apt_scout.cluster.engine import ClusterEngine
+    from apt_scout.models import Listing
+
+    # Fingerprints read the phone from the text (not from phone_hash), so
+    # both ads carry the same number in raw_text to force a strong merge.
+    a = Listing(source="yad2", source_id="1", url="https://y/1", raw_text="לפרטים 052-1234567", neighborhood=None)
+    b = Listing(source="komo", source_id="2", url="https://k/2", raw_text="טל' 052-1234567", neighborhood="bavli")
+    clusters = ClusterEngine().cluster([a, b], salt="s")
+    assert len(clusters) == 1
+    assert clusters[0].canonical.neighborhood == "bavli"

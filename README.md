@@ -52,6 +52,23 @@ cluster, on its first appearance. Portal cards display a "N מקורות" (N sou
 a cluster appears on multiple platforms. The system caps alerts at 12 per run and produces
 an overflow summary if that limit is exceeded.
 
+## Neighborhoods
+
+Every listing is assigned a neighborhood by point-in-polygon against
+`data/neighborhoods.geojson` (OpenStreetMap `place=suburb`/`neighbourhood`/
+`quarter` boundaries for Tel Aviv-Yafo, Givatayim and Ramat Gan, plus the
+city boundaries as a fallback). `data/neighborhoods.json` holds a
+hand-curated profile per neighborhood: a consensus reputation tier
+(`sought_after` / `solid` / `mixed` / `weak`), a summary, pros, cons and
+tags. Sources for each call are listed in `docs/neighborhoods-sources.md`.
+The profile appears on portal cards and as one line in Telegram alerts; it
+is opinion distilled from public guides, not a score, and the JSON is
+meant to be edited — a malformed `data/neighborhoods.json` fails the run
+loudly at startup, and `tests/test_neighborhood_data.py` validates it.
+
+Rebuild the boundaries with `scripts/build_neighborhoods_geojson.py`; every
+polygon must have a profile (a test enforces it).
+
 ## Portal
 
 Every run regenerates a static portal and publishes it to the `gh-pages`
@@ -59,7 +76,11 @@ branch. Enable it once under Settings → Pages → Deploy from branch →
 `gh-pages`.
 
 All filtering in the portal is client-side, so changes take effect instantly
-and your selections are remembered in the browser.
+and your selections are remembered in the browser. City chips and
+neighborhood chips let you narrow the listing grid by geography, each card's
+"פרטים על השכונה" panel expands to that neighborhood's summary/pros/cons,
+and a Street View link on each card opens Google Maps at the listing's
+location.
 
 The portal never renders contact details. Phone numbers are stored only as
 salted hashes and are excluded from the published data by an explicit
@@ -149,6 +170,11 @@ scratch on each run, so the next successful push simply overwrites
 Message the bot; changes apply on the next hourly run and are committed to
 `config/filters.json`.
 
+Alerts are restricted to Tel Aviv-Yafo, Givatayim and Ramat Gan by
+default — the committed `config/filters.json` ships that restriction. This
+drops listings that used to be eligible (e.g. Holon, Bat Yam); send
+`/cities all` to lift it.
+
 | Command | Effect |
 |---|---|
 | `/price 4000 5500` | Set the price range |
@@ -157,6 +183,8 @@ Message the bot; changes apply on the next hourly run and are committed to
 | `/rooms 2` | Set the minimum room count |
 | `/size 50` | Set the minimum size in m² |
 | `/sublets on\|off` | Show (`on`) or hide (`off`, default) sublet/short-term ads |
+| `/cities תל אביב, גבעתיים` | Restrict alerts to these cities (`/cities all` lifts the restriction) |
+| `/exclude פלורנטין` / `/include פלורנטין` | Hide or restore a neighborhood (any Hebrew/English alias) |
 | `/pause` / `/resume` | Stop and restart alerts |
 | `/status` | Show the current thresholds |
 

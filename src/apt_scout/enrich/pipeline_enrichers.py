@@ -9,6 +9,7 @@ from ..normalise.rooms import parse_rooms
 from ..normalise.size import parse_size
 from ..normalise.text import extract_phone, hash_phone
 from ..state import StateStore
+from .city import normalise_city
 from .distance import distance_from_centre_km
 from .drivetime import DriveTimeCalculator
 from .geocode import Geocoder
@@ -34,6 +35,18 @@ def _fill_from_text(listing: Listing) -> Listing:
         listing.rooms = parse_rooms(text)
     if listing.size_sqm is None:
         listing.size_sqm = parse_size(text)
+    return listing
+
+
+def _normalise_city_step(listing: Listing) -> Listing:
+    """Rewrite known city spellings to their canonical form.
+
+    Only the three cities the filters know about are rewritten; anything
+    else keeps the source's string so the portal can still show it.
+    """
+    canonical = normalise_city(listing.city)
+    if canonical is not None:
+        listing.city = canonical
     return listing
 
 
@@ -106,6 +119,7 @@ def build_enrichers(
     salt: str,
     geocoder: Any = None,
     drive: Any = None,
+    neighborhood: Enricher | None = None,
 ) -> list[Enricher]:
     """Assemble the enrichment chain, in dependency order.
 
@@ -114,8 +128,9 @@ def build_enrichers(
     """
     geocoder = geocoder or Geocoder(store)
     drive = drive or DriveTimeCalculator(store)
-    return [
+    steps: list[Enricher] = [
         _fill_from_text,
+        _normalise_city_step,
         _classify,
         _flag_sublet,
         _make_phone_hasher(salt),
@@ -123,3 +138,6 @@ def build_enrichers(
         _add_distance,
         _make_drive_step(drive),
     ]
+    if neighborhood is not None:
+        steps.append(neighborhood)
+    return steps

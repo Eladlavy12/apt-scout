@@ -71,3 +71,14 @@ class TestRoundTrip:
         listing = full_listing()
         restored = deserialise_listing(serialise_listing(listing))
         assert restored.distance_km == 3.2
+
+
+def test_neighborhood_round_trips():
+    original = Listing(source="yad2", source_id="9", url="https://y/9", neighborhood="florentin")
+    assert deserialise_listing(serialise_listing(original)).neighborhood == "florentin"
+
+
+def test_legacy_dict_without_neighborhood_deserialises_to_none():
+    data = serialise_listing(Listing(source="yad2", source_id="9", url="https://y/9"))
+    del data["neighborhood"]
+    assert deserialise_listing(data).neighborhood is None

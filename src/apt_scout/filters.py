@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass, fields
+from dataclasses import dataclass, field, fields
 from pathlib import Path
 
+from .enrich.city import CANONICAL_CITIES, normalise_city
 from .models import Listing, Occupancy
 
 
@@ -26,6 +27,11 @@ class Filters:
     include_unsure_occupancy: bool = True
     exclude_sublets: bool = True
     paused: bool = False
+    # Canonical city names (see enrich.city). Empty means no restriction;
+    # a listing whose city is unknown is not disqualified.
+    cities: list[str] = field(default_factory=lambda: list(CANONICAL_CITIES))
+    # Knowledge-base neighborhood ids the user has ruled out.
+    excluded_neighborhoods: list[str] = field(default_factory=list)
 
     @classmethod
     def load(cls, path: Path) -> "Filters":
@@ -75,6 +81,16 @@ class Filters:
         if (
             listing.distance_km is not None
             and listing.distance_km > self.max_distance_km
+        ):
+            return False
+
+        city = normalise_city(listing.city) or listing.city
+        if self.cities and city is not None and city not in self.cities:
+            return False
+
+        if (
+            listing.neighborhood is not None
+            and listing.neighborhood in self.excluded_neighborhoods
         ):
             return False
 

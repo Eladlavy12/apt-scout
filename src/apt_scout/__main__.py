@@ -16,6 +16,7 @@ from .adapters.onmap import OnmapAdapter
 from .adapters.prog import ProgAdapter
 from .adapters.yad2 import Yad2Adapter
 from .budget import BudgetGuard
+from .enrich.neighborhood import NeighborhoodEnricher, load_neighborhood_data
 from .enrich.pipeline_enrichers import build_enrichers
 from .fetch import CurlTransport, Fetcher, HttpTransport
 from .filters import Filters
@@ -56,6 +57,7 @@ class Runtime:
     enrichers: list
     cluster_salt: str
     chat_id: str | None = None
+    knowledge: Any = None
 
 
 def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
@@ -99,6 +101,8 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
     if fb_marketplace is not None:
         fb_marketplace["token"] = env.get("APIFY_TOKEN")
 
+    index, knowledge = load_neighborhood_data(repo_root / "data")
+
     if dry_run:
         notifier: Any = DryRunNotifier()
     else:
@@ -109,7 +113,7 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
                 "TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID must be set "
                 "(or pass --dry-run)"
             )
-        notifier = TelegramNotifier(token, chat_id)
+        notifier = TelegramNotifier(token, chat_id, knowledge=knowledge)
 
     salt = env.get("PHONE_HASH_SALT")
     if not salt:
@@ -139,9 +143,14 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
             ProgAdapter(),
             FbMarketplaceAdapter(budget),
         ],
-        enrichers=build_enrichers(store, salt=salt),
+        enrichers=build_enrichers(
+            store,
+            salt=salt,
+            neighborhood=NeighborhoodEnricher(store, index, knowledge),
+        ),
         cluster_salt=salt,
         chat_id=env.get("TELEGRAM_CHAT_ID"),
+        knowledge=knowledge,
     )
 
 
@@ -220,6 +229,7 @@ def main(argv: list[str] | None = None) -> int:
             runtime.filters,
             Path(args.repo) / "config" / "filters.json",
             chat_id=runtime.chat_id or "",
+            knowledge=runtime.knowledge,
         )
 
     report = run_pipeline(
@@ -245,6 +255,7 @@ def main(argv: list[str] | None = None) -> int:
                 health=HealthTracker(runtime.store).report(),
                 filters=runtime.filters,
                 generated_at=datetime.now(timezone.utc),
+                knowledge=runtime.knowledge,
             )
         else:
             reason = (

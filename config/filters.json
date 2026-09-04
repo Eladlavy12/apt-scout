@@ -1,5 +1,11 @@
 {
+  "cities": [
+    "תל אביב יפו",
+    "גבעתיים",
+    "רמת גן"
+  ],
   "exclude_sublets": true,
+  "excluded_neighborhoods": [],
   "include_price_missing": true,
   "include_unsure_occupancy": true,
   "max_distance_km": 5,

@@ -217,3 +217,22 @@ when a neighborhood is resolved; nothing otherwise.
 - Per-listing AI write-ups (candidate for the phase-5 daily Claude agent).
 - Neighborhoods outside Tel Aviv-Yafo, Givatayim, Ramat Gan.
 - Editing the knowledge base from Telegram or the portal.
+
+## Amendments (as built, 2026-09-05)
+
+- Boundaries come from OpenStreetMap `place=suburb|neighbourhood|quarter`
+  for all three cities; the municipality administrative-boundary layer is
+  not used.
+- The GeoJSON carries the three city boundaries as `kind: "city"` fallback
+  features, so a listing that lands inside a city but outside every mapped
+  neighborhood resolves to the city-level profile (`tel_aviv_yafo`,
+  `givatayim`, `ramat_gan`) instead of `None`.
+- `/exclude` and `/include` resolve a typed name by exact alias match
+  (after normalisation), replying "not found" or listing the ambiguous
+  options — not fuzzy suggestions.
+- Portal neighborhood chips default to all-on regardless of
+  `excluded_neighborhoods`; that filter only gates Telegram alerts, not
+  what the portal displays.
+- Text-fallback neighborhood matches (no usable coordinates) are never
+  cached and never overwrite the listing's own city — only a point-in-
+  polygon match is trusted enough for both.

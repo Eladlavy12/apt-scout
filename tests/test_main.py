@@ -1,4 +1,6 @@
 import json
+import shutil
+from pathlib import Path
 
 import pytest
 
@@ -23,6 +25,7 @@ def repo(tmp_path):
         json.dumps({"yad2": {"enabled": False, "follows_filters": True}}),
         encoding="utf-8",
     )
+    shutil.copytree(Path("data"), tmp_path / "data")
     return tmp_path
 
 
@@ -288,3 +291,19 @@ class TestMain:
     def test_creates_the_state_directory(self, repo):
         main(["--repo", str(repo), "--dry-run"])
         assert (repo / "state").is_dir()
+
+
+def test_runtime_wires_the_neighborhood_enricher(tmp_path):
+    import shutil
+    from pathlib import Path
+
+    from apt_scout.__main__ import build_runtime
+    from apt_scout.models import Listing
+
+    shutil.copytree(Path("config"), tmp_path / "config")
+    shutil.copytree(Path("data"), tmp_path / "data")
+    runtime = build_runtime(tmp_path, {}, dry_run=True)
+    item = Listing(source="yad2", source_id="1", url="https://y/1", lat=32.056581, lon=34.804087)
+    for step in runtime.enrichers:
+        item = step(item)
+    assert item.neighborhood == "orot"
