@@ -9,19 +9,23 @@ generally want to live here** — as the majority view across these sources. It 
 not a price ranking and not a safety score. Where sources disagree the entry
 says so in `summary`.
 
-Research date: 2026-09-03.
+Research date: 2026-09-03. Review-driven fix pass: 2026-09-05 — re-tried the
+three still-unread user links (see `homemarket`, `quora-he`, `reddit-israel`
+below), corrected the `rg-muni` citations, and folded in the light-rail tag
+policy and other review findings (task-6-review.md); see
+task-6-report.md for the full list.
 
 ## Sources
 
 | key | what it is | url | fetched |
 |---|---|---|---|
-| `homemarket` | HomeMarket "מדריך השכונות של תל אביב — איפה אתם באמת" | https://homemarket.co.il/מדריך-השכונות-של-תל-אביב-איפה-אתם-באמת/ | 2026-09-03 — **HTTP 403, not fetchable**; not used |
+| `homemarket` | HomeMarket "מדריך השכונות של תל אביב — איפה אתם באמת" (broker-authored buyer's guide; sales-oriented, so used only to corroborate facts already supported elsewhere) | https://homemarket.co.il/מדריך-השכונות-של-תל-אביב-איפה-אתם-באמת/ | 2026-09-03 HTTP 403 to the original fetcher; **re-fetched successfully 2026-09-05 via the in-app browser**. Confirms the Red Line runs close to Florentin; also covers the Old North, Rothschild/city-centre, the "Midtown" east-TLV towers, Neve Shaanan's renewal trajectory, Florentin, Neve Tzedek and the Jaffa flea-market/Noga/college area, all consistent with what the other sources already say — no other profile was changed on its strength |
 | `secrettlv-2023` | Secret Tel Aviv FB group poll "סקר איפה הכי שווה לגור בתל אביב" | https://www.facebook.com/groups/secrettelaviv/posts/10161343037675943/ | 2026-09-03 — **not fetchable without login** (only the post title rendered); not used |
 | `secrettlv-2019` | Secret Tel Aviv FB group thread "האזור הכי טוב למגורים בתל אביב" | https://www.facebook.com/groups/secrettelaviv/posts/10156576550365943/ | 2026-09-03 — **not fetchable without login** (only the post title rendered); not used |
-| `quora-he` | Quora (he) "באיזו שכונה הכי כדאי לגור בתל אביב" | https://he.quora.com/באיזו-שכונה-הכי-כדאי-לגור-בתל-אביב | 2026-09-03 — **HTTP 403, not fetchable**; not used |
-| `reddit-israel` | r/Israel "How is it like to live in Tel Aviv" | https://www.reddit.com/r/Israel/comments/ypxcgo/how_is_it_like_to_live_in_tel_aviv/ | 2026-09-03 — **reddit.com blocked for this fetcher** (old.reddit and `.json` too); not used |
+| `quora-he` | Quora (he) "באיזו שכונה הכי כדאי לגור בתל אביב" | https://he.quora.com/באיזו-שכונה-הכי-כדאי-לגור-בתל-אביב | 2026-09-03 HTTP 403; **retried 2026-09-05 via the in-app browser** — this time it served a Cloudflare "Performing security verification" challenge page instead of content. Not bypassed (bot-checks are not to be solved by the agent); still not fetchable, not used |
+| `reddit-israel` | r/Israel "How is it like to live in Tel Aviv" | https://www.reddit.com/r/Israel/comments/ypxcgo/how_is_it_like_to_live_in_tel_aviv/ | 2026-09-03 reddit.com blocked for the original fetcher (old.reddit and `.json` too); **retried 2026-09-05** — both `reddit.com` and `old.reddit.com` are blocked by the browsing tool's own policy before the page even loads. Still not fetchable, not used |
 | `diytlv` | DIY Tel Aviv Guide — Tel Aviv neighbourhood guide (long, candid, renter-focused) | https://www.diytelavivguide.com/blog/moving-to-tel-aviv/tel-aviv-neighbourhood-guide | 2026-09-03 |
-| `wiki-he` | Hebrew Wikipedia articles, one per neighborhood (history, boundaries, building stock, population, socio-economic rank) | https://he.wikipedia.org/ | 2026-09-03 |
+| `wiki-he` | Hebrew Wikipedia articles, one per neighborhood (history, boundaries, building stock, population, socio-economic rank) — see the article list below the table | https://he.wikipedia.org/ | 2026-09-03 |
 | `timeout-east` | Time Out (he) "ביצרון או התקווה? מדריך השכונות של מזרח תל אביב" — the single best consensus source for east TLV | https://timeout.co.il/השכונות-מזרח-תל-אביב/ | 2026-09-03 |
 | `timeout-rg-gv` | Time Out (he) head-to-head "לאן תעזבו את תל אביב, לרמת גן או לגבעתיים?" (incl. 2022 rent figures) | https://timeout.co.il/ראש-בראש-ערי-לוויין/ | 2026-09-03 |
 | `timeout-kfar-shalem` | Time Out (he) "כל מה שאתם צריכים לדעת על כפר שלם" | https://timeout.co.il/כפר-שלם/ | 2026-09-03 |
@@ -42,14 +46,11 @@ Research date: 2026-09-03.
 | `pillu-givatayim` | Pillu "מדריך שכונות גבעתיים 2026 — איפה כדאי לגור ולקנות" | https://pillu.co.il/article-givatayim-neighborhoods-2026.html | 2026-09-03 |
 | `calcalist-givatayim` | Calcalist on Givatayim's first master plan in 60 years: where pinui-binui and TAMA 38 are allowed | https://www.calcalist.co.il/articles/0,7340,L-3848913,00.html | 2026-09-03 |
 | `maariv-weizmann` | Maariv HaMekomon "גבעתיים: המהפך של רחוב ויצמן" (Katznelson bar/café strip, Weizmann boulevard plan) | https://www.maariv.co.il/hamekomon/ramatgan/article-981865 | 2026-09-03 |
-| `rg-muni` | Ramat Gan municipality — neighborhood pages and master-plan status map | https://www.ramat-gan.muni.il/my-neighborhood/ | 2026-09-03 |
+| `rg-muni` | Ramat Gan municipality — neighborhood pages and master-plan status map | https://www.ramat-gan.muni.il/my-neighborhood/ | 2026-09-03 — **not fetchable (HTTP 403/404)**; not used. It was wrongly cited by 13 entries in the original write-up (aliot, azor_habiluim, bar_ilan, haruzim, hashmonaim, kfar_azar, nahalat_ganim, neve_yehoshua, qiryat_krinitzi, ramat_amidar, ramat_hen, tsanhanim, yahalom); the 2026-09-05 fix pass removed the key from all 13 and added `inference` plus a first-sentence acknowledgement to the two (hashmonaim, nahalat_ganim) that had no other real source for their municipal-planning-zone content |
 | `nadlancenter-rg` | Merkaz HaNadlan "התחדשות עירונית רמת גן — המדריך השלם 2026" (RG holds ~1/5 of Israel's approved TAMA 38 projects; mostly demolish-and-rebuild) | https://www.nadlancenter.co.il/article/4298 | 2026-09-03 |
 | `xnet-horshot` | Xnet on Park HaHorshot and the new Kiryat Shalom north-west district | https://xnet.ynet.co.il/articles/0,7340,L-4903921,00.html | 2026-09-03 |
-| `madlan` | Madlan area-info pages (prices, schools, resident ratings) | https://www.madlan.co.il/ | 2026-09-03 |
-| `hamichlol` | HaMichlol (Hebrew Wikipedia fork) neighborhood articles, used where he.wikipedia had no article | https://www.hamichlol.org.il/ | 2026-09-03 |
 | `globes` | Globes real-estate coverage of Gush Dan urban renewal and the Central Station evacuation | https://www.globes.co.il/ | 2026-09-03 |
-| `mako-xnet` | Mako / Xnet city and architecture features (Central Station area, Givatayim, Ramat Gan) | https://www.mako.co.il/ | 2026-09-03 |
-| `en-wiki` | English Wikipedia neighborhood articles, used to cross-check names and boundaries | https://en.wikipedia.org/ | 2026-09-03 |
+| `mako-xnet` | Mako / Xnet city and architecture features (Central Station area, Givatayim, Ramat Gan) — cited by `neve_shaanan` | https://www.mako.co.il/ | 2026-09-03 |
 | `ynet-price-map` | Ynet "היקרות, הזולות והמפתיעות: מפת המחירים של השכונות בתל אביב" — price per m² for every TLV neighborhood, cheapest to dearest | https://www.ynet.co.il/economy/article/yokra14443171 | 2026-09-04 |
 | `ynet-rentals` | Ynet ranking of the 128 most in-demand rental neighborhoods in Israel (Lev Tel Aviv 4th nationally; no Ramat Gan or Givatayim neighborhood in the top 20) | https://www.ynet.co.il/economy/article/yokra14886421 | 2026-09-04 |
 | `ynet-kochav` | Ynet "מבוקשת ויקרה: הצצה לשכונת כוכב הצפון בת"א" | https://www.ynet.co.il/articles/0,7340,L-5266635,00.html | 2026-09-04 |
@@ -65,18 +66,36 @@ Research date: 2026-09-03.
 | `tlvonline` | Tel Aviv Online neighborhood and price posts (Park Tzameret naming, Dakar's 810 new units, Kochav HaTsafon prices) | https://tlvonline.co.il/ | 2026-09-04 |
 | `inference` | No usable published material found for the neighborhood; the profile is reasoned from the immediately surrounding area, the OSM polygon and the building stock, and says so in `summary` | — | 2026-09-03 |
 
+`wiki-he` article titles used (one key covering ~30 fetches): Yad Eliyahu, Kfar
+Shalem, Kiryat Shalom, Neve Shaanan, HaTikva, Ramat HaTayasim, Nahalat
+Yitzhak, Bitzaron, Ramat Israel, Neve Eliezer, Ezra, HaArgazim, Neve Ofer,
+Shapira, Orot, Neve Hen, Neve Kfir, Neve Barbur, Tel Haim, Florentin, Givat
+Herzl, Tzahalon, Kerem HaTeimanim, Neve Tzedek, Ajami, Bavli, Old North (both
+halves), New North (all three), Ramat Aviv, Park Tzameret, Old Jaffa, Yafo
+Gimel, Yafo Dalet, Kfar Azar, Qiryat Krinitzi, Tel Ganim, Bursa, Ramat Amidar,
+Ramat Efal, Expo Tel Aviv, Park Darom, Borochov, Givatayim, Ramat Gan.
+
 ### Sources that could not be fetched
 
-Four of the six user-supplied links are not machine-readable:
+Two of the six user-supplied links remain unreadable even after a second
+attempt on 2026-09-05 via the in-app browser (the browser could load
+`homemarket`, which is now used — see its row above):
 
-- `homemarket` — HTTP 403 to this fetcher.
-- `quora-he` — HTTP 403 to this fetcher.
-- `reddit-israel` — reddit.com is blocked for this fetcher, including `old.reddit.com` and the `.json` endpoint.
-- `secrettlv-2023` / `secrettlv-2019` — Facebook group posts return only the post title without a login; the titles confirm the threads are "סקר איפה הכי שווה לגור בתל אביב" and "האזור הכי טוב למגורים בתל אביב" but no answers rendered.
+- `quora-he` — served a Cloudflare bot-check ("Performing security
+  verification") instead of content on 2026-09-05; not bypassed, still not
+  fetchable.
+- `reddit-israel` — `reddit.com` and `old.reddit.com` are both blocked by the
+  browsing tool's own policy; still not fetchable.
+- `secrettlv-2023` / `secrettlv-2019` — Facebook group posts return only the
+  post title without a login (skipped on 2026-09-05 per instructions — these
+  are login-walled and were not retried); the titles confirm the threads are
+  "סקר איפה הכי שווה לגור בתל אביב" and "האזור הכי טוב למגורים בתל אביב" but
+  no answers rendered.
 
-Their role — crowd consensus on "where is it actually good to live" — is covered
-instead by `diytlv`, `timeout-east`, `timeout-rg-gv`, `makler-bestworst`,
-`nativeisrael` and `ronkin-2026`. No profile cites a source that was not read.
+Their role — crowd consensus on "where is it actually good to live" — is
+covered instead by `diytlv`, `timeout-east`, `timeout-rg-gv`,
+`makler-bestworst`, `nativeisrael`, `ronkin-2026` and, now, `homemarket`. No
+profile cites a source that was not read.
 
 ## Rent reality (calibration for the ₪4,000–5,500 budget)
 
@@ -118,6 +137,18 @@ Useful for reading the profiles: the budget is for **2+ rooms Israeli count**
   station serves Neve Shaanan / Shapira / HaTikva. (`magdilim-east`, `diytlv`)
 - Givatayim and Ramat Gan run limited Saturday bus service ("Sababus" in Ramat
   Gan since 2019); most of Tel Aviv does not. (`wiki-he`)
+- **`light_rail` tag policy (added 2026-09-05, review finding I4).** The tag
+  is applied only when an entry's own summary/pros/cons name a specific line
+  (הקו האדום / הסגול / הירוק or "רכבת קלה") that is described as **operating**
+  — not merely planned or under construction. A heavy-rail station (Israel
+  Railways) never earns this tag on its own. This is why `givatayim` and
+  `merkaz_hayeridim` lost the tag (no operating station named in their text;
+  `merkaz_hayeridim`'s "station" is the Israel Railways University stop), why
+  `neve_hen` and `new_north_south` lost it (Purple Line station "planned", and
+  a heavy-rail "central station" respectively), and why `florentin`, `aliot`,
+  `harishonim`, `ajami_and_givat_aliyah` and `givatayim_city` gained it (their
+  text now names the operating Red Line, or the operating Bialik/Abba Hillel
+  stations, explicitly).
 
 ## Notes by neighborhood
 
@@ -208,6 +239,11 @@ outside every mapped neighborhood polygon. City-wide average rent ≈₪7,200; t
 east and south are the cheap entry points and carry most of the renewal
 pipeline, the old north and centre are the expensive end. (`nativeisrael`,
 `alayof-2026`, `ronkin-2026`)
+
+*Deliberate omission:* `tel_aviv_yafo.names` has no `ת"א` alias. `_alias_key`
+strips punctuation, so `ת"א` would normalise to `תא` — a two-letter string
+that would false-match plain Hebrew text far too often (e.g. inside other
+words). Leaving it out is intentional, not an oversight.
 
 **orot — אורות.** The reference point (ORT Singalovski college) is inside this
 polygon. East TLV, east of Yad Eliyahu, district 9; formally a sub-neighborhood
