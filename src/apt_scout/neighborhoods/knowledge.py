@@ -106,9 +106,11 @@ class KnowledgeBase:
         self._entries = entries
         self._by_alias: dict[str, list[Neighborhood]] = {}
         for item in entries.values():
+            seen: set[str] = set()
             for name in item.names:
                 key = _alias_key(name)
-                if key:
+                if key and key not in seen:
+                    seen.add(key)
                     self._by_alias.setdefault(key, []).append(item)
 
     @classmethod

@@ -347,6 +347,18 @@ class TestExcludeInclude:
         # names in the options list are not, by design.
         assert reply.startswith("'&lt;b' לא חד-משמעי")
 
+    def test_exclude_with_duplicate_normalized_aliases_resolves_uniquely(self):
+        kb_with_dupes = KnowledgeBase.from_dict(
+            {
+                "ramat_gan": {"names": ["רמת גן", "רמת-גן", "Ramat Gan"], "city": "רמת גן",
+                              "reputation": "mixed", "summary": "s",
+                              "pros": ["a", "b"], "cons": ["c", "d"], "tags": ["noisy"], "sources": ["x"]}
+            }
+        )
+        updated, reply = apply_command(Filters(), "exclude", ["רמת", "גן"], kb_with_dupes)
+        assert updated.excluded_neighborhoods == ["ramat_gan"]
+        assert "לא חד-משמעי" not in reply
+
 
 class TestStatusShowsNeighborhoods:
     def test_status_lists_cities_and_exclusions(self):

@@ -114,6 +114,11 @@ class TestLookup:
         base = kb(weird=entry(names=["פלורנטין", "׳"], city="תל אביב יפו"))
         assert base.match_in_text("רחוב הרצל 5, חולון", None) is None
 
+    def test_aliases_that_normalise_alike_yield_one_match(self):
+        base = kb(ramat_gan=entry(names=["רמת גן", "רמת-גן", "Ramat Gan"], city="רמת גן"))
+        assert [n.id for n in base.find_by_name("רמת גן")] == ["ramat_gan"]
+        assert [n.id for n in base.find_by_name("רמת-גן")] == ["ramat_gan"]
+
 
 class TestPublicProjection:
     def test_strips_notes_and_sources(self):

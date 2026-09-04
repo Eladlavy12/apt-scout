@@ -88,3 +88,12 @@ class TestKnowledgeBaseFile:
         assert base.match_in_text("New apartment, great city views", None) is None
         assert base.match_in_text("דירה בלב העיר", None) is None
         assert base.match_in_text("רחוב עליות הנוער", None) is None
+
+    def test_every_display_name_resolves_to_at_most_one_entry(self):
+        base = KnowledgeBase.load(KB_PATH)
+        clashes = {
+            item.display_name: [n.id for n in base.find_by_name(item.display_name)]
+            for item in base.entries()
+            if len(base.find_by_name(item.display_name)) > 1
+        }
+        assert clashes == {}
