@@ -8,6 +8,7 @@ from ..geo.polygon import PolygonIndex
 from ..models import Listing
 from ..neighborhoods.knowledge import KnowledgeBase
 from ..state import StateStore
+from .city import normalise_city
 
 CACHE = "neighborhoods"
 GEOJSON_FILE = "neighborhoods.geojson"
@@ -64,9 +65,14 @@ class NeighborhoodEnricher:
             self._remember(key, found)
             self._apply(listing, found, from_geometry=True)
         else:
-            found = self._knowledge.match_in_text(listing.address_text, None)
+            # The listing's own city is used only to disambiguate a shared
+            # name across cities (e.g. "הדר" in both תל אביב יפו and
+            # רמת גן); it is normalised because carry-forward listings
+            # may carry a raw, un-normalised city string.
+            city = normalise_city(listing.city)
+            found = self._knowledge.match_in_text(listing.address_text, city)
             if found is None:
-                found = self._knowledge.match_in_text(listing.title, None)
+                found = self._knowledge.match_in_text(listing.title, city)
             self._apply(listing, found, from_geometry=False)
         return listing
 

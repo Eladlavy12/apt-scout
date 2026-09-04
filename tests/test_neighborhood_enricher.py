@@ -84,15 +84,33 @@ class TestTextFallback:
         result = enricher(tmp_path)(listing(title="דירה מקסימה ברמת חן", city="רמת גן"))
         assert result.neighborhood == "hood"
 
-    def test_a_text_hit_does_not_overwrite_the_source_city(self, tmp_path):
+    def test_a_text_hit_does_not_overwrite_the_source_city_same_city(self, tmp_path):
         # A polygon can outrank a mislabelled border-street city, but a text
         # guess must not: the source's own city stays put even though the
-        # matched neighborhood profile belongs to a different city.
+        # profile could have set it anyway (here they happen to agree).
+        result = enricher(tmp_path)(
+            listing(title="דירה בשכונת אורות", city="תל אביב יפו")
+        )
+        assert result.neighborhood == "orot"
+        assert result.city == "תל אביב יפו"
+
+    def test_a_text_hit_does_not_overwrite_a_missing_city(self, tmp_path):
+        # A text hit never overwrites listing.city, including from None.
+        result = enricher(tmp_path)(
+            listing(title="דירה מקסימה ברמת חן", city=None)
+        )
+        assert result.neighborhood == "hood"
+        assert result.city is None
+
+    def test_the_reported_city_scopes_the_text_match(self, tmp_path):
+        # Spec §2: the text fallback is restricted to entries whose city
+        # matches the listing's canonical city when known -- the ambiguity
+        # guard for shared names like "הדר". A Ramat Gan-only alias must
+        # not resolve for a listing reported as being in a different city.
         result = enricher(tmp_path)(
             listing(title="דירה מקסימה ברמת חן", city="תל אביב יפו")
         )
-        assert result.neighborhood == "hood"
-        assert result.city == "תל אביב יפו"
+        assert result.neighborhood is None
 
     def test_a_text_miss_is_not_cached(self, tmp_path):
         store = StateStore(tmp_path)
