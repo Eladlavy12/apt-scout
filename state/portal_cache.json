@@ -649,6 +649,33 @@
   ],
   "komo": [
     {
+      "address_text": "תל אביב יפו, ביצרון, דרך השלום 24",
+      "city": "תל אביב יפו",
+      "distance_km": null,
+      "drive_minutes": null,
+      "first_seen_at": "2026-09-05T03:00:33.077925+00:00",
+      "floor": 1,
+      "is_sublet": false,
+      "lat": null,
+      "lon": null,
+      "neighborhood": "tel_aviv_yafo",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33080536&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 3500,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 60.0,
+      "source": "komo",
+      "source_id": "4908662",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4908662"
+    },
+    {
       "address_text": "תל אביב יפו, פלורנטין, זבולון 48",
       "city": "תל אביב יפו",
       "distance_km": 3.01,
@@ -971,33 +998,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4906343"
-    },
-    {
-      "address_text": "תל אביב יפו, ביצרון, דרך השלום 24",
-      "city": "תל אביב יפו",
-      "distance_km": null,
-      "drive_minutes": null,
-      "first_seen_at": "2026-09-05T03:00:33.077925+00:00",
-      "floor": 1,
-      "is_sublet": false,
-      "lat": null,
-      "lon": null,
-      "neighborhood": "tel_aviv_yafo",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=32842134&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 3500,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 60.0,
-      "source": "komo",
-      "source_id": "4908662",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4908662"
     },
     {
       "address_text": "תל אביב יפו, יד אליהו, קלמר משה 2",
