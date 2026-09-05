@@ -32,10 +32,20 @@ python -m apt_scout --repo . --dry-run
 | yad2 | Enabled | Blocked from GitHub datacenter IPs at all tiers. Fed by a PC-side helper (see "Local yad2 feed" below) when its feed file is fresh; otherwise falls back to the (usually failing) direct fetch. |
 | onmap | Working | JSON API, runs on all tiers. |
 | komo | Working | HTML scraping, runs on all tiers. |
-| homeless | Working | Tel Aviv, Givatayim, Ramat Gan. Occasional rate-limiting on third city. |
+| homeless | Blocked since 2026-09-01 | Tel Aviv, Givatayim, Ramat Gan. The site now answers HTTP 403 to every scripted request (GitHub and residential IPs alike); stays enabled so recovery is automatic. |
 | prog | Disabled on CI | WAF blocks GitHub datacenter IPs; works locally. Re-enable if running from residential IP. |
 | fb_marketplace | Working | Via Apify actor `curious_coder/facebook-marketplace`. Runs every 6 hours, budget-guarded. |
 | madlan | Not implemented | Blocks automated browsers outright (Cloudflare + PerimeterX). Apify actor is the only viable path. |
+
+**When a source fails, its last good listings stay in the portal for up to
+24 hours** (`state/portal_cache.json`, timestamps in
+`state/portal_cache_meta.json`). This rides out the PC being off overnight
+(the yad2 feed goes stale after 6 hours) or a day-long block without the
+portal collapsing to the cloud-fetchable sources. The failure is still
+recorded: the health footer shows the source as failing with a note of how
+many cached listings are being shown, and the run log prints a `KEPT` line.
+After 24 hours without a successful fetch the source drops out of the portal.
+Alerts are unaffected either way, since restored listings were already seen.
 
 ## Budget
 

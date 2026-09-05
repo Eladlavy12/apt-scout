@@ -275,6 +275,12 @@ def main(argv: list[str] | None = None) -> int:
     )
     for source, error in report.errors.items():
         print(f"  ERROR {source}: {error}", file=sys.stderr)
+    for source, count in report.restored.items():
+        print(
+            f"  KEPT {source}: showing {count} cached listings from its last "
+            "successful run",
+            file=sys.stderr,
+        )
     return 0
 
 

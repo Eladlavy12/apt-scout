@@ -41,7 +41,9 @@ class HealthTracker:
             entry["last_failure"] = now
             entry["consecutive_failures"] += 1
             entry["last_error"] = error
-            entry["detail"] = None
+            # A failure normally clears the success detail, but the pipeline
+            # may pass one to say what is being shown instead (cached listings).
+            entry["detail"] = detail
         self._store.save(HEALTH, self._data)
 
     def report(self) -> dict:
