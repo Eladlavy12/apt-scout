@@ -654,6 +654,7 @@
       "is_sublet": false,
       "lat": 32.060281,
       "lon": 34.771128,
+      "neighborhood": "florentin",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -680,6 +681,7 @@
       "is_sublet": false,
       "lat": 32.042061,
       "lon": 34.773234,
+      "neighborhood": "kiryat_shalom",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -706,6 +708,7 @@
       "is_sublet": false,
       "lat": null,
       "lon": null,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -732,6 +735,7 @@
       "is_sublet": false,
       "lat": 32.04054,
       "lon": 34.775744,
+      "neighborhood": "kiryat_shalom",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -758,6 +762,7 @@
       "is_sublet": false,
       "lat": 32.08182,
       "lon": 34.782381,
+      "neighborhood": "new_north_south",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -784,6 +789,7 @@
       "is_sublet": false,
       "lat": null,
       "lon": null,
+      "neighborhood": "tel_aviv_yafo",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -810,6 +816,7 @@
       "is_sublet": false,
       "lat": 32.052236,
       "lon": 34.792614,
+      "neighborhood": "hatikva",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -836,6 +843,7 @@
       "is_sublet": false,
       "lat": 32.057283,
       "lon": 34.772141,
+      "neighborhood": "florentin",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -862,6 +870,7 @@
       "is_sublet": false,
       "lat": 32.033137,
       "lon": 34.753333,
+      "neighborhood": "yafo_d_givat_hatmarim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -888,6 +897,7 @@
       "is_sublet": false,
       "lat": 32.073154,
       "lon": 34.766458,
+      "neighborhood": "kerem_hateimanim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -914,6 +924,7 @@
       "is_sublet": false,
       "lat": 32.052043,
       "lon": 34.790864,
+      "neighborhood": "hatikva",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -940,6 +951,7 @@
       "is_sublet": false,
       "lat": null,
       "lon": null,
+      "neighborhood": "tel_aviv_yafo",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -966,6 +978,7 @@
       "is_sublet": false,
       "lat": 32.063024,
       "lon": 34.797757,
+      "neighborhood": "yad_eliyahu",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -992,6 +1005,7 @@
       "is_sublet": false,
       "lat": 32.118719,
       "lon": 34.843221,
+      "neighborhood": "tel_aviv_yafo",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1018,6 +1032,7 @@
       "is_sublet": false,
       "lat": 32.04878,
       "lon": 34.792292,
+      "neighborhood": "hatikva",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1044,6 +1059,7 @@
       "is_sublet": false,
       "lat": null,
       "lon": null,
+      "neighborhood": "tel_aviv_yafo",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1070,6 +1086,7 @@
       "is_sublet": false,
       "lat": 32.085902,
       "lon": 34.779764,
+      "neighborhood": "old_north_north",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1096,6 +1113,7 @@
       "is_sublet": false,
       "lat": 32.064529,
       "lon": 34.795468,
+      "neighborhood": "bitzaron_ramat_israel",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1122,6 +1140,7 @@
       "is_sublet": false,
       "lat": 32.058558,
       "lon": 34.771853,
+      "neighborhood": "florentin",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1148,6 +1167,7 @@
       "is_sublet": false,
       "lat": 32.119145,
       "lon": 34.829998,
+      "neighborhood": "tel_aviv_yafo",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1168,7 +1188,7 @@
   "onmap": [
     {
       "address_text": "Ha-Khalutzim St. 48 Florentin Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 2.99,
       "drive_minutes": 8.2,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1176,6 +1196,7 @@
       "is_sublet": false,
       "lat": 32.0569432,
       "lon": 34.7723305,
+      "neighborhood": "florentin",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1200,7 +1221,7 @@
     },
     {
       "address_text": "HaKongres St. 41 Neve Sha'anan Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 2.55,
       "drive_minutes": 7.5,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1208,6 +1229,7 @@
       "is_sublet": false,
       "lat": 32.0558781,
       "lon": 34.7770297,
+      "neighborhood": "neve_shaanan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1230,7 +1252,7 @@
     },
     {
       "address_text": "Almagor St. 15 Neve Sharet Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 7.88,
       "drive_minutes": 18.8,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1238,6 +1260,7 @@
       "is_sublet": false,
       "lat": 32.1191577,
       "lon": 34.8434538,
+      "neighborhood": "tel_aviv_yafo",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1261,7 +1284,7 @@
     },
     {
       "address_text": "Menahem Arber St. 8 Tel Kabir Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 3.84,
       "drive_minutes": 9.2,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1269,6 +1292,7 @@
       "is_sublet": false,
       "lat": 32.041601,
       "lon": 34.76732,
+      "neighborhood": "neve_ofer",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -1285,7 +1309,7 @@
     },
     {
       "address_text": "Yefet St. 179 Yafo Gimel South Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 5.74,
       "drive_minutes": 11.0,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1293,6 +1317,7 @@
       "is_sublet": false,
       "lat": 32.035667,
       "lon": 34.748466,
+      "neighborhood": "yafo_gimel_neve_golan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1324,7 +1349,7 @@
     },
     {
       "address_text": "Shim'on ha-Tarsi St. 3 Northern Part of Old North Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 4.82,
       "drive_minutes": 11.9,
       "first_seen_at": "2026-09-04T09:56:03.090456+00:00",
@@ -1332,6 +1357,7 @@
       "is_sublet": false,
       "lat": 32.094434262312674,
       "lon": 34.779143848134225,
+      "neighborhood": "old_north_north",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1373,7 +1399,7 @@
     },
     {
       "address_text": "Misgav Am St. 8 Kiryat Shalom Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 3.27,
       "drive_minutes": 9.6,
       "first_seen_at": "2026-09-03T18:00:35.067576+00:00",
@@ -1381,6 +1407,7 @@
       "is_sublet": false,
       "lat": 32.0417501,
       "lon": 34.774089,
+      "neighborhood": "kiryat_shalom",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1404,7 +1431,7 @@
     },
     {
       "address_text": "Hashuk St. 12 Florentin Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 3.1,
       "drive_minutes": 7.7,
       "first_seen_at": "2026-09-02T08:36:09.517495+00:00",
@@ -1412,6 +1439,7 @@
       "is_sublet": false,
       "lat": 32.0600592,
       "lon": 34.771445,
+      "neighborhood": "florentin",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1439,7 +1467,7 @@
     },
     {
       "address_text": "Herzl St. 36 Florentin Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 3.2,
       "drive_minutes": 8.3,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1447,6 +1475,7 @@
       "is_sublet": false,
       "lat": 32.0599973,
       "lon": 34.770335,
+      "neighborhood": "florentin",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1472,7 +1501,7 @@
     },
     {
       "address_text": "Herzl St. 34 Florentin Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 3.19,
       "drive_minutes": 7.7,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1480,6 +1509,7 @@
       "is_sublet": false,
       "lat": 32.0600562,
       "lon": 34.7705292,
+      "neighborhood": "florentin",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1505,7 +1535,7 @@
     },
     {
       "address_text": "Herzl St. 36 Florentin Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 3.2,
       "drive_minutes": 8.3,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1513,6 +1543,7 @@
       "is_sublet": false,
       "lat": 32.0599973,
       "lon": 34.770335,
+      "neighborhood": "florentin",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1539,7 +1570,7 @@
     },
     {
       "address_text": "Yefet St. Yafo Gimel South Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 5.83,
       "drive_minutes": 11.4,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1547,6 +1578,7 @@
       "is_sublet": false,
       "lat": 32.034948,
       "lon": 34.7477078,
+      "neighborhood": "yafo_gimel_neve_golan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1575,7 +1607,7 @@
     },
     {
       "address_text": "Negba St. 26 Yad Eliyahu Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 0.72,
       "drive_minutes": 3.4,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1583,6 +1615,7 @@
       "is_sublet": false,
       "lat": 32.0540869,
       "lon": 34.7970499,
+      "neighborhood": "yad_eliyahu",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -1599,7 +1632,7 @@
     },
     {
       "address_text": "Yefet St. Yafo Gimel South Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 5.83,
       "drive_minutes": 11.4,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1607,6 +1640,7 @@
       "is_sublet": false,
       "lat": 32.034948,
       "lon": 34.7477078,
+      "neighborhood": "yafo_gimel_neve_golan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1632,7 +1666,7 @@
     },
     {
       "address_text": "Tslilei HaNina St. 34 Nir Aviv Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 1.17,
       "drive_minutes": 2.6,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1640,6 +1674,7 @@
       "is_sublet": false,
       "lat": 32.0486067,
       "lon": 34.8121902,
+      "neighborhood": "nir_aviv",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1667,7 +1702,7 @@
     },
     {
       "address_text": "Sumkan St. 1 Giv'at ha-Tmarim-Yafo Dalet Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 5.05,
       "drive_minutes": 9.8,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1675,6 +1710,7 @@
       "is_sublet": false,
       "lat": 32.033818,
       "lon": 34.7577121,
+      "neighborhood": "yafo_d_givat_hatmarim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1700,7 +1736,7 @@
     },
     {
       "address_text": "Ma'apilei Egoz St. 102 Neve Khen Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 0.36,
       "drive_minutes": 2.0,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1708,6 +1744,7 @@
       "is_sublet": false,
       "lat": 32.0556528,
       "lon": 34.8077328,
+      "neighborhood": "neve_hen",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1731,7 +1768,7 @@
     },
     {
       "address_text": "HaShalom Road 97 Tel Khayim Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 0.64,
       "drive_minutes": 2.9,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1739,6 +1776,7 @@
       "is_sublet": false,
       "lat": 32.0622644,
       "lon": 34.8049128,
+      "neighborhood": "tel_haim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1765,7 +1803,7 @@
     },
     {
       "address_text": "Sderot Sheshet HaYamim 5 Neve Eli'ezer Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 1.29,
       "drive_minutes": 3.4,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1773,6 +1811,7 @@
       "is_sublet": false,
       "lat": 32.045925,
       "lon": 34.809567,
+      "neighborhood": "neve_eliezer_kfar_shalem_east",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1802,7 +1841,7 @@
     },
     {
       "address_text": "HaEtrog St. 23 Ajami Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 5.54,
       "drive_minutes": 11.2,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1810,6 +1849,7 @@
       "is_sublet": false,
       "lat": 32.0382935,
       "lon": 34.7494338,
+      "neighborhood": "ajami_and_givat_aliyah",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1837,7 +1877,7 @@
     },
     {
       "address_text": "Moshe Dayan Road 29 Ha-Tikva Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 0.88,
       "drive_minutes": 3.3,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1845,6 +1885,7 @@
       "is_sublet": false,
       "lat": 32.0499264,
       "lon": 34.7990595,
+      "neighborhood": "hatikva",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1869,7 +1910,7 @@
     },
     {
       "address_text": "Cordovero St. 4 Florentin Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 3.38,
       "drive_minutes": 9.3,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1877,6 +1918,7 @@
       "is_sublet": false,
       "lat": 32.0566569,
       "lon": 34.7682217,
+      "neighborhood": "florentin",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1907,7 +1949,7 @@
     },
     {
       "address_text": "Negba St. 30 Yad Eliyahu Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 0.64,
       "drive_minutes": 3.6,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1915,6 +1957,7 @@
       "is_sublet": false,
       "lat": 32.0541313,
       "lon": 34.7978839,
+      "neighborhood": "yad_eliyahu",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1936,7 +1979,7 @@
     },
     {
       "address_text": "Negba St. 30 Yad Eliyahu Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 0.64,
       "drive_minutes": 3.6,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1944,6 +1987,7 @@
       "is_sublet": false,
       "lat": 32.0541313,
       "lon": 34.7978839,
+      "neighborhood": "yad_eliyahu",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -1972,7 +2016,7 @@
     },
     {
       "address_text": "Kalman St. 23 Ha-Tikva Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 1.28,
       "drive_minutes": 4.9,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -1980,6 +2024,7 @@
       "is_sublet": false,
       "lat": 32.0496671,
       "lon": 34.793273,
+      "neighborhood": "hatikva",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2005,7 +2050,7 @@
     },
     {
       "address_text": "Bosem St. 34 Livne Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 1.35,
       "drive_minutes": 4.3,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -2013,6 +2058,7 @@
       "is_sublet": false,
       "lat": 32.0444996,
       "lon": 34.8059358,
+      "neighborhood": "livna_yedidya",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2038,7 +2084,7 @@
     },
     {
       "address_text": "Shivtei Israel St. 49 Jaffa Center Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 4.72,
       "drive_minutes": 10.5,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -2046,6 +2092,7 @@
       "is_sublet": false,
       "lat": 32.0464201,
       "lon": 34.7554401,
+      "neighborhood": "tzahalon",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2069,7 +2116,7 @@
     },
     {
       "address_text": "Korazim St. 13 Neve Sharet Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 8.0,
       "drive_minutes": 17.3,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -2077,6 +2124,7 @@
       "is_sublet": false,
       "lat": 32.1205959,
       "lon": 34.842928,
+      "neighborhood": "tel_aviv_yafo",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -2093,7 +2141,7 @@
     },
     {
       "address_text": "Ha-Lokhamim St. 53 Kholon Junction Industrial Zone Holon",
-      "city": "Holon",
+      "city": "תל אביב יפו",
       "distance_km": 3.91,
       "drive_minutes": 9.6,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -2101,6 +2149,7 @@
       "is_sublet": false,
       "lat": 32.0353511,
       "lon": 34.7709576,
+      "neighborhood": "tel_aviv_yafo",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2128,7 +2177,7 @@
     },
     {
       "address_text": "HaRav Yizkhak Yedidya Frenkel Florentin Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 3.0,
       "drive_minutes": 8.2,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -2136,6 +2185,7 @@
       "is_sublet": false,
       "lat": 32.0569984,
       "lon": 34.7722992,
+      "neighborhood": "florentin",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2157,7 +2207,7 @@
     },
     {
       "address_text": "Sderot Sheshet HaYamim 5 Neve Eli'ezer Tel Aviv-Yafo",
-      "city": "Tel Aviv-Yafo",
+      "city": "תל אביב יפו",
       "distance_km": 1.29,
       "drive_minutes": 3.4,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -2165,6 +2215,7 @@
       "is_sublet": false,
       "lat": 32.045925,
       "lon": 34.809567,
+      "neighborhood": "neve_eliezer_kfar_shalem_east",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2191,7 +2242,7 @@
     },
     {
       "address_text": "Boaz St. 5 Ha-Tikva Tel Aviv",
-      "city": "Tel Aviv",
+      "city": "תל אביב יפו",
       "distance_km": 1.31,
       "drive_minutes": 4.6,
       "first_seen_at": "2026-09-01T15:57:50.168517+00:00",
@@ -2199,6 +2250,7 @@
       "is_sublet": false,
       "lat": 32.0479328,
       "lon": 34.7947082,
+      "neighborhood": "hatikva",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2233,6 +2285,7 @@
       "is_sublet": false,
       "lat": 32.021606,
       "lon": 34.773252,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2261,6 +2314,7 @@
       "is_sublet": false,
       "lat": 32.083635,
       "lon": 34.823628,
+      "neighborhood": "ramat_gan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2295,6 +2349,7 @@
       "is_sublet": false,
       "lat": 32.028853,
       "lon": 34.7492,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2326,6 +2381,7 @@
       "is_sublet": false,
       "lat": 32.024417,
       "lon": 34.750275,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2352,6 +2408,7 @@
       "is_sublet": false,
       "lat": 32.020666,
       "lon": 34.760371,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2385,6 +2442,7 @@
       "is_sublet": false,
       "lat": 32.048944,
       "lon": 34.782418,
+      "neighborhood": "shapira",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2416,6 +2474,7 @@
       "is_sublet": false,
       "lat": 32.049703,
       "lon": 34.778715,
+      "neighborhood": "shapira",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2444,6 +2503,7 @@
       "is_sublet": false,
       "lat": 32.010525,
       "lon": 34.754021,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2478,6 +2538,7 @@
       "is_sublet": false,
       "lat": 32.048212,
       "lon": 34.758453,
+      "neighborhood": "tzahalon",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2508,6 +2569,7 @@
       "is_sublet": false,
       "lat": 32.016531,
       "lon": 34.777933,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2540,6 +2602,7 @@
       "is_sublet": false,
       "lat": 32.028135,
       "lon": 34.771275,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -2564,6 +2627,7 @@
       "is_sublet": false,
       "lat": 32.07962,
       "lon": 34.816046,
+      "neighborhood": "yahalom",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2592,6 +2656,7 @@
       "is_sublet": false,
       "lat": 32.052016,
       "lon": 34.790866,
+      "neighborhood": "hatikva",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -2616,6 +2681,7 @@
       "is_sublet": false,
       "lat": 32.084898,
       "lon": 34.810787,
+      "neighborhood": "hashmonaim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2648,6 +2714,7 @@
       "is_sublet": false,
       "lat": 32.046788,
       "lon": 34.799134,
+      "neighborhood": "livna_yedidya",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2683,6 +2750,7 @@
       "is_sublet": false,
       "lat": 32.017583,
       "lon": 34.791166,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2714,6 +2782,7 @@
       "is_sublet": false,
       "lat": 32.025879,
       "lon": 34.80869,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2745,6 +2814,7 @@
       "is_sublet": false,
       "lat": 32.021853,
       "lon": 34.780798,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2778,6 +2848,7 @@
       "is_sublet": false,
       "lat": 32.015716,
       "lon": 34.783448,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2809,6 +2880,7 @@
       "is_sublet": false,
       "lat": 32.052978,
       "lon": 34.808547,
+      "neighborhood": "neve_hen",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2839,6 +2911,7 @@
       "is_sublet": false,
       "lat": 32.030051,
       "lon": 34.80311,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -2863,6 +2936,7 @@
       "is_sublet": false,
       "lat": 32.05725,
       "lon": 34.772126,
+      "neighborhood": "florentin",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2893,6 +2967,7 @@
       "is_sublet": false,
       "lat": 32.070375,
       "lon": 34.834642,
+      "neighborhood": "ramat_amidar",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2925,6 +3000,7 @@
       "is_sublet": false,
       "lat": 32.032701,
       "lon": 34.76594,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2954,6 +3030,7 @@
       "is_sublet": false,
       "lat": 32.033063,
       "lon": 34.753265,
+      "neighborhood": "yafo_d_givat_hatmarim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -2989,6 +3066,7 @@
       "is_sublet": false,
       "lat": 32.023551,
       "lon": 34.759336,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -3013,6 +3091,7 @@
       "is_sublet": false,
       "lat": 32.076402,
       "lon": 34.824684,
+      "neighborhood": "ramat_yitzhak",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3047,6 +3126,7 @@
       "is_sublet": false,
       "lat": 32.110406,
       "lon": 34.818512,
+      "neighborhood": "tel_aviv_yafo",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3076,6 +3156,7 @@
       "is_sublet": false,
       "lat": 32.065381,
       "lon": 34.803753,
+      "neighborhood": "tel_haim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3108,6 +3189,7 @@
       "is_sublet": false,
       "lat": 32.042151,
       "lon": 34.762882,
+      "neighborhood": "neve_ofer",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3138,6 +3220,7 @@
       "is_sublet": false,
       "lat": 32.074917,
       "lon": 34.831319,
+      "neighborhood": "ramat_gan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3168,6 +3251,7 @@
       "is_sublet": false,
       "lat": 32.052287,
       "lon": 34.810738,
+      "neighborhood": "neve_hen",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3201,6 +3285,7 @@
       "is_sublet": false,
       "lat": 32.046611,
       "lon": 34.807738,
+      "neighborhood": "neve_eliezer_kfar_shalem_east",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3230,6 +3315,7 @@
       "is_sublet": false,
       "lat": 32.017754,
       "lon": 34.779535,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -3254,6 +3340,7 @@
       "is_sublet": false,
       "lat": 32.074814,
       "lon": 34.808674,
+      "neighborhood": "givatayim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3285,6 +3372,7 @@
       "is_sublet": false,
       "lat": 32.021304,
       "lon": 34.779874,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3317,6 +3405,7 @@
       "is_sublet": false,
       "lat": 32.013467,
       "lon": 34.742987,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3352,6 +3441,7 @@
       "is_sublet": false,
       "lat": 32.049527,
       "lon": 34.777478,
+      "neighborhood": "shapira",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -3376,6 +3466,7 @@
       "is_sublet": false,
       "lat": 32.016105,
       "lon": 34.744547,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3408,6 +3499,7 @@
       "is_sublet": false,
       "lat": 32.068509,
       "lon": 34.8385,
+      "neighborhood": "ramat_amidar",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3441,6 +3533,7 @@
       "is_sublet": false,
       "lat": 32.009922,
       "lon": 34.754042,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3472,6 +3565,7 @@
       "is_sublet": false,
       "lat": 32.058572,
       "lon": 34.773851,
+      "neighborhood": "neve_shaanan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3499,6 +3593,7 @@
       "is_sublet": false,
       "lat": 32.024552,
       "lon": 34.775454,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3534,6 +3629,7 @@
       "is_sublet": false,
       "lat": 32.008629,
       "lon": 34.758992,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3569,6 +3665,7 @@
       "is_sublet": false,
       "lat": 32.028495,
       "lon": 34.745398,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3598,6 +3695,7 @@
       "is_sublet": false,
       "lat": 32.014962,
       "lon": 34.797534,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3631,6 +3729,7 @@
       "is_sublet": false,
       "lat": 32.023521,
       "lon": 34.763812,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3663,6 +3762,7 @@
       "is_sublet": false,
       "lat": 32.058274,
       "lon": 34.781718,
+      "neighborhood": "neve_shaanan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3694,6 +3794,7 @@
       "is_sublet": false,
       "lat": 32.014766,
       "lon": 34.788092,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3729,6 +3830,7 @@
       "is_sublet": false,
       "lat": 32.026006,
       "lon": 34.750527,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -3753,6 +3855,7 @@
       "is_sublet": false,
       "lat": 32.050145,
       "lon": 34.788558,
+      "neighborhood": "hatikva",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3788,6 +3891,7 @@
       "is_sublet": false,
       "lat": 32.06101,
       "lon": 34.834576,
+      "neighborhood": "neve_yehoshua",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3823,6 +3927,7 @@
       "is_sublet": false,
       "lat": 32.020776,
       "lon": 34.781231,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3858,6 +3963,7 @@
       "is_sublet": false,
       "lat": 32.054662,
       "lon": 34.768443,
+      "neighborhood": "givat_herzl",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -3882,6 +3988,7 @@
       "is_sublet": false,
       "lat": 32.059849,
       "lon": 34.809474,
+      "neighborhood": "ramat_hatayasim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3916,6 +4023,7 @@
       "is_sublet": false,
       "lat": 32.016321,
       "lon": 34.747313,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3945,6 +4053,7 @@
       "is_sublet": false,
       "lat": 32.047835,
       "lon": 34.791832,
+      "neighborhood": "hatikva",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -3979,6 +4088,7 @@
       "is_sublet": false,
       "lat": 32.045492,
       "lon": 34.805888,
+      "neighborhood": "livna_yedidya",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4006,6 +4116,7 @@
       "is_sublet": false,
       "lat": 32.015316,
       "lon": 34.78485,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4037,6 +4148,7 @@
       "is_sublet": false,
       "lat": 32.009212,
       "lon": 34.751008,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -4061,6 +4173,7 @@
       "is_sublet": false,
       "lat": 32.013467,
       "lon": 34.742987,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4094,6 +4207,7 @@
       "is_sublet": false,
       "lat": 32.048043,
       "lon": 34.778438,
+      "neighborhood": "shapira",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -4118,6 +4232,7 @@
       "is_sublet": false,
       "lat": 32.048043,
       "lon": 34.778438,
+      "neighborhood": "shapira",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -4142,6 +4257,7 @@
       "is_sublet": false,
       "lat": 32.088102,
       "lon": 34.819327,
+      "neighborhood": "ramat_gan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4172,6 +4288,7 @@
       "is_sublet": false,
       "lat": 32.017047,
       "lon": 34.79782,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4205,6 +4322,7 @@
       "is_sublet": false,
       "lat": 32.060024,
       "lon": 34.825614,
+      "neighborhood": "azor_habiluim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4240,6 +4358,7 @@
       "is_sublet": false,
       "lat": 32.013469,
       "lon": 34.746528,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4270,6 +4389,7 @@
       "is_sublet": false,
       "lat": 32.045574,
       "lon": 34.791008,
+      "neighborhood": "ezra_haargazim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -4294,6 +4414,7 @@
       "is_sublet": false,
       "lat": 32.092739,
       "lon": 34.816416,
+      "neighborhood": "nahalat_ganim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4326,6 +4447,7 @@
       "is_sublet": false,
       "lat": 32.070412,
       "lon": 34.800474,
+      "neighborhood": "bitzaron_ramat_israel",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4359,6 +4481,7 @@
       "is_sublet": false,
       "lat": 32.023764,
       "lon": 34.77886,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4390,6 +4513,7 @@
       "is_sublet": false,
       "lat": 32.016292,
       "lon": 34.744239,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4419,6 +4543,7 @@
       "is_sublet": false,
       "lat": 32.064314,
       "lon": 34.804059,
+      "neighborhood": "tel_haim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4450,6 +4575,7 @@
       "is_sublet": false,
       "lat": 32.011647,
       "lon": 34.74616,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4484,6 +4610,7 @@
       "is_sublet": false,
       "lat": 32.058495,
       "lon": 34.782089,
+      "neighborhood": "neve_shaanan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4516,6 +4643,7 @@
       "is_sublet": false,
       "lat": 32.020664,
       "lon": 34.765916,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -4540,6 +4668,7 @@
       "is_sublet": false,
       "lat": 32.028513,
       "lon": 34.75581,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4573,6 +4702,7 @@
       "is_sublet": false,
       "lat": 32.016064,
       "lon": 34.760746,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4605,6 +4735,7 @@
       "is_sublet": false,
       "lat": 32.009897,
       "lon": 34.794327,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4637,6 +4768,7 @@
       "is_sublet": false,
       "lat": 32.012712,
       "lon": 34.763276,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4670,6 +4802,7 @@
       "is_sublet": false,
       "lat": 32.057195,
       "lon": 34.810705,
+      "neighborhood": "ramat_hatayasim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4705,6 +4838,7 @@
       "is_sublet": false,
       "lat": 32.009525,
       "lon": 34.769589,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4740,6 +4874,7 @@
       "is_sublet": false,
       "lat": 32.05315,
       "lon": 34.793292,
+      "neighborhood": "hatikva",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4769,6 +4904,7 @@
       "is_sublet": false,
       "lat": 32.025096,
       "lon": 34.810109,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4802,6 +4938,7 @@
       "is_sublet": false,
       "lat": 32.013582,
       "lon": 34.788223,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4832,6 +4969,7 @@
       "is_sublet": false,
       "lat": 32.064314,
       "lon": 34.804059,
+      "neighborhood": "tel_haim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4866,6 +5004,7 @@
       "is_sublet": false,
       "lat": 32.079018,
       "lon": 34.817741,
+      "neighborhood": "givatayim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -4890,6 +5029,7 @@
       "is_sublet": false,
       "lat": 32.007831,
       "lon": 34.750662,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4919,6 +5059,7 @@
       "is_sublet": false,
       "lat": 32.014571,
       "lon": 34.795784,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4952,6 +5093,7 @@
       "is_sublet": false,
       "lat": 32.04795,
       "lon": 34.792766,
+      "neighborhood": "hatikva",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -4985,6 +5127,7 @@
       "is_sublet": false,
       "lat": 32.026306,
       "lon": 34.773417,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5017,6 +5160,7 @@
       "is_sublet": false,
       "lat": 32.009008,
       "lon": 34.756477,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5047,6 +5191,7 @@
       "is_sublet": false,
       "lat": 32.024667,
       "lon": 34.80899,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5081,6 +5226,7 @@
       "is_sublet": false,
       "lat": 32.090811,
       "lon": 34.821712,
+      "neighborhood": "nahalat_ganim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5112,6 +5258,7 @@
       "is_sublet": false,
       "lat": 32.07363,
       "lon": 34.781071,
+      "neighborhood": "old_north_south",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5143,6 +5290,7 @@
       "is_sublet": false,
       "lat": 32.07502,
       "lon": 34.781457,
+      "neighborhood": "old_north_south",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5176,6 +5324,7 @@
       "is_sublet": false,
       "lat": 32.011649,
       "lon": 34.794574,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5206,6 +5355,7 @@
       "is_sublet": false,
       "lat": 32.021121,
       "lon": 34.744052,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5241,6 +5391,7 @@
       "is_sublet": false,
       "lat": 32.022492,
       "lon": 34.77699,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5271,6 +5422,7 @@
       "is_sublet": false,
       "lat": 32.022777,
       "lon": 34.782964,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5304,6 +5456,7 @@
       "is_sublet": false,
       "lat": 32.0751488571429,
       "lon": 34.8294294285714,
+      "neighborhood": "ramat_gan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5335,6 +5488,7 @@
       "is_sublet": false,
       "lat": 32.0750096601942,
       "lon": 34.8138990194175,
+      "neighborhood": "givatayim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5365,6 +5519,7 @@
       "is_sublet": false,
       "lat": 32.0567328333333,
       "lon": 34.76875425,
+      "neighborhood": "florentin",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5400,6 +5555,7 @@
       "is_sublet": false,
       "lat": 32.0757383532934,
       "lon": 34.8104081317365,
+      "neighborhood": "borochov",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5440,6 +5596,7 @@
       "is_sublet": false,
       "lat": 32.020275,
       "lon": 34.746699,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5473,6 +5630,7 @@
       "is_sublet": false,
       "lat": 32.0530047297297,
       "lon": 34.7676215945946,
+      "neighborhood": "givat_herzl",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5504,6 +5662,7 @@
       "is_sublet": false,
       "lat": 32.0205130384615,
       "lon": 34.7478143076923,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5533,6 +5692,7 @@
       "is_sublet": false,
       "lat": 32.087667,
       "lon": 34.797374,
+      "neighborhood": "tzamarot_ayalon",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5565,6 +5725,7 @@
       "is_sublet": false,
       "lat": 32.03928,
       "lon": 34.762997,
+      "neighborhood": "neve_ofer",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5597,6 +5758,7 @@
       "is_sublet": false,
       "lat": 32.05618,
       "lon": 34.777678,
+      "neighborhood": "neve_shaanan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5626,6 +5788,7 @@
       "is_sublet": false,
       "lat": 32.0502888823529,
       "lon": 34.7766796588235,
+      "neighborhood": "shapira",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -5650,6 +5813,7 @@
       "is_sublet": false,
       "lat": 32.058119516129,
       "lon": 34.7640729516129,
+      "neighborhood": "neve_tzedek",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5683,6 +5847,7 @@
       "is_sublet": false,
       "lat": 32.081066375,
       "lon": 34.802710625,
+      "neighborhood": "harishonim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5714,6 +5879,7 @@
       "is_sublet": false,
       "lat": 32.0497761153846,
       "lon": 34.8195522692308,
+      "neighborhood": "ramat_shikma",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5747,6 +5913,7 @@
       "is_sublet": false,
       "lat": 32.0776302,
       "lon": 34.8242076,
+      "neighborhood": "ramat_yitzhak",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5780,6 +5947,7 @@
       "is_sublet": false,
       "lat": 32.0217004333333,
       "lon": 34.7706510333333,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5815,6 +5983,7 @@
       "is_sublet": false,
       "lat": 32.0740088235294,
       "lon": 34.8284215588235,
+      "neighborhood": "ramat_gan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5841,6 +6010,7 @@
       "is_sublet": false,
       "lat": 32.092989,
       "lon": 34.81914,
+      "neighborhood": "nahalat_ganim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5872,6 +6042,7 @@
       "is_sublet": false,
       "lat": 32.0255784673913,
       "lon": 34.7485546521739,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5902,6 +6073,7 @@
       "is_sublet": false,
       "lat": 32.01148925,
       "lon": 34.7608865625,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5933,6 +6105,7 @@
       "is_sublet": false,
       "lat": 32.013199,
       "lon": 34.747733,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -5957,6 +6130,7 @@
       "is_sublet": false,
       "lat": 32.022865,
       "lon": 34.7763198505747,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -5991,6 +6165,7 @@
       "is_sublet": false,
       "lat": 32.029991,
       "lon": 34.77326,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -6015,6 +6190,7 @@
       "is_sublet": false,
       "lat": 32.059177,
       "lon": 34.77935,
+      "neighborhood": "neve_shaanan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6046,6 +6222,7 @@
       "is_sublet": false,
       "lat": 32.0234365789474,
       "lon": 34.7729447894737,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6075,6 +6252,7 @@
       "is_sublet": false,
       "lat": 32.02240909375,
       "lon": 34.7485298125,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -6099,6 +6277,7 @@
       "is_sublet": false,
       "lat": 32.027637,
       "lon": 34.748089,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6130,6 +6309,7 @@
       "is_sublet": false,
       "lat": 32.00564,
       "lon": 34.785874,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -6154,6 +6334,7 @@
       "is_sublet": false,
       "lat": 32.0185689350649,
       "lon": 34.7394265584416,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6184,6 +6365,7 @@
       "is_sublet": false,
       "lat": 32.0218966756757,
       "lon": 34.7783230810811,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6218,6 +6400,7 @@
       "is_sublet": false,
       "lat": 32.059177,
       "lon": 34.77935,
+      "neighborhood": "neve_shaanan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6249,6 +6432,7 @@
       "is_sublet": false,
       "lat": 32.06678,
       "lon": 34.83067,
+      "neighborhood": "ramat_gan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -6273,6 +6457,7 @@
       "is_sublet": false,
       "lat": 32.0293200769231,
       "lon": 34.7459610769231,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -6297,6 +6482,7 @@
       "is_sublet": false,
       "lat": 32.086038,
       "lon": 34.802344,
+      "neighborhood": "bursa",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6323,6 +6509,7 @@
       "is_sublet": false,
       "lat": 32.0224307647059,
       "lon": 34.7411384117647,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6353,6 +6540,7 @@
       "is_sublet": false,
       "lat": 32.02503,
       "lon": 34.781963,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6388,6 +6576,7 @@
       "is_sublet": false,
       "lat": 32.029991,
       "lon": 34.77326,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6420,6 +6609,7 @@
       "is_sublet": false,
       "lat": 32.086360547619,
       "lon": 34.8007004761905,
+      "neighborhood": "bursa",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6451,6 +6641,7 @@
       "is_sublet": false,
       "lat": 32.043406,
       "lon": 34.767339,
+      "neighborhood": "neve_ofer",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6484,6 +6675,7 @@
       "is_sublet": false,
       "lat": 32.041302,
       "lon": 34.762721,
+      "neighborhood": "neve_ofer",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6516,6 +6708,7 @@
       "is_sublet": false,
       "lat": 32.0539945260417,
       "lon": 34.7935360625,
+      "neighborhood": "yad_eliyahu",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6548,6 +6741,7 @@
       "is_sublet": false,
       "lat": 32.0552614375,
       "lon": 34.7769851458333,
+      "neighborhood": "neve_shaanan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6579,6 +6773,7 @@
       "is_sublet": false,
       "lat": 32.070094,
       "lon": 34.828384,
+      "neighborhood": "ramat_gan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6607,6 +6802,7 @@
       "is_sublet": false,
       "lat": 32.0782183333333,
       "lon": 34.8262456,
+      "neighborhood": "aliot",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6635,6 +6831,7 @@
       "is_sublet": false,
       "lat": 32.0668048461539,
       "lon": 34.8298398461539,
+      "neighborhood": "ramat_gan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6668,6 +6865,7 @@
       "is_sublet": false,
       "lat": 32.06906,
       "lon": 34.823071,
+      "neighborhood": "ramat_gan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6700,6 +6898,7 @@
       "is_sublet": false,
       "lat": 32.05421,
       "lon": 34.777803,
+      "neighborhood": "shapira",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6736,6 +6935,7 @@
       "is_sublet": false,
       "lat": 32.013199,
       "lon": 34.747733,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6767,6 +6967,7 @@
       "is_sublet": false,
       "lat": 32.0246925357143,
       "lon": 34.7618329285714,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6805,6 +7006,7 @@
       "is_sublet": false,
       "lat": 32.0198471052632,
       "lon": 34.7802492631579,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6837,6 +7039,7 @@
       "is_sublet": false,
       "lat": 32.0670913888889,
       "lon": 34.8338587222222,
+      "neighborhood": "ramat_amidar",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6874,6 +7077,7 @@
       "is_sublet": false,
       "lat": 32.060106,
       "lon": 34.8185668461539,
+      "neighborhood": "givatayim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6903,6 +7107,7 @@
       "is_sublet": false,
       "lat": 32.05909,
       "lon": 34.779462,
+      "neighborhood": "neve_shaanan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6933,6 +7138,7 @@
       "is_sublet": false,
       "lat": 32.053008,
       "lon": 34.788787,
+      "neighborhood": "hatikva",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6960,6 +7166,7 @@
       "is_sublet": false,
       "lat": 32.0176658823529,
       "lon": 34.7608077647059,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -6992,6 +7199,7 @@
       "is_sublet": false,
       "lat": 32.008105,
       "lon": 34.786089,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7023,6 +7231,7 @@
       "is_sublet": false,
       "lat": 32.070137,
       "lon": 34.773903,
+      "neighborhood": "lev_tel_aviv",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7054,6 +7263,7 @@
       "is_sublet": false,
       "lat": 32.021405,
       "lon": 34.777911,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7088,6 +7298,7 @@
       "is_sublet": false,
       "lat": 32.0609678095238,
       "lon": 34.8197697142857,
+      "neighborhood": "azor_habiluim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7119,6 +7330,7 @@
       "is_sublet": false,
       "lat": 32.0168764724409,
       "lon": 34.748938015748,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7153,6 +7365,7 @@
       "is_sublet": false,
       "lat": 32.0220224285714,
       "lon": 34.7524031428571,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7183,6 +7396,7 @@
       "is_sublet": false,
       "lat": 32.0211745462185,
       "lon": 34.7788665882353,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7218,6 +7432,7 @@
       "is_sublet": false,
       "lat": 32.0783043518518,
       "lon": 34.8163827962963,
+      "neighborhood": "givatayim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7247,6 +7462,7 @@
       "is_sublet": false,
       "lat": 32.0397907916667,
       "lon": 34.749204625,
+      "neighborhood": "ajami_and_givat_aliyah",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7279,6 +7495,7 @@
       "is_sublet": false,
       "lat": 32.0061245681818,
       "lon": 34.7903133636364,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7313,6 +7530,7 @@
       "is_sublet": false,
       "lat": 32.023551,
       "lon": 34.759336,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7342,6 +7560,7 @@
       "is_sublet": false,
       "lat": 32.056824,
       "lon": 34.790809,
+      "neighborhood": "yad_eliyahu",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7382,6 +7601,7 @@
       "is_sublet": false,
       "lat": 32.007181,
       "lon": 34.7634873225806,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7414,6 +7634,7 @@
       "is_sublet": false,
       "lat": 32.026137,
       "lon": 34.743334,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7443,6 +7664,7 @@
       "is_sublet": false,
       "lat": 32.0744797848101,
       "lon": 34.8234164177215,
+      "neighborhood": "ramat_yitzhak",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7476,6 +7698,7 @@
       "is_sublet": false,
       "lat": 32.06883,
       "lon": 34.836726,
+      "neighborhood": "ramat_amidar",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7516,6 +7739,7 @@
       "is_sublet": false,
       "lat": 32.0226345319149,
       "lon": 34.7776314255319,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -7540,6 +7764,7 @@
       "is_sublet": false,
       "lat": 32.013199,
       "lon": 34.747733,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7566,6 +7791,7 @@
       "is_sublet": false,
       "lat": 32.061364308642,
       "lon": 34.7715379074074,
+      "neighborhood": "lev_tel_aviv",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7599,6 +7825,7 @@
       "is_sublet": false,
       "lat": 32.119229,
       "lon": 34.840652,
+      "neighborhood": "tel_aviv_yafo",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7631,6 +7858,7 @@
       "is_sublet": false,
       "lat": 32.017971,
       "lon": 34.749025,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7661,6 +7889,7 @@
       "is_sublet": false,
       "lat": 32.0792834,
       "lon": 34.8225837333333,
+      "neighborhood": "ramat_gan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7697,6 +7926,7 @@
       "is_sublet": false,
       "lat": 32.0237783125,
       "lon": 34.7592428125,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7737,6 +7967,7 @@
       "is_sublet": false,
       "lat": 32.057711,
       "lon": 34.768945,
+      "neighborhood": "florentin",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7765,6 +7996,7 @@
       "is_sublet": false,
       "lat": 32.016475,
       "lon": 34.763183,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7794,6 +8026,7 @@
       "is_sublet": false,
       "lat": 32.084603,
       "lon": 34.810371,
+      "neighborhood": "hashmonaim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7826,6 +8059,7 @@
       "is_sublet": false,
       "lat": 32.0887863333333,
       "lon": 34.8052451111111,
+      "neighborhood": "haruzim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7857,6 +8091,7 @@
       "is_sublet": false,
       "lat": 32.074991,
       "lon": 34.825493,
+      "neighborhood": "aliot",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7889,6 +8124,7 @@
       "is_sublet": false,
       "lat": 32.1204199375,
       "lon": 34.841785,
+      "neighborhood": "tel_aviv_yafo",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7919,6 +8155,7 @@
       "is_sublet": false,
       "lat": 32.018226,
       "lon": 34.773074,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -7943,6 +8180,7 @@
       "is_sublet": false,
       "lat": 32.0899285,
       "lon": 34.8157231111111,
+      "neighborhood": "ramat_gan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -7967,6 +8205,7 @@
       "is_sublet": false,
       "lat": 32.013534,
       "lon": 34.759159,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -7999,6 +8238,7 @@
       "is_sublet": false,
       "lat": 32.0249567714286,
       "lon": 34.7467046571429,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -8030,6 +8270,7 @@
       "is_sublet": false,
       "lat": 32.0179064545455,
       "lon": 34.7517300909091,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -8063,6 +8304,7 @@
       "is_sublet": false,
       "lat": 32.021235546875,
       "lon": 34.7443959479167,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -8087,6 +8329,7 @@
       "is_sublet": false,
       "lat": 32.080879,
       "lon": 34.810197,
+      "neighborhood": "hashmonaim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -8120,6 +8363,7 @@
       "is_sublet": false,
       "lat": 32.056608,
       "lon": 34.807776,
+      "neighborhood": "ramat_hatayasim",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -8144,6 +8388,7 @@
       "is_sublet": false,
       "lat": 32.0143430645161,
       "lon": 34.7464783548387,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -8175,6 +8420,7 @@
       "is_sublet": false,
       "lat": 32.077008,
       "lon": 34.822015,
+      "neighborhood": "ramat_yitzhak",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [],
@@ -8199,6 +8445,7 @@
       "is_sublet": false,
       "lat": 32.0293200769231,
       "lon": 34.7459610769231,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -8228,6 +8475,7 @@
       "is_sublet": false,
       "lat": 32.024744,
       "lon": 34.773898,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -8261,6 +8509,7 @@
       "is_sublet": false,
       "lat": 32.0128098723404,
       "lon": 34.7586483617021,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -8293,6 +8542,7 @@
       "is_sublet": false,
       "lat": 32.023579125,
       "lon": 34.7539011875,
+      "neighborhood": null,
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -8323,6 +8573,7 @@
       "is_sublet": false,
       "lat": 32.0769555,
       "lon": 34.8262802916667,
+      "neighborhood": "aliot",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
@@ -8356,6 +8607,7 @@
       "is_sublet": false,
       "lat": 32.059314,
       "lon": 34.780111,
+      "neighborhood": "neve_shaanan",
       "occupancy": "whole",
       "phone_hash": null,
       "photos": [
