@@ -46,6 +46,17 @@ class HealthTracker:
             entry["detail"] = detail
         self._store.save(HEALTH, self._data)
 
+    def note(self, source: str, detail: str | None) -> None:
+        """Set a source's detail without touching its success/failure counts.
+
+        Used after a failure has already been recorded, to say what the
+        portal shows in the source's place (cached listings).
+        """
+        if source not in self._data:
+            return
+        self._data[source]["detail"] = detail
+        self._store.save(HEALTH, self._data)
+
     def report(self) -> dict:
         return self._data
 

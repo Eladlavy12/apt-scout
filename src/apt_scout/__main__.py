@@ -169,6 +169,10 @@ def should_build_portal(report: RunReport, sources_config: dict) -> bool:
     """
     if report.fetched > 0:
         return True
+    # Every source failed, but fresh carry-forward listings were restored:
+    # rebuilding publishes them (and, later, prunes them once they expire).
+    if report.restored:
+        return True
     enabled = [
         name
         for name, config in sources_config.items()

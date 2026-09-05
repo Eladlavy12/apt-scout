@@ -173,6 +173,101 @@ class TestStaleCacheIsNotRestored:
         assert store.load(PORTAL_CACHE_META, {})["yad2"] == (T0 + timedelta(hours=1)).isoformat()
 
 
+class TestRobustness:
+    def _fail_run(self, store, now, **kwargs):
+        return run(
+            [StubAdapter("yad2", error="HTTP 403"), StubAdapter("komo", [listing("komo", "k1")])],
+            store,
+            now=now,
+            **kwargs,
+        )
+
+    def test_a_naive_now_does_not_crash_the_run(self, tmp_path):
+        store = StateStore(tmp_path)
+        seed(store)
+        report = self._fail_run(store, now=datetime(2026, 9, 5, 11, 0))
+        assert report.restored == {"yad2": 1}
+
+    def test_a_corrupt_meta_file_is_ignored(self, tmp_path):
+        store = StateStore(tmp_path)
+        seed(store)
+        store.save(PORTAL_CACHE_META, ["garbage"])
+        report = self._fail_run(store, now=T0 + timedelta(hours=1))
+        assert report.restored == {}
+        assert "yad2" in report.errors
+
+    def test_minutes_of_clock_skew_still_restore(self, tmp_path):
+        store = StateStore(tmp_path)
+        seed(store)
+        report = self._fail_run(store, now=T0 - timedelta(minutes=5))
+        assert report.restored == {"yad2": 1}
+
+    def test_a_timestamp_far_in_the_future_is_not_trusted(self, tmp_path):
+        store = StateStore(tmp_path)
+        seed(store)
+        report = self._fail_run(store, now=T0 - timedelta(hours=5))
+        assert report.restored == {}
+
+    def test_the_failure_is_recorded_even_if_the_cache_write_breaks(self, tmp_path, monkeypatch):
+        store = StateStore(tmp_path)
+        seed(store)
+        original = store.save
+
+        def flaky(name, data):
+            if name == PORTAL_CACHE:
+                raise OSError("disk full")
+            original(name, data)
+
+        monkeypatch.setattr(store, "save", flaky)
+        try:
+            self._fail_run(store, now=T0 + timedelta(hours=1))
+        except OSError:
+            pass
+        assert HealthTracker(store).report()["yad2"]["consecutive_failures"] == 1
+
+
+class TestPortalBuildDecision:
+    def test_an_all_failed_run_with_restored_listings_rebuilds_the_portal(self, tmp_path):
+        from apt_scout.__main__ import should_build_portal
+
+        store = StateStore(tmp_path)
+        seed(store)
+        report = run(
+            [StubAdapter("yad2", error="HTTP 403"), StubAdapter("komo", error="HTTP 403")],
+            store,
+            now=T0 + timedelta(hours=1),
+        )
+        assert report.fetched == 0
+        assert report.restored == {"yad2": 1, "komo": 1}
+        assert should_build_portal(report, SOURCES) is True
+
+    def test_an_all_failed_run_with_nothing_to_restore_keeps_the_old_portal(self, tmp_path):
+        from apt_scout.__main__ import should_build_portal
+
+        store = StateStore(tmp_path)
+        seed(store)
+        report = run(
+            [StubAdapter("yad2", error="HTTP 403"), StubAdapter("komo", error="HTTP 403")],
+            store,
+            now=T0 + timedelta(hours=30),
+        )
+        assert report.restored == {}
+        assert should_build_portal(report, SOURCES) is False
+
+    def test_a_restored_listing_clusters_with_a_fresh_one(self, tmp_path):
+        store = StateStore(tmp_path)
+        run([StubAdapter("yad2", [Listing(source="yad2", source_id="1", url="https://yad2/1", raw_text="טל 052-1234567", price=4800, rooms=3.0, occupancy=Occupancy.WHOLE)])], store, now=T0)
+        fresh = Listing(source="komo", source_id="k9", url="https://komo/k9", raw_text="לפרטים 052-1234567", price=4800, rooms=3.0, occupancy=Occupancy.WHOLE)
+        report = run(
+            [StubAdapter("yad2", error="HTTP 403"), StubAdapter("komo", [fresh])],
+            store,
+            now=T0 + timedelta(hours=1),
+        )
+        pooled = [item for item in report.listings if set(item.sources) == {"yad2", "komo"}]
+        assert len(pooled) == 1
+        assert pooled[0].first_seen_at == T0
+
+
 class TestHealthDetailOnFailure:
     def test_a_failure_can_carry_a_detail(self, tmp_path):
         tracker = HealthTracker(StateStore(tmp_path))

@@ -105,6 +105,10 @@ def run_pipeline(
     After a confirmed send, every member id is marked notified at once.
     """
     now = now or datetime.now(timezone.utc)
+    if now.tzinfo is None:
+        # Cache timestamps are aware; a naive `now` from a caller must not
+        # turn into a TypeError deep in the restore step.
+        now = now.replace(tzinfo=timezone.utc)
     enrichers = enrichers or []
     health = HealthTracker(store)
     report = RunReport()
@@ -112,8 +116,9 @@ def run_pipeline(
     collected: list[Listing] = []
     gate_skipped: list[str] = []
     fetched_ok: set[str] = set()
-    # Failures are recorded in health only after the restore decision below,
-    # so the entry can say what the portal shows in the source's place.
+    # Failures are recorded in health immediately (a broken scraper must be
+    # visible even if something later in the run goes wrong); the restore
+    # step below only adds a detail saying what the portal shows instead.
     failures: dict[str, str] = {}
     for adapter in adapters:
         config = sources_config.get(adapter.name, {})
@@ -133,6 +138,7 @@ def run_pipeline(
             message = f"{type(exc).__name__}: {exc}"
             report.errors[adapter.name] = message
             failures[adapter.name] = message
+            health.record(adapter.name, ok=False, error=message)
             continue
         finally:
             # The fetch was attempted either way: a source that raises must
@@ -144,6 +150,7 @@ def run_pipeline(
         if result.error:
             report.errors[adapter.name] = result.error
             failures[adapter.name] = result.error
+            health.record(adapter.name, ok=False, error=result.error)
             continue
 
         health.record(adapter.name, ok=True, detail=result.detail)
@@ -222,7 +229,13 @@ def run_pipeline(
             return None
         if cached_at.tzinfo is None:
             cached_at = cached_at.replace(tzinfo=timezone.utc)
-        return (now - cached_at).total_seconds() / 3600
+        # Minutes of clock skew between two runners must not read as "from
+        # the future" and drop a brand-new cache; anything beyond an hour
+        # backwards is a bad timestamp and is not trusted.
+        age = (now - cached_at).total_seconds() / 3600
+        if age < -1:
+            return None
+        return max(age, 0.0)
 
     def _restore(source: str) -> list[Listing]:
         entries = cache.get(source, [])
@@ -240,17 +253,19 @@ def run_pipeline(
     for source in gate_skipped:
         restored.extend(_restore(source))
 
-    for source, message in failures.items():
+    for source in failures:
         age = _cache_age_hours(source)
-        kept: list[Listing] = []
-        if age is not None and 0 <= age <= max_stale_hours:
-            kept = _restore(source)
-        detail = None
-        if kept:
-            restored.extend(kept)
-            report.restored[source] = len(kept)
-            detail = f"מוצגות {len(kept)} מודעות מהריצה האחרונה שהצליחה (לפני {age:.0f} שע')"
-        health.record(source, ok=False, error=message, detail=detail)
+        if age is None or age > max_stale_hours:
+            continue
+        kept = _restore(source)
+        if not kept:
+            continue
+        restored.extend(kept)
+        report.restored[source] = len(kept)
+        health.note(
+            source,
+            f"מוצגות {len(kept)} מודעות מהריצה האחרונה שהצליחה (לפני {age:.0f} שע')",
+        )
 
     clusters = ClusterEngine().cluster(enriched + restored, cluster_salt)
 
