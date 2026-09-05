@@ -18,6 +18,14 @@ Enricher = Callable[[Listing], Listing]
 # listings, persisted so a cadence-skipped source still contributes to
 # clustering and the portal (see run_pipeline's docstring).
 PORTAL_CACHE = "portal_cache"
+# When each source's cache entry was written (ISO timestamps), so a failed
+# source's last good listings can be kept for a bounded time and no longer.
+PORTAL_CACHE_META = "portal_cache_meta"
+
+# How long a failed source's last successful listings stay in the portal.
+# Long enough to ride out the PC being off overnight (the yad2 feed) or a
+# day-long block, short enough that a dead source does not show week-old ads.
+MAX_STALE_HOURS = 24.0
 
 # Notifications are exactly-once and pooled at the cluster level, not the
 # per-listing level: one alert per apartment regardless of how many sources
@@ -39,6 +47,9 @@ class RunReport:
     # succeeded, errored, or raised). A cadence-skipped source is NOT in here;
     # should_build_portal uses that to tell "nothing ran" from "nothing found".
     attempted: list[str] = field(default_factory=list)
+    # Sources that failed this run but whose last good listings were kept in
+    # the portal from the carry-forward cache, with how many were restored.
+    restored: dict[str, int] = field(default_factory=dict)
 
 
 def run_pipeline(
@@ -53,6 +64,7 @@ def run_pipeline(
     gate: Any | None = None,
     cluster_salt: str = "",
     max_alerts_per_run: int = MAX_ALERTS_PER_RUN,
+    max_stale_hours: float = MAX_STALE_HOURS,
 ) -> RunReport:
     """Fetch, enrich, cluster, filter, and notify for one scheduled run.
 
@@ -77,6 +89,13 @@ def run_pipeline(
     are not re-fetched, re-enriched, or re-counted: they do not contribute to
     `report.fetched`/`report.new` and never re-stamp seen state.
 
+    A source that was attempted and FAILED is restored the same way, but only
+    while its cache entry is younger than `max_stale_hours`: the portal keeps
+    showing yesterday's yad2 listings while the PC feed is stale, yet a source
+    that has been dead for days drops out instead of showing stale ads. The
+    failure is still recorded as a failure; its health detail says how many
+    cached listings are being shown.
+
     Listings are clustered (cross-source dedup) after enrichment and before
     filtering: filtering, notification, and the portal all operate on one
     canonical listing per apartment, never on a raw per-source post. A
@@ -86,6 +105,10 @@ def run_pipeline(
     After a confirmed send, every member id is marked notified at once.
     """
     now = now or datetime.now(timezone.utc)
+    if now.tzinfo is None:
+        # Cache timestamps are aware; a naive `now` from a caller must not
+        # turn into a TypeError deep in the restore step.
+        now = now.replace(tzinfo=timezone.utc)
     enrichers = enrichers or []
     health = HealthTracker(store)
     report = RunReport()
@@ -93,6 +116,10 @@ def run_pipeline(
     collected: list[Listing] = []
     gate_skipped: list[str] = []
     fetched_ok: set[str] = set()
+    # Failures are recorded in health immediately (a broken scraper must be
+    # visible even if something later in the run goes wrong); the restore
+    # step below only adds a detail saying what the portal shows instead.
+    failures: dict[str, str] = {}
     for adapter in adapters:
         config = sources_config.get(adapter.name, {})
         if not config.get("enabled", True):
@@ -110,6 +137,7 @@ def run_pipeline(
         except Exception as exc:  # noqa: BLE001 - isolation is the whole point
             message = f"{type(exc).__name__}: {exc}"
             report.errors[adapter.name] = message
+            failures[adapter.name] = message
             health.record(adapter.name, ok=False, error=message)
             continue
         finally:
@@ -121,6 +149,7 @@ def run_pipeline(
 
         if result.error:
             report.errors[adapter.name] = result.error
+            failures[adapter.name] = result.error
             health.record(adapter.name, ok=False, error=result.error)
             continue
 
@@ -174,27 +203,69 @@ def run_pipeline(
     # Carry-forward cache: replace only the sources that actually fetched
     # this run; a skipped (or errored) source keeps its previous entry.
     cache = store.load(PORTAL_CACHE, {})
+    cache_meta = store.load(PORTAL_CACHE_META, {})
+    if not isinstance(cache_meta, dict):
+        cache_meta = {}
     for source in fetched_ok:
         cache[source] = [
             serialise_listing(item) for item in enriched if item.source == source
         ]
+        cache_meta[source] = now.isoformat()
     store.save(PORTAL_CACHE, cache)
+    store.save(PORTAL_CACHE_META, cache_meta)
 
-    # Restore cached listings for cadence-skipped sources. They are already
-    # enriched and already seen (their seen state was stamped the run they
-    # were fetched), so they merge in only AFTER the fetched/new counting -
-    # they never enter `new_seen`, so they can't inflate `new` or re-stamp
-    # seen state.
-    restored: list[Listing] = []
-    for source in gate_skipped:
+    # Restore cached listings for cadence-skipped sources, and for failed
+    # sources whose cache is still fresh enough. They are already enriched and
+    # already seen (their seen state was stamped the run they were fetched),
+    # so they merge in only AFTER the fetched/new counting - they never enter
+    # `new_seen`, so they can't inflate `new` or re-stamp seen state.
+    def _cache_age_hours(source: str) -> float | None:
+        raw_time = cache_meta.get(source)
+        if not isinstance(raw_time, str):
+            return None  # pre-upgrade cache: age unknown, so not trusted
+        try:
+            cached_at = datetime.fromisoformat(raw_time)
+        except ValueError:
+            return None
+        if cached_at.tzinfo is None:
+            cached_at = cached_at.replace(tzinfo=timezone.utc)
+        # Minutes of clock skew between two runners must not read as "from
+        # the future" and drop a brand-new cache; anything beyond an hour
+        # backwards is a bad timestamp and is not trusted.
+        age = (now - cached_at).total_seconds() / 3600
+        if age < -1:
+            return None
+        return max(age, 0.0)
+
+    def _restore(source: str) -> list[Listing]:
         entries = cache.get(source, [])
         if not isinstance(entries, list):
-            continue  # wrong-shaped cache value must not fail the run
+            return []  # wrong-shaped cache value must not fail the run
+        items: list[Listing] = []
         for raw in entries:
             try:
-                restored.append(deserialise_listing(raw))
+                items.append(deserialise_listing(raw))
             except (TypeError, ValueError, KeyError):
                 continue  # one corrupt cache entry must not fail the run
+        return items
+
+    restored: list[Listing] = []
+    for source in gate_skipped:
+        restored.extend(_restore(source))
+
+    for source in failures:
+        age = _cache_age_hours(source)
+        if age is None or age > max_stale_hours:
+            continue
+        kept = _restore(source)
+        if not kept:
+            continue
+        restored.extend(kept)
+        report.restored[source] = len(kept)
+        health.note(
+            source,
+            f"מוצגות {len(kept)} מודעות מהריצה האחרונה שהצליחה (לפני {age:.0f} שע')",
+        )
 
     clusters = ClusterEngine().cluster(enriched + restored, cluster_salt)
 

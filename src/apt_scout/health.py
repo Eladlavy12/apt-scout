@@ -41,7 +41,20 @@ class HealthTracker:
             entry["last_failure"] = now
             entry["consecutive_failures"] += 1
             entry["last_error"] = error
-            entry["detail"] = None
+            # A failure normally clears the success detail, but the pipeline
+            # may pass one to say what is being shown instead (cached listings).
+            entry["detail"] = detail
+        self._store.save(HEALTH, self._data)
+
+    def note(self, source: str, detail: str | None) -> None:
+        """Set a source's detail without touching its success/failure counts.
+
+        Used after a failure has already been recorded, to say what the
+        portal shows in the source's place (cached listings).
+        """
+        if source not in self._data:
+            return
+        self._data[source]["detail"] = detail
         self._store.save(HEALTH, self._data)
 
     def report(self) -> dict:
