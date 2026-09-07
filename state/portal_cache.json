@@ -642,6 +642,33 @@
   ],
   "komo": [
     {
+      "address_text": "תל אביב יפו, פלורנטין, המשביר 5",
+      "city": "תל אביב יפו",
+      "distance_km": 3.13,
+      "drive_minutes": 7.7,
+      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
+      "floor": null,
+      "is_sublet": false,
+      "lat": 32.060281,
+      "lon": 34.771128,
+      "neighborhood": "florentin",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33106329&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 3800,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 35.0,
+      "source": "komo",
+      "source_id": "4779844",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4779844"
+    },
+    {
       "address_text": "תל אביב יפו, קריית שלום, בורמה 38",
       "city": "תל אביב יפו",
       "distance_km": 3.33,
@@ -964,33 +991,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4905616"
-    },
-    {
-      "address_text": "תל אביב יפו, פלורנטין, המשביר 5",
-      "city": "תל אביב יפו",
-      "distance_km": 3.13,
-      "drive_minutes": 7.7,
-      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
-      "floor": null,
-      "is_sublet": false,
-      "lat": 32.060281,
-      "lon": 34.771128,
-      "neighborhood": "florentin",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33062783&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 3800,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 35.0,
-      "source": "komo",
-      "source_id": "4779844",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4779844"
     },
     {
       "address_text": "תל אביב יפו, קריית שלום, קמינסקה 6",
