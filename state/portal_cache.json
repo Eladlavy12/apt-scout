@@ -655,6 +655,33 @@
   ],
   "komo": [
     {
+      "address_text": "תל אביב יפו, נווה גולן, בת יפתח 187",
+      "city": "תל אביב יפו",
+      "distance_km": null,
+      "drive_minutes": null,
+      "first_seen_at": "2026-09-06T15:00:33.811811+00:00",
+      "floor": 2,
+      "is_sublet": false,
+      "lat": null,
+      "lon": null,
+      "neighborhood": "tel_aviv_yafo",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33108552&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 4950,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 60.0,
+      "source": "komo",
+      "source_id": "4870398",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4870398"
+    },
+    {
       "address_text": "תל אביב יפו, פלורנטין, המשביר 5",
       "city": "תל אביב יפו",
       "distance_km": 3.13,
@@ -707,33 +734,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4882936"
-    },
-    {
-      "address_text": "תל אביב יפו, נווה גולן, בת יפתח 187",
-      "city": "תל אביב יפו",
-      "distance_km": null,
-      "drive_minutes": null,
-      "first_seen_at": "2026-09-06T15:00:33.811811+00:00",
-      "floor": 2,
-      "is_sublet": false,
-      "lat": null,
-      "lon": null,
-      "neighborhood": "tel_aviv_yafo",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33089517&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 4950,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 60.0,
-      "source": "komo",
-      "source_id": "4870398",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4870398"
     },
     {
       "address_text": "תל אביב יפו, שכונת התקווה, לבלוב 2",
