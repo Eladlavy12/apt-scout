@@ -653,6 +653,33 @@
   ],
   "komo": [
     {
+      "address_text": "תל אביב יפו, ביצרון, עמינדב 22",
+      "city": "תל אביב יפו",
+      "distance_km": 1.2,
+      "drive_minutes": 5.6,
+      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
+      "floor": 2,
+      "is_sublet": false,
+      "lat": 32.064529,
+      "lon": 34.795468,
+      "neighborhood": "bitzaron_ramat_israel",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33175487&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 5000,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 60.0,
+      "source": "komo",
+      "source_id": "4888859",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4888859"
+    },
+    {
       "address_text": "תל אביב יפו, נווה גולן, בת יפתח 187",
       "city": "תל אביב יפו",
       "distance_km": null,
@@ -759,33 +786,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4905499"
-    },
-    {
-      "address_text": "תל אביב יפו, ביצרון, עמינדב 22",
-      "city": "תל אביב יפו",
-      "distance_km": 1.2,
-      "drive_minutes": 5.6,
-      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
-      "floor": 2,
-      "is_sublet": false,
-      "lat": 32.064529,
-      "lon": 34.795468,
-      "neighborhood": "bitzaron_ramat_israel",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33159530&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 5000,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 60.0,
-      "source": "komo",
-      "source_id": "4888859",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4888859"
     },
     {
       "address_text": "תל אביב יפו, נווה אליעזר, צוקרמן יצחק 5",
