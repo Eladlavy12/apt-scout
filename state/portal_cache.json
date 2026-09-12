@@ -657,6 +657,33 @@
   ],
   "komo": [
     {
+      "address_text": "תל אביב יפו, שכונת התקווה, יחיעם 5",
+      "city": "תל אביב יפו",
+      "distance_km": 1.08,
+      "drive_minutes": 5.0,
+      "first_seen_at": "2026-09-08T16:00:41.226724+00:00",
+      "floor": 1,
+      "is_sublet": false,
+      "lat": 32.053139,
+      "lon": 34.793341,
+      "neighborhood": "hatikva",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33189066&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 5500,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 55.0,
+      "source": "komo",
+      "source_id": "4910581",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4910581"
+    },
+    {
       "address_text": "תל אביב יפו, ביצרון, דרך השלום 24",
       "city": "תל אביב יפו",
       "distance_km": null,
@@ -1141,33 +1168,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4899592"
-    },
-    {
-      "address_text": "תל אביב יפו, שכונת התקווה, יחיעם 5",
-      "city": "תל אביב יפו",
-      "distance_km": 1.08,
-      "drive_minutes": 5.0,
-      "first_seen_at": "2026-09-08T16:00:41.226724+00:00",
-      "floor": 1,
-      "is_sublet": false,
-      "lat": 32.053139,
-      "lon": 34.793341,
-      "neighborhood": "hatikva",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=32562346&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 5500,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 55.0,
-      "source": "komo",
-      "source_id": "4910581",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4910581"
     },
     {
       "address_text": "תל אביב יפו, גני צהלה, שינדלר אוסקר 8",
