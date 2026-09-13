@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>APT-Scout</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="vendor/leaflet.css">
+</head>
+<body>
+  <header>
+    <h1>APT-Scout</h1>
+    <p id="summary">טוען…</p>
+  </header>
+
+  <section id="controls">
+    <label>
+      זמן נסיעה מקסימלי: <output id="max-drive-out"></output> דק'
+      <input type="range" id="max-drive" min="5" max="45" step="1">
+    </label>
+    <label>
+      מחיר מינימלי: <output id="min-price-out"></output> ₪
+      <input type="range" id="min-price" min="2000" max="12000" step="100">
+    </label>
+    <label>
+      מחיר מקסימלי: <output id="max-price-out"></output> ₪
+      <input type="range" id="max-price" min="2000" max="12000" step="100">
+    </label>
+    <label>
+      מינימום חדרים: <output id="min-rooms-out"></output>
+      <input type="range" id="min-rooms" min="1" max="6" step="0.5">
+    </label>
+    <label>
+      מינימום שטח: <output id="min-size-out"></output> מ"ר
+      <input type="range" id="min-size" min="20" max="150" step="5">
+    </label>
+    <label>
+      מרחק מקסימלי: <output id="max-km-out"></output> ק"מ
+      <input type="range" id="max-km" min="1" max="30" step="0.5">
+    </label>
+    <label class="toggle">
+      <input type="checkbox" id="include-no-price"> הצג ללא מחיר
+    </label>
+    <label class="toggle">
+      <input type="checkbox" id="include-unsure"> הצג לא ודאי (שותפים?)
+    </label>
+    <label class="toggle">
+      <input type="checkbox" id="include-sublets"> הצג סאבלטים
+    </label>
+    <label>
+      מיון:
+      <select id="sort">
+        <option value="newest">החדשות ביותר</option>
+        <option value="cheapest">הזול ביותר</option>
+        <option value="nearest">הקרוב ביותר</option>
+        <option value="preference">העדפה</option>
+      </select>
+    </label>
+    <div>
+      <span class="controls-subtitle">מקורות</span>
+      <div id="source-toggles" class="chips"></div>
+    </div>
+    <div>
+      <span class="controls-subtitle">ערים</span>
+      <div id="city-toggles" class="chips"></div>
+    </div>
+    <div class="wide">
+      <span class="controls-subtitle">שכונות</span>
+      <div id="neighborhood-toggles"></div>
+    </div>
+    <button type="button" id="reset">איפוס</button>
+  </section>
+
+  <div id="map"></div>
+
+  <main id="results"></main>
+  <footer id="health"></footer>
+
+  <script src="vendor/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
