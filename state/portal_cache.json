@@ -686,6 +686,33 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4906824"
     },
     {
+      "address_text": "תל אביב יפו, עזרא, שתולים 44",
+      "city": "תל אביב יפו",
+      "distance_km": 1.66,
+      "drive_minutes": 5.1,
+      "first_seen_at": "2026-09-16T03:00:37.954728+00:00",
+      "floor": null,
+      "is_sublet": false,
+      "lat": 32.0434067,
+      "lon": 34.7957224,
+      "neighborhood": "ezra_haargazim",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=0&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 3600,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 40.0,
+      "source": "komo",
+      "source_id": "4934137",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4934137"
+    },
+    {
       "address_text": "תל אביב יפו, שכונת התקווה, האקליפטוס 10",
       "city": "תל אביב יפו",
       "distance_km": 1.64,
@@ -1170,33 +1197,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4927252"
-    },
-    {
-      "address_text": "תל אביב יפו, צהלון, שד ירושלים 66",
-      "city": "תל אביב יפו",
-      "distance_km": null,
-      "drive_minutes": null,
-      "first_seen_at": "2026-09-04T07:00:46.636796+00:00",
-      "floor": 1,
-      "is_sublet": false,
-      "lat": null,
-      "lon": null,
-      "neighborhood": "tel_aviv_yafo",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33184858&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 5500,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 61.0,
-      "source": "komo",
-      "source_id": "4906343",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4906343"
     }
   ],
   "onmap": [
