@@ -686,6 +686,33 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4906824"
     },
     {
+      "address_text": "תל אביב יפו, שכונת התקווה, ששון 11",
+      "city": "תל אביב יפו",
+      "distance_km": 1.41,
+      "drive_minutes": 4.9,
+      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
+      "floor": 2,
+      "is_sublet": false,
+      "lat": 32.04878,
+      "lon": 34.792292,
+      "neighborhood": "hatikva",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33224024&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 3900,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 47.0,
+      "source": "komo",
+      "source_id": "4905499",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4905499"
+    },
+    {
       "address_text": "תל אביב יפו, עזרא, שתולים 44",
       "city": "תל אביב יפו",
       "distance_km": 1.66,
@@ -846,33 +873,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4932207"
-    },
-    {
-      "address_text": "תל אביב יפו, שכונת התקווה, ששון 11",
-      "city": "תל אביב יפו",
-      "distance_km": 1.41,
-      "drive_minutes": 4.9,
-      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
-      "floor": 2,
-      "is_sublet": false,
-      "lat": 32.04878,
-      "lon": 34.792292,
-      "neighborhood": "hatikva",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33183725&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 3900,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 47.0,
-      "source": "komo",
-      "source_id": "4905499",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4905499"
     },
     {
       "address_text": "תל אביב יפו, תל חיים, בובר שלמה 12",
