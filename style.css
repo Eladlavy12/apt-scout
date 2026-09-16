@@ -1,0 +1,165 @@
+:root {
+  --bg: #fbfbfd;
+  --fg: #17171a;
+  --muted: #6b6b76;
+  --card: #ffffff;
+  --line: #e3e3ea;
+  --accent: #1f6feb;
+  --good: #1a7f37;
+  --bad: #b42318;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #131316;
+    --fg: #ececf1;
+    --muted: #9a9aa5;
+    --card: #1c1c21;
+    --line: #2c2c33;
+    --accent: #58a6ff;
+    --good: #3fb950;
+    --bad: #f85149;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 1rem;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, "Segoe UI", Arial, sans-serif;
+  line-height: 1.5;
+}
+
+header h1 { margin: 0 0 .25rem; font-size: 1.3rem; }
+#summary { margin: 0 0 1rem; color: var(--muted); font-size: .9rem; }
+
+#controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: .75rem 1.25rem;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+#controls label { display: block; font-size: .85rem; color: var(--muted); }
+#controls label.toggle { display: flex; align-items: center; gap: .5rem; }
+#controls input[type="range"] { width: 100%; margin-top: .35rem; accent-color: var(--accent); }
+#controls output { font-weight: 600; color: var(--fg); }
+#controls select {
+  display: block;
+  width: 100%;
+  margin-top: .35rem;
+  padding: .35rem .5rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--fg);
+  font-size: .85rem;
+}
+
+.controls-subtitle { display: block; font-size: .85rem; color: var(--muted); margin-bottom: .35rem; }
+
+#source-toggles { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .3rem .7rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: .8rem;
+  color: var(--muted);
+  cursor: pointer;
+  background: var(--card);
+}
+
+.chip input[type="checkbox"] { accent-color: var(--accent); }
+
+#reset {
+  padding: .5rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+  align-self: end;
+}
+
+#map {
+  height: 320px;
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  z-index: 0;
+}
+
+#results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card img { width: 100%; height: 170px; object-fit: cover; display: block; }
+.card .body { padding: .85rem; }
+.card h2 { margin: .4rem 0 .3rem; font-size: 1.1rem; }
+.card p { margin: 0 0 .35rem; font-size: .9rem; }
+.card .addr { color: var(--muted); }
+.card a { color: var(--accent); font-size: .9rem; }
+
+.badge {
+  display: inline-block;
+  padding: .1rem .45rem;
+  margin-inline-end: .35rem;
+  border-radius: 999px;
+  font-size: .72rem;
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.badge.new { background: var(--accent); border-color: var(--accent); color: #fff; }
+.badge.multi { background: var(--good); border-color: var(--good); color: #fff; }
+.badge.sublet { background: var(--bad); border-color: var(--bad); color: #fff; }
+
+#health {
+  margin-top: 1.5rem;
+  padding-top: .75rem;
+  border-top: 1px solid var(--line);
+  font-size: .8rem;
+  color: var(--muted);
+}
+
+#health .good { color: var(--good); margin-inline-start: .5rem; }
+#health .bad { color: var(--bad); margin-inline-start: .5rem; font-weight: 600; }
+
+#controls .wide { grid-column: 1 / -1; }
+#city-toggles { display: flex; flex-wrap: wrap; gap: .5rem; }
+#neighborhood-toggles details { margin-bottom: .4rem; }
+#neighborhood-toggles summary { cursor: pointer; font-size: .85rem; color: var(--muted); }
+#neighborhood-toggles .chips { display: flex; flex-wrap: wrap; gap: .4rem; padding: .4rem 0 .2rem; }
+
+.card .hood { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; font-size: .85rem; }
+.card .hood-name { font-weight: 600; }
+.pill { padding: .05rem .5rem; border-radius: 999px; font-size: .72rem; color: #fff; }
+.rep-sought_after { background: var(--good); }
+.rep-solid { background: var(--accent); }
+.rep-mixed { background: #b7791f; }
+.rep-weak { background: var(--muted); }
+.tag { padding: .05rem .45rem; border: 1px solid var(--line); border-radius: 999px; font-size: .72rem; color: var(--muted); }
+.hood-details { margin: .35rem 0 .5rem; font-size: .85rem; }
+.hood-details summary { cursor: pointer; color: var(--accent); }
+.hood-details ul { margin: .2rem 0 .5rem; padding-inline-start: 1.1rem; }
+.card a.streetview { margin-inline-end: .1rem; }
