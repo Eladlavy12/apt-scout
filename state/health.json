@@ -7,10 +7,10 @@
     "last_success": "2026-09-18T19:59:04.743366+00:00"
   },
   "homeless": {
-    "consecutive_failures": 398,
+    "consecutive_failures": 399,
     "detail": null,
     "last_error": "רמת גן: fetch failed: All tiers failed for https://www.homeless.co.il/rent/city=%D7%A8%D7%9E%D7%AA%20%D7%92%D7%9F (http: HTTP 403; curl: HTTP 403)",
-    "last_failure": "2026-09-19T00:01:15.735682+00:00",
+    "last_failure": "2026-09-19T01:00:56.114645+00:00",
     "last_success": "2026-09-01T17:23:44.215720+00:00"
   },
   "komo": {
@@ -18,14 +18,14 @@
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-07T06:01:22.847449+00:00",
-    "last_success": "2026-09-19T00:00:59.173751+00:00"
+    "last_success": "2026-09-19T01:00:39.903238+00:00"
   },
   "onmap": {
     "consecutive_failures": 0,
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-11T21:01:44.858317+00:00",
-    "last_success": "2026-09-19T00:00:56.338116+00:00"
+    "last_success": "2026-09-19T01:00:37.083600+00:00"
   },
   "prog": {
     "consecutive_failures": 1,
@@ -34,10 +34,10 @@
     "last_success": "2026-09-01T15:58:42.284471+00:00"
   },
   "yad2": {
-    "consecutive_failures": 46,
-    "detail": null,
-    "last_error": "response was not JSON (tier http): Expecting value: line 1 column 1 (char 0); browser fallback also failed",
+    "consecutive_failures": 0,
+    "detail": "local feed from 2026-09-19T00:45:14.180311+00:00",
+    "last_error": null,
     "last_failure": "2026-09-19T00:00:55.644711+00:00",
-    "last_success": "2026-09-17T02:00:36.259058+00:00"
+    "last_success": "2026-09-19T01:00:36.371449+00:00"
   }
 }
