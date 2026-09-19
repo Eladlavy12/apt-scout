@@ -657,6 +657,33 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4906824"
     },
     {
+      "address_text": "תל אביב יפו, שכונת התקווה, יחיעם 5",
+      "city": "תל אביב יפו",
+      "distance_km": 1.08,
+      "drive_minutes": 5.0,
+      "first_seen_at": "2026-09-19T00:00:34.625860+00:00",
+      "floor": 1,
+      "is_sublet": false,
+      "lat": 32.053139,
+      "lon": 34.793341,
+      "neighborhood": "hatikva",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33267204&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 5200,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 59.0,
+      "source": "komo",
+      "source_id": "4935119",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4935119"
+    },
+    {
       "address_text": "תל אביב יפו, שכונת התקווה, דרך ההגנה 80",
       "city": "תל אביב יפו",
       "distance_km": null,
@@ -1141,33 +1168,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4916882"
-    },
-    {
-      "address_text": "תל אביב יפו, נווה שאנן, מטלון 65",
-      "city": "תל אביב יפו",
-      "distance_km": 2.75,
-      "drive_minutes": 8.0,
-      "first_seen_at": "2026-09-17T23:00:39.961755+00:00",
-      "floor": 2,
-      "is_sublet": false,
-      "lat": 32.058286,
-      "lon": 34.774959,
-      "neighborhood": "neve_shaanan",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33249496&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 5900,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 55.0,
-      "source": "komo",
-      "source_id": "4934533",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4934533"
     }
   ],
   "onmap": [
