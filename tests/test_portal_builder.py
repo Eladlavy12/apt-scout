@@ -71,6 +71,9 @@ class TestPublicDict:
     def test_publishes_the_neighborhood_id(self):
         assert listing_to_public_dict(listing(neighborhood="bavli"))["neighborhood"] == "bavli"
 
+    def test_publishes_the_group_id(self):
+        assert listing_to_public_dict(listing(group_id="tlvrent"))["group_id"] == "tlvrent"
+
 
 class TestBuildPortal:
     def test_writes_the_data_file(self, tmp_path):

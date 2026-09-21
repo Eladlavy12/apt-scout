@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from .adapters.fb_groups import FbGroupsAdapter
 from .adapters.fb_marketplace import FbMarketplaceAdapter
 from .adapters.homeless import HomelessAdapter
 from .adapters.komo import KomoAdapter
@@ -142,6 +143,7 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
             HomelessAdapter(),
             ProgAdapter(),
             FbMarketplaceAdapter(budget),
+            FbGroupsAdapter(),
         ],
         enrichers=build_enrichers(
             store,

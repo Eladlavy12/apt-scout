@@ -44,6 +44,9 @@ class Listing:
     # resolved, or when the point lies outside every known boundary.
     neighborhood: str | None = None
 
+    # For fb_groups listings: the config id of the group the post came from.
+    group_id: str | None = None
+
     photos: list[str] = field(default_factory=list)
     phone_hash: str | None = None
 

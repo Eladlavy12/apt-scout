@@ -32,6 +32,7 @@ PUBLIC_FIELDS = (
     "drive_minutes",
     "distance_km",
     "neighborhood",
+    "group_id",
     "photos",
     "occupancy",
     "is_sublet",

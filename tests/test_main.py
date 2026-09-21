@@ -151,7 +151,7 @@ class TestFbMarketplaceToken:
 
 
 class TestAdapterRegistration:
-    def test_all_six_adapters_are_registered(self, repo):
+    def test_all_seven_adapters_are_registered(self, repo):
         runtime = build_runtime(repo, {}, dry_run=True)
         assert {adapter.name for adapter in runtime.adapters} == {
             "yad2",
@@ -160,6 +160,7 @@ class TestAdapterRegistration:
             "homeless",
             "prog",
             "fb_marketplace",
+            "fb_groups",
         }
 
 
