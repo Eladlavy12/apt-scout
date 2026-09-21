@@ -30,7 +30,7 @@ class Rotation:
             try:
                 loaded = json.loads(self._path.read_text(encoding="utf-8"))
                 if isinstance(loaded, dict) and isinstance(loaded.get("groups"), dict):
-                    self.data.update(loaded)
+                    self.data = {"groups": loaded["groups"], "blocked_until": loaded.get("blocked_until"), "backoff_hours": loaded.get("backoff_hours")}
             except (OSError, UnicodeDecodeError, json.JSONDecodeError):
                 pass
 
@@ -54,7 +54,8 @@ class Rotation:
         for group in groups:
             if not group.enabled:
                 continue
-            last = _parse(self.group_state(group.id).get("last_visit"))
+            state = self.data["groups"].get(group.id) or {}
+            last = _parse(state.get("last_visit"))
             if last is not None and now - last < gap:
                 continue
             due.append((last or datetime.min.replace(tzinfo=timezone.utc), group))

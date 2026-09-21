@@ -72,3 +72,27 @@ class TestRecordAndPersist:
     def test_corrupt_file_starts_empty(self, tmp_path):
         (tmp_path / "rot.json").write_text("{oops", encoding="utf-8")
         assert Rotation(tmp_path / "rot.json").data["groups"] == {}
+
+    def test_junk_keys_are_not_persisted(self, tmp_path):
+        # Write a file with junk key plus valid data
+        file_path = tmp_path / "rot.json"
+        file_path.write_text(
+            json.dumps({
+                "groups": {"a": {"last_visit": None, "last_outcome": None, "visits": 0, "blocked": 0, "posts_seen": 0}},
+                "blocked_until": None,
+                "backoff_hours": None,
+                "junk": 1
+            }),
+            encoding="utf-8"
+        )
+        # Load and save
+        r = Rotation(file_path)
+        r.save()
+        # Reload raw JSON and check keys
+        raw = json.loads(file_path.read_text(encoding="utf-8"))
+        assert set(raw.keys()) == {"groups", "blocked_until", "backoff_hours"}
+
+    def test_pick_has_no_side_effects(self, tmp_path):
+        r = Rotation(tmp_path / "rot.json")
+        r.pick(G, NOW, 10, 5)
+        assert r.data["groups"] == {}
