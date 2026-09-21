@@ -85,7 +85,7 @@ anything published, as for every source.
   `visit_gap_seconds` 20. Defaults are placeholders until the probe
   reports; the plan records the measured value.
 - Rotation state `state/fb_groups_rotation.json`:
-  `{"groups": {<id>: {"last_visit": iso, "last_outcome": "ok|blocked|error|empty"}}, "blocked_until": iso|null, "backoff_hours": float}`.
+  `{"groups": {<id>: {"last_visit": iso, "last_outcome": "ok|blocked|error|empty", "visits": int, "blocked": int, "posts_seen": int}}, "blocked_until": iso|null, "backoff_hours": float}`.
 - One run: if `now < blocked_until` → exit 0 with a log line, no visits.
   Otherwise pick up to `batch_size` enabled groups whose `last_visit` is
   older than `min_hours_between_visits`, least recent first. For each:
@@ -111,10 +111,12 @@ anything published, as for every source.
   replaced), write `{"source": "fb_groups", "fetched_at": now,
   "posts": [...]}` atomically. The PS1 script commits and pushes the feed
   file exactly as it does for yad2 (one `git add` for both files).
-- Ledger visits: each visit increments `visits` (and `blocked` when it
-  was blocked) in `state/fb_groups_yield.json` (§4); `posts_seen`
-  increments by the number of posts extracted. The collector is the only
-  writer of these three counters; the cloud writes the rest.
+- Visit counters: each visit increments `visits` (and `blocked` when it
+  was blocked) and `posts_seen` by the number of posts extracted, inside
+  the group's entry in `state/fb_groups_rotation.json`. The PC owns that
+  file and the feed file; the cloud owns `state/fb_groups_yield.json`
+  (§4). One writer per file, so the hourly commits from both sides never
+  conflict. The PS1 script stages the feed and the rotation file.
 - Never raises: any exception in one group is that group's `error`
   outcome; the run continues with the next group. Exit code 0 unless the
   feed file could not be written.
@@ -158,12 +160,13 @@ anything published, as for every source.
 ## 4. Yield ledger — `state/fb_groups_yield.json`
 
 ```json
-{"<group_id>": {"visits": 0, "blocked": 0, "posts_seen": 0,
-                "offers": 0, "listings": 0, "matched": 0,
-                "last_matched_at": null}}
+{"<group_id>": {"offers": 0, "listings": 0, "matched": 0,
+                "last_matched_at": null},
+ "_clusters": ["<cluster ids already credited>"]}
 ```
 
-- `visits`, `blocked`, `posts_seen`: written by the collector (§2).
+- `visits`, `blocked`, `posts_seen` come from the PC-owned rotation file
+  (§2); the ledger views below merge the two files by group id.
 - `offers`: incremented by the adapter per post that survived the age and
   seeker checks (counted once per `(group_id, post_id)` via a
   `counted_offers` id set stored alongside, pruned with the feed window).
