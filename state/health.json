@@ -1,4 +1,11 @@
 {
+  "fb_groups": {
+    "consecutive_failures": 1,
+    "detail": null,
+    "last_error": "no feed file",
+    "last_failure": "2026-09-21T17:38:52.791124+00:00",
+    "last_success": null
+  },
   "fb_marketplace": {
     "consecutive_failures": 0,
     "detail": null,
