@@ -60,7 +60,7 @@
   "fb_marketplace": {
     "enabled": true,
     "cadence_hours": 6,
-    "search_url": "https://www.facebook.com/marketplace/telaviv/propertyrentals?minPrice=4000&maxPrice=5500&sortBy=creation_time_descend&exact=false",
+    "search_url": "https://www.facebook.com/marketplace/category/propertyrentals?minPrice=4000&maxPrice=5500&minBedrooms=1&sortBy=creation_time_descend&exact=false&latitude=32.056581&longitude=34.804087&radius=6",
     "max_items": 20,
     "max_results": 20,
     "max_age_days": 7
