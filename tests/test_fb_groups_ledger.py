@@ -79,6 +79,17 @@ class TestPipelineHooks:
             run([Stub("fb_groups", [fb("g", "1")])], store, YieldLedger(store), now=NOW + timedelta(hours=i))
         assert YieldLedger(store).rows([Group("g", "", True)], {"groups": {}})[0]["matched"] == 1
 
+    def test_a_later_cross_post_with_a_smaller_id_does_not_double_credit(self, tmp_path):
+        store = StateStore(tmp_path)
+        ledger = YieldLedger(store)
+        run([Stub("fb_groups", [fb("zzz", "9")])], store, ledger, now=NOW)
+        ledger = YieldLedger(store)
+        run([Stub("fb_groups", [fb("zzz", "9"), fb("aaa", "1")])], store, ledger, now=NOW + timedelta(hours=1))
+        rows = {r["id"]: r for r in YieldLedger(store).rows([Group("aaa", "", True), Group("zzz", "", True)], {"groups": {}})}
+        assert rows["zzz"]["matched"] == 1
+        assert rows["aaa"]["matched"] == 0
+        assert rows["zzz"]["matched"] + rows["aaa"]["matched"] == 1
+
     def test_a_yad2_first_cross_post_earns_the_group_nothing(self, tmp_path):
         store = StateStore(tmp_path)
         yad = Listing(source="yad2", source_id="9", url="https://y/9", raw_text=TEXT, price=4900, rooms=3.0, occupancy=Occupancy.WHOLE)

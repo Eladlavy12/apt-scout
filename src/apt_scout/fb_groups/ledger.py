@@ -7,7 +7,6 @@ from .groups import Group
 
 YIELD = "fb_groups_yield"
 _ID_CAP = 5000
-_COUNTERS = ("offers", "listings", "matched")
 
 
 class YieldLedger:
@@ -48,8 +47,9 @@ class YieldLedger:
     def count_listing(self, group_id: str, stable_id: str) -> bool:
         return self._count("_listings", "listings", group_id, stable_id)
 
-    def credit_match(self, cluster_id: str, group_id: str, now: datetime) -> bool:
-        if not self._count("_clusters", "matched", group_id, cluster_id):
+    def credit_match(self, key: str, group_id: str, now: datetime) -> bool:
+        """Credit a match once per key; the pipeline passes the earliest member's stable_id."""
+        if not self._count("_clusters", "matched", group_id, key):
             return False
         self._row(group_id)["last_matched_at"] = now.isoformat()
         return True

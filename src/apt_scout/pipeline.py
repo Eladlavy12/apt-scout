@@ -307,7 +307,9 @@ def run_pipeline(
                 key=lambda m: (m.first_seen_at or now, _source_rank(m.source), m.stable_id()),
             )
             if earliest.source == "fb_groups" and earliest.group_id:
-                yield_ledger.credit_match(cluster.cluster_id, earliest.group_id, now)
+                # Credit once per earliest member's stable_id (which is immutable);
+                # cluster_id is not stable as members join, so it can't be the key.
+                yield_ledger.credit_match(earliest.stable_id(), earliest.group_id, now)
 
         member_ids = [member.stable_id() for member in cluster.members]
         if any(member_id in already_notified for member_id in member_ids):
