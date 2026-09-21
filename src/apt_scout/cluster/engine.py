@@ -12,7 +12,7 @@ from apt_scout.models import Listing, Occupancy
 # Members are ordered by "how much we trust this source's data" for
 # canonical-field pooling and for tie-breaking cluster ordering. Sources not
 # in this list (future adapters) sort after every known one.
-_SOURCE_PRIORITY = ["yad2", "onmap", "komo", "homeless", "fb_marketplace", "prog"]
+_SOURCE_PRIORITY = ["yad2", "onmap", "komo", "homeless", "fb_marketplace", "fb_groups", "prog"]
 
 _MIN_SHARED_WEAK_FINGERPRINTS = 2
 

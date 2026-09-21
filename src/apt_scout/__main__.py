@@ -4,7 +4,7 @@ import argparse
 import json
 import os
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -19,6 +19,8 @@ from .adapters.yad2 import Yad2Adapter
 from .budget import BudgetGuard
 from .enrich.neighborhood import NeighborhoodEnricher, load_neighborhood_data
 from .enrich.pipeline_enrichers import build_enrichers
+from .fb_groups.groups import load_groups
+from .fb_groups.ledger import YieldLedger
 from .fetch import CurlTransport, Fetcher, HttpTransport
 from .filters import Filters
 from .health import HealthTracker
@@ -59,6 +61,8 @@ class Runtime:
     cluster_salt: str
     chat_id: str | None = None
     knowledge: Any = None
+    yield_ledger: Any = None
+    groups: list = field(default_factory=list)
 
 
 def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
@@ -153,6 +157,10 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
         cluster_salt=salt,
         chat_id=env.get("TELEGRAM_CHAT_ID"),
         knowledge=knowledge,
+        yield_ledger=YieldLedger(store),
+        groups=load_groups(repo_root / "config" / "facebook_groups.json")
+        if (repo_root / "config" / "facebook_groups.json").exists()
+        else [],
     )
 
 
@@ -248,6 +256,7 @@ def main(argv: list[str] | None = None) -> int:
         enrichers=runtime.enrichers,
         gate=CadenceGate(runtime.store),
         cluster_salt=runtime.cluster_salt,
+        yield_ledger=runtime.yield_ledger,
     )
 
     if not args.dry_run:

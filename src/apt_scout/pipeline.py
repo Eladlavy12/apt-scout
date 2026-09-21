@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any
 
-from .cluster.engine import Cluster, ClusterEngine
+from .cluster.engine import Cluster, ClusterEngine, _source_rank
 from .filters import Filters
 from .health import HealthTracker
 from .models import Listing
@@ -65,6 +65,7 @@ def run_pipeline(
     cluster_salt: str = "",
     max_alerts_per_run: int = MAX_ALERTS_PER_RUN,
     max_stale_hours: float = MAX_STALE_HOURS,
+    yield_ledger: Any | None = None,
 ) -> RunReport:
     """Fetch, enrich, cluster, filter, and notify for one scheduled run.
 
@@ -200,6 +201,13 @@ def run_pipeline(
                 )
         enriched.append(listing)
 
+    if yield_ledger is not None:
+        for listing in enriched:
+            if listing.source == "fb_groups" and listing.group_id:
+                yield_ledger.count_offer(listing.group_id, listing.stable_id())
+                if listing.price is not None or listing.rooms is not None:
+                    yield_ledger.count_listing(listing.group_id, listing.stable_id())
+
     # Carry-forward cache: replace only the sources that actually fetched
     # this run; a skipped (or errored) source keeps its previous entry.
     cache = store.load(PORTAL_CACHE, {})
@@ -293,6 +301,14 @@ def run_pipeline(
             continue
         report.matched += 1
 
+        if yield_ledger is not None:
+            earliest = min(
+                cluster.members,
+                key=lambda m: (m.first_seen_at or now, _source_rank(m.source), m.stable_id()),
+            )
+            if earliest.source == "fb_groups" and earliest.group_id:
+                yield_ledger.credit_match(cluster.cluster_id, earliest.group_id, now)
+
         member_ids = [member.stable_id() for member in cluster.members]
         if any(member_id in already_notified for member_id in member_ids):
             # Suppression must self-heal the whole cluster's notified state,
@@ -322,5 +338,8 @@ def run_pipeline(
     report.listings = canonical_listings
 
     store.record_seen(new_seen)
+
+    if yield_ledger is not None:
+        yield_ledger.save()
 
     return report
