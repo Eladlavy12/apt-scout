@@ -78,14 +78,22 @@ if ($fetchExit -ne 0) {
     exit $fetchExit
 }
 
-$statusOutput = (git status --porcelain state/feeds/yad2.json | Out-String).Trim()
-if ([string]::IsNullOrWhiteSpace($statusOutput)) {
-    Write-Log "no change to state/feeds/yad2.json; nothing to commit. === run end ==="
-    exit 0
+Write-Log "collecting Facebook groups via $PythonExe -m apt_scout.fb_groups"
+try {
+    $fbOutput = (& $PythonExe -m apt_scout.fb_groups --repo $RepoRoot 2>&1 | Out-String).Trim()
+    Write-Log "fb_groups exit=$LASTEXITCODE output: $fbOutput"
+} catch {
+    Write-Log "fb_groups collection failed (continuing with yad2 only): $($_.Exception.Message)"
 }
 
-git add state/feeds/yad2.json
-$commitOutput = (git commit -m "chore: yad2 local feed" 2>&1 | Out-String).Trim()
+$FeedFiles = @("state/feeds/yad2.json", "state/feeds/facebook_groups.json", "state/fb_groups_rotation.json")
+$statusOutput = (git status --porcelain -- $FeedFiles | Out-String).Trim()
+if ([string]::IsNullOrWhiteSpace($statusOutput)) {
+    Write-Log "no change to feed files; nothing to commit. === run end ==="
+    exit 0
+}
+git add -- $FeedFiles
+$commitOutput = (git commit -m "chore: local feeds" 2>&1 | Out-String).Trim()
 Write-Log "git commit: $commitOutput"
 
 $pushed = $false

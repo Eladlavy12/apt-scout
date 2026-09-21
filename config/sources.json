@@ -72,11 +72,11 @@
     "feed_max_age_hours": 24,
     "rotation_file": "state/fb_groups_rotation.json",
     "groups_file": "config/facebook_groups.json",
-    "batch_size": 3,
-    "min_hours_between_visits": 5,
+    "batch_size": 2,
+    "min_hours_between_visits": 8,
     "max_post_age_days": 3,
-    "backoff_hours_initial": 1,
-    "backoff_hours_max": 24,
-    "visit_gap_seconds": 20
+    "backoff_hours_initial": 6,
+    "backoff_hours_max": 48,
+    "visit_gap_seconds": 60
   }
 }

@@ -39,6 +39,7 @@ python -m apt_scout --repo . --dry-run
 | homeless | Blocked since 2026-09-01 | Tel Aviv, Givatayim, Ramat Gan. The site now answers HTTP 403 to every scripted request (GitHub and residential IPs alike); stays enabled so recovery is automatic. |
 | prog | Disabled on CI | WAF blocks GitHub datacenter IPs; works locally. Re-enable if running from residential IP. |
 | fb_marketplace | Working | Via Apify actor `curious_coder/facebook-marketplace`. Runs every 6 hours, budget-guarded. |
+| fb_groups | PC feed | 17 public groups (config/facebook_groups.json), visited anonymously a few per hour from the PC; posts parsed in the cloud; per-group yield in the portal footer and /groups. |
 | madlan | Not implemented | Blocks automated browsers outright (Cloudflare + PerimeterX). Apify actor is the only viable path. |
 
 **When a source fails, its last good listings stay in the portal for up to
@@ -82,6 +83,56 @@ loudly at startup, and `tests/test_neighborhood_data.py` validates it.
 
 Rebuild the boundaries with `scripts/build_neighborhoods_geojson.py`; every
 polygon must have a profile (a test enforces it).
+
+## Facebook groups
+
+`scripts/local_yad2_feed.ps1` also runs `python -m apt_scout.fb_groups
+--repo .` right after the yad2 fetch, on the same PC. It visits a small
+batch of public Facebook groups anonymously (no login, no account, no
+Apify) through a real, off-screen Chrome window, reads whatever posts
+render on the group's front page, and writes them to
+`state/feeds/facebook_groups.json`. The cloud run parses that feed on its
+normal hourly cadence — enrichment, clustering, alerting and the portal
+all treat `fb_groups` like any other source.
+
+**Rate limit and backoff.** Anonymous visits from one IP get rate-limited
+by Facebook: a recovery probe measured the block persisting for at least
+3 hours after roughly 10 visits in 5 minutes tripped it. To stay well
+under that, the PC visits `batch_size` 2 groups per run, at least
+`min_hours_between_visits` 8 hours apart per group, 60 seconds apart
+within a batch (`config/sources.json` → `fb_groups`). If a visit is
+blocked anyway, the collector backs off for `backoff_hours_initial` 6
+hours, doubling on repeated blocks up to `backoff_hours_max` 48 hours,
+and skips all visits until then. These are config values only — the
+`CollectSettings` code defaults in `src/apt_scout/fb_groups/collect.py`
+are unrelated placeholders; `config/sources.json` is what actually runs.
+
+**Yield ledger.** `state/fb_groups_yield.json` tracks, per group, how
+many posts became offers, how many became listings, and how many
+actually matched your alert filters (credited only to the first group an
+apartment was seen in). The portal's health footer and the Telegram
+`/groups` command both show this table, alongside visit/block counts
+from the PC-owned rotation file. A group that never produces a match is
+a good candidate to drop — set its `enabled: false` in
+`config/facebook_groups.json`; the ledger and rotation state age it out
+on their own.
+
+**Smoke test.** `scripts/fb_groups_smoke.py` visits one group anonymously
+and prints the extracted post ids, timestamps and text/photo lengths
+(never post text itself). It is a manual, local-only check — it makes a
+real Facebook request, so it must never run in CI:
+
+```powershell
+.venv\Scripts\python.exe scripts\fb_groups_smoke.py ApartmentsTelAviv
+```
+
+**State files.** Two files under `state/` belong to this source, each
+with exactly one writer: `state/fb_groups_rotation.json` (PC-owned —
+last visit, outcome, backoff state per group) and
+`state/fb_groups_yield.json` (cloud-owned — offers/listings/matched
+counters per group). The feed file `state/feeds/facebook_groups.json` is
+also PC-owned. No Facebook account, cookies, or credentials are used or
+stored anywhere in this pipeline.
 
 ## Portal
 
@@ -201,6 +252,7 @@ drops listings that used to be eligible (e.g. Holon, Bat Yam); send
 | `/exclude פלורנטין` / `/include פלורנטין` | Hide or restore a neighborhood (any Hebrew/English alias) |
 | `/pause` / `/resume` | Stop and restart alerts |
 | `/status` | Show the current thresholds |
+| `/groups` | Per-group yield: matched / listings / posts / visits |
 
 These control **alerts**. The portal's sliders control **display**, and the two
 are deliberately independent so you can browse more loosely than you are

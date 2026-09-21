@@ -221,3 +221,21 @@ anything published, as for every source.
 - Apify or any paid provider (the post record is the seam for it).
 - Comments, reactions, author identity.
 - Automatic removal of low-yield groups.
+
+## Amendments (as built, 2026-09-21)
+
+- `config/facebook_groups.json` seeds **17** unique groups, not 18 as §1
+  originally stated — one of the three duplicates called out there
+  collapsed the count by one during dedup.
+- Group names discovered at visit time are written into
+  `state/fb_groups_rotation.json`, not back into
+  `config/facebook_groups.json`; the groups config stays human-owned and
+  is never written by the collector.
+- Measured block behaviour: the recovery probe found the anonymous block
+  from the PC's IP still in place at least 3 hours after it began,
+  triggered by roughly 10 visits in 5 minutes. Chosen cadence in
+  `config/sources.json` → `fb_groups` to stay well under that: `batch_size`
+  2, `min_hours_between_visits` 8, `backoff_hours_initial` 6,
+  `backoff_hours_max` 48, `visit_gap_seconds` 60. The `CollectSettings`
+  dataclass defaults in `src/apt_scout/fb_groups/collect.py` are
+  unchanged placeholders; the config file is the source of truth.
