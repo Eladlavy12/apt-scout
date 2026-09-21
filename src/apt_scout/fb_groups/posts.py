@@ -11,6 +11,27 @@ from ..normalise.text import normalise_text
 POST_URL = "https://www.facebook.com/groups/{group_id}/posts/{post_id}/"
 SOURCE = "fb_groups"
 
+# Weekday names: Hebrew and English.
+# Hebrew weekdays appear as "יום שני", "שבת", or "יום שבת".
+_HE_WEEKDAYS = {
+    "ראשון": 6,   # Sunday (weekday() index)
+    "שני": 0,      # Monday
+    "שלישי": 1,    # Tuesday
+    "רביעי": 2,    # Wednesday
+    "חמישי": 3,    # Thursday
+    "שישי": 4,     # Friday
+    "שבת": 5,      # Saturday
+}
+_EN_WEEKDAYS = {
+    "sunday": 6,
+    "monday": 0,
+    "tuesday": 1,
+    "wednesday": 2,
+    "thursday": 3,
+    "friday": 4,
+    "saturday": 5,
+}
+
 # Facebook shows a relative label ("5 שעות", "3d", "Yesterday at 3:15 PM");
 # the exact minute is not needed, only the age for the freshness window.
 # Longer/more specific alternatives are listed before shorter ones that
@@ -49,6 +70,38 @@ def _is_absolute_date_label(text: str) -> bool:
     return bool(_YEAR_RE.search(text))
 
 
+def _parse_weekday(text: str, now: datetime) -> datetime | None:
+    """
+    Detect a weekday name (Hebrew or English) and return the most recent
+    strictly-past date with that weekday at the same time of day as now.
+    Returns None if no weekday name is found.
+    """
+    # Check for Hebrew weekday names (appear as "יום שני", "שבת", "יום שבת", etc.)
+    for he_name, weekday_index in _HE_WEEKDAYS.items():
+        if he_name in text:
+            # Found a Hebrew weekday; calculate days back
+            current_weekday = now.weekday()
+            days_back = (current_weekday - weekday_index) % 7
+            # If days_back is 0 (today has that weekday), we want strictly past, so go 7 days back
+            if days_back == 0:
+                days_back = 7
+            return now - timedelta(days=days_back)
+
+    # Check for English weekday names (must be whole words at the start)
+    text_start = text.split()[0].lower() if text.split() else ""
+    for en_name, weekday_index in _EN_WEEKDAYS.items():
+        if en_name == text_start:
+            # Found an English weekday at the start; calculate days back
+            current_weekday = now.weekday()
+            days_back = (current_weekday - weekday_index) % 7
+            # If days_back is 0 (today has that weekday), we want strictly past, so go 7 days back
+            if days_back == 0:
+                days_back = 7
+            return now - timedelta(days=days_back)
+
+    return None
+
+
 def parse_relative_time(label: str | None, now: datetime) -> datetime | None:
     if not label:
         return None
@@ -69,6 +122,11 @@ def parse_relative_time(label: str | None, now: datetime) -> datetime | None:
         return now - timedelta(days=1)
     if _is_absolute_date_label(text):
         return now - timedelta(days=_FAR_PAST_DAYS)
+    # Check for weekday names before numeric-unit regex to avoid matching
+    # "יום" in "יום שני" as a unit (1 day) instead of recognizing the weekday.
+    weekday_result = _parse_weekday(text, now)
+    if weekday_result is not None:
+        return weekday_result
     match = _NUMBER_UNIT.match(text)
     if not match:
         return None

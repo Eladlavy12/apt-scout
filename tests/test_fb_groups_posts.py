@@ -57,6 +57,12 @@ class TestGroups:
         ("3 שבועות", NOW - timedelta(days=21)),
         ("2 חודשים", NOW - timedelta(days=60)),
         ("שבוע", NOW - timedelta(days=7)),
+        # Weekday names: Hebrew and English; NOW is Monday 2026-09-21 12:00 UTC
+        ("יום שבת", NOW - timedelta(days=2)),
+        ("יום שני בשעה 14:30", NOW - timedelta(days=7)),
+        ("יום ראשון", NOW - timedelta(days=1)),
+        ("Monday at 3:15 PM", NOW - timedelta(days=7)),
+        ("Thursday at 9:00 AM", NOW - timedelta(days=4)),
     ],
 )
 def test_relative_time(label, expected):
