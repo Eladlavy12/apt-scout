@@ -24,6 +24,19 @@ class TestRecordsFromExtraction:
         assert records_from_extraction({}, "g", NOW) == []
         assert records_from_extraction({"posts": "nope"}, "g", NOW) == []
 
+    def test_drops_posts_with_empty_text(self):
+        # C1: a post with a resolvable post_id but no message container (the
+        # EXTRACT_JS text fallback no longer reads the whole article, which
+        # would otherwise leak the author's name) must be dropped entirely,
+        # not published with an empty title.
+        raw = {"posts": [
+            {"post_id": "4444", "text": "", "time_label": "2 שעות", "photos": []},
+            {"post_id": "5555", "text": "   ", "time_label": None, "photos": []},
+            {"post_id": "6", "text": "real text", "time_label": None, "photos": []},
+        ]}
+        recs = records_from_extraction(raw, "g", NOW)
+        assert [r["post_id"] for r in recs] == ["6"]
+
 
 def _chrome_available() -> bool:
     try:
@@ -43,7 +56,13 @@ class TestVisitGroupOnFixture:
         assert result.outcome == "ok", result.error
         assert result.title.startswith("דירות בדיקה")
         by_id = {p["post_id"]: p for p in result.posts}
+        # C1: the fourth article (permalink .../posts/4444/) has no message
+        # container, only an author header - it must be dropped, never
+        # published with the article's innerText (which starts with the
+        # author's name) as a text fallback.
+        assert "4444" not in by_id
         assert set(by_id) == {"1111", "2222"}
+        assert all("Another Person" not in (rec["text"] or "") for rec in result.posts)
         # "See more" was expanded before the text was read
         assert "כניסה מיידית" in by_id["1111"]["text"]
         assert "052-1234567" in by_id["1111"]["text"]

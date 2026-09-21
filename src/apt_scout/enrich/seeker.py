@@ -7,7 +7,7 @@ from ..normalise.text import normalise_text
 # one of these and states no price; an offer that merely says "מחפשים
 # שוכרים" almost always carries a price, which keeps it.
 SEEKER_TERMS = [
-    "מחפש דירה", "מחפשת דירה", "מחפשים דירה", "מחפש/ת", "דרושה דירה",
+    "מחפש דירה", "מחפשת דירה", "מחפשים דירה", "מחפש/ת דיר", "דרושה דירה",
     "מעוניין לשכור", "מעוניינת לשכור",
     "looking for a", "looking for an", "wanted:",
 ]

@@ -239,3 +239,15 @@ anything published, as for every source.
   `backoff_hours_max` 48, `visit_gap_seconds` 60. The `CollectSettings`
   dataclass defaults in `src/apt_scout/fb_groups/collect.py` are
   unchanged placeholders; the config file is the source of truth.
+- Final-review fix (I4): the post record gained a `time_label` field —
+  the raw relative-time label as extracted (may be `None`) — alongside
+  `posted_at`. It exists so the adapter and `merge_feed` can tell "no
+  label was present" (posted_at is None, fetch-time fallback is fine)
+  apart from "a label was present but could not be parsed" (posted_at is
+  None because the age is genuinely unknown, so the post is dropped/
+  pruned instead of being kept fresh by the fetch-time fallback).
+  `parse_relative_time` also now recognises weeks/months/years (Hebrew
+  and English, numbered or bare) and a leading "לפני "/"before " wrapper,
+  and treats a label carrying a month name or a 4-digit year as an
+  unparsed absolute date, returning `now - timedelta(days=3650)` (far
+  past) rather than `None`.

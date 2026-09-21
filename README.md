@@ -87,7 +87,10 @@ polygon must have a profile (a test enforces it).
 ## Facebook groups
 
 `scripts/local_yad2_feed.ps1` also runs `python -m apt_scout.fb_groups
---repo .` right after the yad2 fetch, on the same PC. It visits a small
+--repo .` right after the yad2 fetch, on the same PC, every hour
+regardless of whether that yad2 fetch succeeded or failed - the two
+sources are independent, so a bad yad2 run never skips the Facebook
+groups collection. It visits a small
 batch of public Facebook groups anonymously (no login, no account, no
 Apify) through a real, off-screen Chrome window, reads whatever posts
 render on the group's front page, and writes them to
@@ -133,6 +136,13 @@ last visit, outcome, backoff state per group) and
 counters per group). The feed file `state/feeds/facebook_groups.json` is
 also PC-owned. No Facebook account, cookies, or credentials are used or
 stored anywhere in this pipeline.
+
+The PC and the cloud commit their files separately — the PC pushes the
+rotation and feed files from its own hourly task, independently of the
+cloud run that pushes the yield ledger — so the `/groups` table can
+briefly show matches for a group with zero visits while a PC push is
+retrying (the cloud's matched count updates before the PC's visit count
+catches up).
 
 ## Portal
 

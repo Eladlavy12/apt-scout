@@ -41,6 +41,11 @@ def listing_from_post(post: dict, now: datetime, max_post_age_days: float) -> Li
     if is_seeker_text(text):
         return None
     posted_at = _parse(post.get("posted_at"))
+    time_label = post.get("time_label")
+    if posted_at is None and isinstance(time_label, str) and time_label.strip():
+        # I4: a label was present but parse_relative_time could not read it
+        # - age unknown, fail closed rather than falling back to fetched_at.
+        return None
     aged_by = posted_at or _parse(post.get("fetched_at"))
     if aged_by is not None and now - aged_by > timedelta(days=max_post_age_days):
         return None

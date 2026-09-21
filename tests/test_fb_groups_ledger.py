@@ -110,6 +110,54 @@ class TestPipelineHooks:
         assert report.matched == 1
 
 
+class TestLedgerIsolation:
+    """I5: yield-ledger bookkeeping is best-effort and must never abort a run."""
+
+    def test_a_raising_ledger_does_not_stop_notifications(self, tmp_path):
+        class RaisingLedger:
+            def count_offer(self, *a, **k):
+                raise RuntimeError("boom-offer")
+
+            def count_listing(self, *a, **k):
+                raise RuntimeError("boom-listing")
+
+            def credit_match(self, *a, **k):
+                raise RuntimeError("boom-credit")
+
+            def save(self):
+                raise RuntimeError("boom-save")
+
+        store_without = StateStore(tmp_path / "without")
+        report_without = run([Stub("fb_groups", [fb("g", "1")])], store_without, None, now=NOW)
+
+        store_with = StateStore(tmp_path / "with")
+        report_with = run([Stub("fb_groups", [fb("g", "1")])], store_with, RaisingLedger(), now=NOW)
+
+        assert report_with.notified == report_without.notified == 1
+        assert "yield_ledger" in report_with.errors
+        assert "boom" in report_with.errors["yield_ledger"]
+
+    def test_credit_key_tolerates_a_naive_first_seen_at(self, tmp_path):
+        store = StateStore(tmp_path)
+        ledger = YieldLedger(store)
+        run([Stub("fb_groups", [fb("early", "1")])], store, ledger, now=NOW)
+
+        # Simulate a pre-existing "seen" entry written without a timezone
+        # (e.g. by older state, or a caller that never coerced it) - the
+        # credit-key comparison must not TypeError on a naive-vs-aware mix.
+        seen = store.load("seen", {})
+        stable_id = fb("early", "1").stable_id()
+        seen[stable_id] = NOW.replace(tzinfo=None).isoformat()
+        store.save("seen", seen)
+
+        ledger = YieldLedger(store)
+        report = run(
+            [Stub("fb_groups", [fb("early", "1"), fb("late", "2")])],
+            store, ledger, now=NOW + timedelta(hours=1),
+        )
+        assert "yield_ledger" not in report.errors
+
+
 class TestRows:
     def test_merges_rotation_counters_and_sorts(self, tmp_path):
         ledger = YieldLedger(StateStore(tmp_path))

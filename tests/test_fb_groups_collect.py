@@ -102,6 +102,20 @@ class TestRun:
         run_collection(root, NOW, settings(batch_size=1), visit=visit, sleep=lambda s: None)
         assert Rotation(root / "state" / "fb_groups_rotation.json").data["backoff_hours"] == 1
 
+    def test_a_block_after_an_ok_visit_still_doubles_backoff_not_resets(self, tmp_path):
+        root = repo(tmp_path)
+        rot = Rotation(root / "state" / "fb_groups_rotation.json")
+        rot.note_block(NOW - timedelta(hours=10), 4, 24)  # backoff_hours -> 8, already past
+        rot.save()
+        visit = FakeVisit({"a": VisitResult("ok", [post("a", "1")]), "b": VisitResult("blocked", error="login")})
+        run_collection(root, NOW, settings(batch_size=2), visit=visit, sleep=lambda s: None)
+        result = Rotation(root / "state" / "fb_groups_rotation.json")
+        # M2: an ok visit earlier in the same batch must not reset
+        # backoff_hours before a later block in that batch is recorded - it
+        # must keep doubling from where it left off (8 -> 16), not restart
+        # from settings.backoff_hours_initial (1).
+        assert result.data["backoff_hours"] == 16
+
 
 def test_settings_from_config_reads_known_keys():
     s = settings_from_config({"batch_size": 4, "visit_gap_seconds": 1, "unknown": 5})
@@ -148,6 +162,10 @@ def test_pruning_lands_even_without_new_posts(tmp_path):
 
 
 def test_sources_json_has_the_block():
-    cfg = json.loads(Path("config/sources.json").read_text(encoding="utf-8"))["fb_groups"]
+    # M3: independent of the process's cwd - anchored to the repo root via
+    # this test file's own location, not a path relative to wherever pytest
+    # happens to be invoked from.
+    config_path = Path(__file__).resolve().parents[1] / "config" / "sources.json"
+    cfg = json.loads(config_path.read_text(encoding="utf-8"))["fb_groups"]
     assert cfg["feed_file"] == "state/feeds/facebook_groups.json"
     assert cfg["rotation_file"] == "state/fb_groups_rotation.json"

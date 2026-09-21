@@ -51,15 +51,40 @@ class TestGroups:
         ("Yesterday at 3:15 PM", NOW - timedelta(days=1)),
         ("Just now", NOW),
         ("עכשיו", NOW),
+        # I4: a leading "X ago" wrapper must strip before the unit is read.
+        ("לפני 5 שעות", NOW - timedelta(hours=5)),
+        # I4: weeks/months/years, Hebrew and English, numbered and bare.
+        ("3 שבועות", NOW - timedelta(days=21)),
+        ("2 חודשים", NOW - timedelta(days=60)),
+        ("שבוע", NOW - timedelta(days=7)),
     ],
 )
 def test_relative_time(label, expected):
     assert parse_relative_time(label, NOW) == expected
 
 
-@pytest.mark.parametrize("label", [None, "", "September 3", "3 בספטמבר", "garbage"])
+@pytest.mark.parametrize("label", [None, "", "garbage"])
 def test_relative_time_unknown_is_none(label):
     assert parse_relative_time(label, NOW) is None
+
+
+# I4: a label bearing an absolute date (a month name or a 4-digit year) is
+# not a relative age at all - Facebook only shows this once a post is old
+# (roughly 7+ days), so it must fail closed to "far past" rather than being
+# misread as "today" via the fetch-time fallback. "September 3" and
+# "3 בספטמבר" moved here from test_relative_time_unknown_is_none: under the
+# old behaviour they returned None (age unknown -> kept as fresh by the
+# fetch-time fallback), which is exactly the inert-window bug this fixes.
+@pytest.mark.parametrize("label", [
+    "12 בספטמבר",
+    "12 בספטמבר 2025",
+    "21 בספטמבר 2026 בשעה 14:30",
+    "September 12 at 3:15 PM",
+    "September 3",
+    "3 בספטמבר",
+])
+def test_relative_time_absolute_date_labels_are_far_past(label):
+    assert parse_relative_time(label, NOW) == NOW - timedelta(days=3650)
 
 
 class TestPostRecord:
@@ -73,6 +98,10 @@ class TestPostRecord:
             "posted_at": (NOW - timedelta(hours=5)).isoformat(),
             "photos": ["https://scontent.x/a.jpg"],
             "fetched_at": NOW.isoformat(),
+            # I4: the raw label is kept alongside the parsed posted_at so the
+            # adapter and merge_feed can tell "no label" (fetch-time
+            # fallback) apart from "label we couldn't parse" (fail closed).
+            "time_label": "5 שעות",
         }
 
     def test_unknown_time_is_null(self):
@@ -80,9 +109,9 @@ class TestPostRecord:
 
 
 class TestMergeFeed:
-    def _post(self, group, pid, fetched, text="t", posted=None):
+    def _post(self, group, pid, fetched, text="t", posted=None, time_label=None):
         return {"group_id": group, "post_id": pid, "url": f"https://www.facebook.com/groups/{group}/posts/{pid}/",
-                "text": text, "posted_at": posted, "photos": [], "fetched_at": fetched.isoformat()}
+                "text": text, "posted_at": posted, "photos": [], "fetched_at": fetched.isoformat(), "time_label": time_label}
 
     def test_upserts_by_group_and_post_id(self):
         old = self._post("g", "1", NOW - timedelta(hours=6), text="old")
@@ -106,6 +135,19 @@ class TestMergeFeed:
 
     def test_drops_posts_from_removed_groups(self):
         assert merge_feed([self._post("gone", "1", NOW)], [], NOW, 3, {"g"}) == []
+
+    def test_drops_a_post_with_an_unparseable_time_label(self):
+        # I4: posted_at is None (parse_relative_time couldn't read the
+        # label) but a non-empty label was present -> age unknown -> fail
+        # closed, pruned, never falls back to fetched_at.
+        bad = self._post("g", "1", NOW, posted=None, time_label="garbage")
+        assert merge_feed([bad], [], NOW, 3, {"g"}) == []
+
+    def test_keeps_a_post_with_no_time_label_by_fetched_at(self):
+        # I4: no label at all (posted_at None, time_label None/empty) keeps
+        # the existing fetch-time fallback.
+        ok = self._post("g", "1", NOW, posted=None, time_label=None)
+        assert [p["post_id"] for p in merge_feed([ok], [], NOW, 3, {"g"})] == ["1"]
 
     def test_sorted_newest_first(self):
         a = self._post("g", "a", NOW, posted=(NOW - timedelta(hours=9)).isoformat())

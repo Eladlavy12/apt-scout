@@ -44,6 +44,17 @@ class TestListingFromPost:
         assert listing_from_post(post(posted_at=None, fetched_at=(NOW - timedelta(days=5)).isoformat()), NOW, 3) is None
         assert listing_from_post(post(posted_at=None), NOW, 3) is not None
 
+    def test_unparseable_time_label_is_dropped(self):
+        # I4: posted_at is None because the label couldn't be parsed - age
+        # unknown must fail closed, not fall back to fetched_at.
+        assert listing_from_post(post(posted_at=None, time_label="garbage"), NOW, 3) is None
+
+    def test_missing_time_label_keeps_the_fetch_time_fallback(self):
+        # I4: no label at all (time_label None/empty) keeps the existing
+        # fetch-time fallback.
+        item = listing_from_post(post(posted_at=None, time_label=None), NOW, 3)
+        assert item is not None
+
     def test_missing_ids_are_dropped(self):
         assert listing_from_post(post(post_id=None), NOW, 3) is None
         assert listing_from_post({"text": "x"}, NOW, 3) is None

@@ -8,7 +8,12 @@ from .posts import post_record
 
 # Off-screen so an hourly unattended visit never steals focus on the PC.
 _CHROME_ARGS = ["--window-position=-32000,-32000", "--window-size=1280,900"]
-_LOGIN_MARKER = "/login"
+# Anchored to Facebook's actual login host+path, not a bare "/login"
+# substring: an unanchored marker could also match a group slug or permalink
+# that happens to contain "login" and wrongly report every such group as
+# blocked. A single "*" glob does not cross the "/" before a query string
+# (e.g. "/login/?next=..."), so the query-form URL needs its own route.
+_LOGIN_URL_PREFIX = "https://www.facebook.com/login"
 
 # Click every "See more" inside each post first; Facebook renders the full
 # text on click even without a session.
@@ -38,11 +43,15 @@ EXTRACT_JS = """() => {
       if (m) { postId = m[1]; timeLabel = a.getAttribute('aria-label') || a.textContent || null; break; }
     }
     const msg = art.querySelector('[data-ad-comet-preview="message"], [data-ad-preview="message"]');
-    const text = ((msg ? msg.innerText : art.innerText) || '').trim();
+    const text = ((msg ? msg.innerText : '') || '').trim();
     const photos = [];
     for (const img of art.querySelectorAll('img[src]')) {
       const src = img.getAttribute('src') || '';
-      if (/^https:\\/\\/scontent[^/]*\\.fbcdn\\.net\\//.test(src)) photos.push(src);
+      if (!/^https:\\/\\/scontent[^/]*\\.fbcdn\\.net\\//.test(src)) continue;
+      if (img.closest('a[href*="/user/"], a[href*="/profile.php"], h2, h3, h4')) continue;
+      const width = img.width || img.naturalWidth || 0;
+      if (width > 0 && width < 200) continue;
+      photos.push(src);
     }
     posts.push({post_id: postId, text, time_label: timeLabel, photos});
   }
@@ -67,7 +76,13 @@ def records_from_extraction(raw: dict, group_id: str, now: datetime) -> list[dic
     for item in posts:
         if not isinstance(item, dict) or not item.get("post_id"):
             continue
-        records.append(post_record(group_id, item["post_id"], item.get("text") or "", item.get("time_label"), item.get("photos") or [], now))
+        text = item.get("text") or ""
+        if not text.strip():
+            # A selector rename (or a post with no message container, like
+            # C1's fourth fixture article) must degrade to "empty, skip",
+            # never fall back to some other text and leak the author's name.
+            continue
+        records.append(post_record(group_id, item["post_id"], text, item.get("time_label"), item.get("photos") or [], now))
     return records
 
 
@@ -85,14 +100,15 @@ def visit_group(group_id: str, now: datetime, *, url: str | None = None, timeout
             try:
                 context = browser.new_context(locale="he-IL", viewport={"width": 1280, "height": 900})
                 page = context.new_page()
-                page.route(f"**{_LOGIN_MARKER}**", lambda route: route.abort())
+                page.route(f"{_LOGIN_URL_PREFIX}*", lambda route: route.abort())
+                page.route("**/login/?next=*", lambda route: route.abort())
                 try:
                     page.goto(target, wait_until="domcontentloaded", timeout=timeout_ms)
                 except Exception as exc:  # noqa: BLE001
                     if "ERR_FAILED" in str(exc) or "abort" in str(exc).lower():
                         return VisitResult("blocked", error="login redirect aborted")
                     return VisitResult("error", error=str(exc)[:200])
-                if _LOGIN_MARKER in page.url:
+                if page.url.startswith(_LOGIN_URL_PREFIX):
                     return VisitResult("blocked", error="redirected to login")
                 try:
                     page.wait_for_selector("[role=article]", timeout=15000)

@@ -56,6 +56,8 @@ def run_collection(repo_root: Path, now: datetime, settings: CollectSettings, vi
         return report
 
     new_posts: list[dict] = []
+    batch_blocked = False
+    batch_had_ok = False
     batch = rotation.pick(groups, now, settings.batch_size, settings.min_hours_between_visits)
     for index, group in enumerate(batch):
         if index > 0:
@@ -70,11 +72,19 @@ def run_collection(repo_root: Path, now: datetime, settings: CollectSettings, vi
         if result.title and not group.name:
             rotation.group_state(group.id)["name"] = result.title.replace(" | Facebook", "").strip()
         if result.outcome == "blocked":
+            batch_blocked = True
             rotation.note_block(now, settings.backoff_hours_initial, settings.backoff_hours_max)
             break
         if result.outcome == "ok":
-            rotation.note_ok(settings.backoff_hours_initial)
+            batch_had_ok = True
             new_posts.extend(result.posts)
+
+    # M2: the backoff resets only after a genuinely clean batch - an ok
+    # visit followed later in the same batch by a block must not erase the
+    # doubled backoff that block is about to set (or is already carrying
+    # from an earlier run).
+    if batch_had_ok and not batch_blocked:
+        rotation.note_ok(settings.backoff_hours_initial)
 
     rotation.save()
 
