@@ -221,3 +221,33 @@ anything published, as for every source.
 - Apify or any paid provider (the post record is the seam for it).
 - Comments, reactions, author identity.
 - Automatic removal of low-yield groups.
+
+## Amendments (as built, 2026-09-21)
+
+- `config/facebook_groups.json` seeds **17** unique groups, not 18 as §1
+  originally stated — one of the three duplicates called out there
+  collapsed the count by one during dedup.
+- Group names discovered at visit time are written into
+  `state/fb_groups_rotation.json`, not back into
+  `config/facebook_groups.json`; the groups config stays human-owned and
+  is never written by the collector.
+- Measured block behaviour: the recovery probe found the anonymous block
+  from the PC's IP still in place at least 3 hours after it began,
+  triggered by roughly 10 visits in 5 minutes. Chosen cadence in
+  `config/sources.json` → `fb_groups` to stay well under that: `batch_size`
+  2, `min_hours_between_visits` 8, `backoff_hours_initial` 6,
+  `backoff_hours_max` 48, `visit_gap_seconds` 60. The `CollectSettings`
+  dataclass defaults in `src/apt_scout/fb_groups/collect.py` are
+  unchanged placeholders; the config file is the source of truth.
+- Final-review fix (I4): the post record gained a `time_label` field —
+  the raw relative-time label as extracted (may be `None`) — alongside
+  `posted_at`. It exists so the adapter and `merge_feed` can tell "no
+  label was present" (posted_at is None, fetch-time fallback is fine)
+  apart from "a label was present but could not be parsed" (posted_at is
+  None because the age is genuinely unknown, so the post is dropped/
+  pruned instead of being kept fresh by the fetch-time fallback).
+  `parse_relative_time` also now recognises weeks/months/years (Hebrew
+  and English, numbered or bare) and a leading "לפני "/"before " wrapper,
+  and treats a label carrying a month name or a 4-digit year as an
+  unparsed absolute date, returning `now - timedelta(days=3650)` (far
+  past) rather than `None`.

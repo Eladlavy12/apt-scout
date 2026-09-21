@@ -32,6 +32,7 @@ PUBLIC_FIELDS = (
     "drive_minutes",
     "distance_km",
     "neighborhood",
+    "group_id",
     "photos",
     "occupancy",
     "is_sublet",
@@ -79,6 +80,7 @@ def build_portal(
     filters: Filters,
     generated_at: datetime,
     knowledge: KnowledgeBase | None = None,
+    groups: list[dict] | None = None,
 ) -> Path:
     """Generate the static portal into output_dir."""
     output_dir = Path(output_dir)
@@ -105,6 +107,12 @@ def build_portal(
     # Profiles are joined client-side by id; notes/sources stay private.
     (output_dir / "data" / "neighborhoods.json").write_text(
         json.dumps(knowledge.public_dict() if knowledge else {}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+    # Per-group yield rows for the footer table; no PII (config ids/names only).
+    (output_dir / "data" / "groups.json").write_text(
+        json.dumps({row["id"]: {k: v for k, v in row.items() if k != "id"} for row in (groups or [])}, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
 

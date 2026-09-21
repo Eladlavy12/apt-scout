@@ -52,6 +52,7 @@ const TAG_LABELS = {
 let profiles = {};
 let cityToggleIds = [];
 let hoodToggleIds = [];
+let groupsInfo = {};
 
 function itemSources(item) {
   return item.sources && item.sources.length ? item.sources : [item.source];
@@ -338,6 +339,14 @@ function card(item) {
   badgeSource.textContent = item.source;
   body.appendChild(badgeSource);
 
+  if (item.group_id) {
+    const badgeGroup = document.createElement("span");
+    badgeGroup.className = "badge group";
+    const info = groupsInfo[item.group_id];
+    badgeGroup.textContent = "קבוצה: " + (info && info.name ? info.name : item.group_id);
+    body.appendChild(badgeGroup);
+  }
+
   const srcs = itemSources(item);
   if (srcs.length > 1) {
     const badgeMulti = document.createElement("span");
@@ -415,7 +424,7 @@ function card(item) {
   }
 
   const link = document.createElement("a");
-  link.textContent = "למודעה המקורית";
+  link.textContent = item.source === "fb_groups" ? "לפוסט בקבוצה" : "למודעה המקורית";
   link.target = "_blank";
   link.rel = "noopener noreferrer";
   const linkUrl = safeHttpUrl(item.url);
@@ -518,6 +527,35 @@ function renderHealth(health, generatedAt) {
   document.getElementById("health").replaceChildren(...nodes);
 }
 
+function renderGroupsTable() {
+  const table = document.getElementById("groups-table");
+  table.replaceChildren();
+  const rows = Object.entries(groupsInfo);
+  if (!rows.length) {
+    document.getElementById("groups").hidden = true;
+    return;
+  }
+  const head = document.createElement("tr");
+  ["קבוצה", "ביקורים", "חסימות", "פוסטים", "מודעות", "תואמות", "תואמת לאחרונה"].forEach((t) => {
+    const th = document.createElement("th");
+    th.textContent = t;
+    head.appendChild(th);
+  });
+  table.appendChild(head);
+  rows.sort((a, b) => (b[1].matched || 0) - (a[1].matched || 0));
+  rows.forEach(([id, g]) => {
+    const tr = document.createElement("tr");
+    if (g.enabled === false) tr.className = "disabled";
+    const last = g.last_matched_at ? new Date(g.last_matched_at).toLocaleDateString("he-IL") : "—";
+    [g.name || id, g.visits || 0, g.blocked || 0, g.posts_seen || 0, g.listings || 0, g.matched || 0, last].forEach((v) => {
+      const td = document.createElement("td");
+      td.textContent = String(v);
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+}
+
 function wire() {
   CONTROLS.concat(TOGGLES).forEach((id) => {
     document.getElementById(id).addEventListener("input", render);
@@ -565,9 +603,11 @@ function wire() {
 Promise.all([
   fetch("data/listings.json").then((response) => response.json()),
   fetch("data/neighborhoods.json").then((response) => (response.ok ? response.json() : {})).catch(() => ({})),
+  fetch("data/groups.json").then((response) => (response.ok ? response.json() : {})).catch(() => ({})),
 ])
-  .then(([data, loadedProfiles]) => {
+  .then(([data, loadedProfiles, loadedGroups]) => {
     profiles = loadedProfiles || {};
+    groupsInfo = loadedGroups || {};
     listings = data.listings || [];
     defaults = data.defaults || {};
     buildSourceToggles(listings);
@@ -592,6 +632,7 @@ Promise.all([
     wire();
     render();
     renderHealth(data.health, data.generated_at);
+    renderGroupsTable();
   })
   .catch(() => {
     document.getElementById("summary").textContent = "שגיאה בטעינת הנתונים";

@@ -4,11 +4,12 @@ import argparse
 import json
 import os
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from .adapters.fb_groups import FbGroupsAdapter
 from .adapters.fb_marketplace import FbMarketplaceAdapter
 from .adapters.homeless import HomelessAdapter
 from .adapters.komo import KomoAdapter
@@ -18,6 +19,9 @@ from .adapters.yad2 import Yad2Adapter
 from .budget import BudgetGuard
 from .enrich.neighborhood import NeighborhoodEnricher, load_neighborhood_data
 from .enrich.pipeline_enrichers import build_enrichers
+from .fb_groups.groups import load_groups
+from .fb_groups.ledger import YieldLedger, format_groups_report
+from .fb_groups.rotation import Rotation
 from .fetch import CurlTransport, Fetcher, HttpTransport
 from .filters import Filters
 from .health import HealthTracker
@@ -58,6 +62,8 @@ class Runtime:
     cluster_salt: str
     chat_id: str | None = None
     knowledge: Any = None
+    yield_ledger: Any = None
+    groups: list = field(default_factory=list)
 
 
 def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
@@ -103,6 +109,10 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
 
     index, knowledge = load_neighborhood_data(repo_root / "data")
 
+    groups_config_path = repo_root / "config" / "facebook_groups.json"
+    groups = load_groups(groups_config_path) if groups_config_path.exists() else []
+    group_names = {g.id: g.name or g.id for g in groups}
+
     if dry_run:
         notifier: Any = DryRunNotifier()
     else:
@@ -113,7 +123,7 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
                 "TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID must be set "
                 "(or pass --dry-run)"
             )
-        notifier = TelegramNotifier(token, chat_id, knowledge=knowledge)
+        notifier = TelegramNotifier(token, chat_id, knowledge=knowledge, group_names=group_names)
 
     salt = env.get("PHONE_HASH_SALT")
     if not salt:
@@ -142,6 +152,7 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
             HomelessAdapter(),
             ProgAdapter(),
             FbMarketplaceAdapter(budget),
+            FbGroupsAdapter(),
         ],
         enrichers=build_enrichers(
             store,
@@ -151,6 +162,8 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
         cluster_salt=salt,
         chat_id=env.get("TELEGRAM_CHAT_ID"),
         knowledge=knowledge,
+        yield_ledger=YieldLedger(store),
+        groups=groups,
     )
 
 
@@ -226,6 +239,11 @@ def main(argv: list[str] | None = None) -> int:
 
     runtime = build_runtime(Path(args.repo), dict(os.environ), dry_run=args.dry_run)
 
+    rotation = Rotation(Path(args.repo) / "state" / "fb_groups_rotation.json")
+    groups_text = format_groups_report(
+        runtime.yield_ledger.rows(runtime.groups, rotation.data), rotation.blocked_until
+    ) if runtime.groups else None
+
     if not args.dry_run:
         runtime.filters = process_commands(
             runtime.notifier,
@@ -234,6 +252,7 @@ def main(argv: list[str] | None = None) -> int:
             Path(args.repo) / "config" / "filters.json",
             chat_id=runtime.chat_id or "",
             knowledge=runtime.knowledge,
+            groups_text=groups_text,
         )
 
     report = run_pipeline(
@@ -246,6 +265,7 @@ def main(argv: list[str] | None = None) -> int:
         enrichers=runtime.enrichers,
         gate=CadenceGate(runtime.store),
         cluster_salt=runtime.cluster_salt,
+        yield_ledger=runtime.yield_ledger,
     )
 
     if not args.dry_run:
@@ -260,6 +280,7 @@ def main(argv: list[str] | None = None) -> int:
                 filters=runtime.filters,
                 generated_at=datetime.now(timezone.utc),
                 knowledge=runtime.knowledge,
+                groups=runtime.yield_ledger.rows(runtime.groups, rotation.data),
             )
         else:
             reason = (

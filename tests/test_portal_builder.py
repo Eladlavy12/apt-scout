@@ -71,6 +71,9 @@ class TestPublicDict:
     def test_publishes_the_neighborhood_id(self):
         assert listing_to_public_dict(listing(neighborhood="bavli"))["neighborhood"] == "bavli"
 
+    def test_publishes_the_group_id(self):
+        assert listing_to_public_dict(listing(group_id="tlvrent"))["group_id"] == "tlvrent"
+
 
 class TestBuildPortal:
     def test_writes_the_data_file(self, tmp_path):
@@ -174,3 +177,16 @@ class TestNeighborhoodsFile:
         payload = json.loads((tmp_path / "data" / "listings.json").read_text(encoding="utf-8"))
         assert payload["defaults"]["cities"] == ["תל אביב יפו", "גבעתיים", "רמת גן"]
         assert payload["defaults"]["excluded_neighborhoods"] == ["bavli"]
+
+
+class TestGroupsFile:
+    def test_publishes_group_rows_by_id(self, tmp_path):
+        rows = [{"id": "tlvrent", "name": "TLV", "enabled": True, "visits": 2, "blocked": 0, "posts_seen": 5,
+                 "offers": 3, "listings": 2, "matched": 1, "last_matched_at": None, "last_visit": None}]
+        build_portal(tmp_path, [listing()], {}, Filters(), NOW, groups=rows)
+        data = json.loads((tmp_path / "data" / "groups.json").read_text(encoding="utf-8"))
+        assert data["tlvrent"]["matched"] == 1 and data["tlvrent"]["name"] == "TLV"
+
+    def test_empty_without_groups(self, tmp_path):
+        build_portal(tmp_path, [listing()], {}, Filters(), NOW)
+        assert json.loads((tmp_path / "data" / "groups.json").read_text(encoding="utf-8")) == {}

@@ -171,3 +171,22 @@ class TestTextFingerprint:
         listing = make_listing(raw_text=None)
         fp = fingerprints(listing, SALT)
         assert not any(k.startswith("text:") for k in fp["weak"])
+
+
+class TestTextHashFingerprint:
+    LONG = "להשכרה דירת 3 חדרים משופצת בפלורנטין, קומה 2, מרפסת שמש, מזגנים בכל החדרים, כניסה מיידית, ללא תיווך"
+
+    def test_identical_long_text_shares_a_strong_key(self):
+        a = fingerprints(make_listing(source="fb_groups", source_id="g1:1", raw_text=self.LONG), SALT)
+        b = fingerprints(make_listing(source="fb_groups", source_id="g2:2", raw_text=self.LONG + "  "), SALT)
+        keys_a = {k for k in a["strong"] if k.startswith("texthash:")}
+        assert keys_a and keys_a == {k for k in b["strong"] if k.startswith("texthash:")}
+
+    def test_short_text_gets_no_texthash(self):
+        fp = fingerprints(make_listing(raw_text="דירה יפה 3 חדרים"), SALT)
+        assert not any(k.startswith("texthash:") for k in fp["strong"])
+
+    def test_different_text_differs(self):
+        a = fingerprints(make_listing(raw_text=self.LONG), SALT)
+        b = fingerprints(make_listing(raw_text=self.LONG.replace("קומה 2", "קומה 3")), SALT)
+        assert [k for k in a["strong"] if k.startswith("texthash:")] != [k for k in b["strong"] if k.startswith("texthash:")]

@@ -8,7 +8,7 @@ from ..neighborhoods.labels import REPUTATION_LABELS, TAG_LABELS
 API_BASE = "https://api.telegram.org/bot{token}/{method}"
 
 
-def format_listing(listing: Listing, knowledge=None) -> str:
+def format_listing(listing: Listing, knowledge=None, group_names=None) -> str:
     """Build the Telegram message body for one listing.
 
     Telegram is private to the user, so full detail is safe here — unlike the
@@ -48,6 +48,10 @@ def format_listing(listing: Listing, knowledge=None) -> str:
     if listing.distance_km is not None:
         lines.append(f'📍 {listing.distance_km:g} ק"מ')
 
+    if listing.group_id:
+        name = (group_names or {}).get(listing.group_id) or listing.group_id
+        lines.append("👥 קבוצה: " + html.escape(name))
+
     lines.append(f"מקור: {listing.source}")
     lines.append(html.escape(listing.url))
     return "\n".join(lines)
@@ -63,6 +67,7 @@ class TelegramNotifier:
         client: object | None = None,
         timeout: float = 15.0,
         knowledge=None,
+        group_names=None,
     ) -> None:
         self._token = token
         self._chat_id = chat_id
@@ -72,6 +77,7 @@ class TelegramNotifier:
             client = httpx.Client(timeout=timeout)
         self._client = client
         self._knowledge = knowledge
+        self._group_names = group_names
 
     def _call(self, method: str, payload: dict) -> bool:
         url = API_BASE.format(token=self._token, method=method)
@@ -111,7 +117,7 @@ class TelegramNotifier:
         return response.json().get("result", [])
 
     def send_listing(self, listing: Listing) -> bool:
-        caption = format_listing(listing, self._knowledge)
+        caption = format_listing(listing, self._knowledge, self._group_names)
         if listing.photos:
             sent = self._call(
                 "sendPhoto",

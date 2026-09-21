@@ -27,6 +27,9 @@ _MIN_TEXT_LENGTH_FOR_SIMILARITY = 40
 _RARE_TOKEN_COUNT = 8
 _MIN_TOKEN_LENGTH = 3
 
+# Text hash fingerprint: identical long text is as good as a shared phone number.
+_MIN_TEXTHASH_LENGTH = 80
+
 
 def _normalise_exturl(raw_url: str) -> str:
     """Lowercase scheme/host and drop the query string, per the brief."""
@@ -116,6 +119,12 @@ def fingerprints(listing: Listing, salt: str) -> dict[str, list[str]]:
 
     for exturl in _extract_exturls(raw_text):
         strong.append(f"exturl:{exturl}")
+
+    normalised = normalise_text(raw_text).lower()
+    if len(normalised) >= _MIN_TEXTHASH_LENGTH:
+        # Cross-posted ads usually carry the exact same text; identical
+        # long text is as good as a shared phone number.
+        strong.append("texthash:" + hashlib.sha1(normalised.encode("utf-8")).hexdigest())
 
     if listing.price is not None and listing.rooms is not None:
         if listing.size_sqm is not None or listing.address_text:

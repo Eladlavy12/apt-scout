@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any
 
-from .cluster.engine import Cluster, ClusterEngine
+from .cluster.engine import Cluster, ClusterEngine, _source_rank
 from .filters import Filters
 from .health import HealthTracker
 from .models import Listing
@@ -33,6 +33,13 @@ MAX_STALE_HOURS = 24.0
 # a burst of new listings never floods the chat; the rest wait for the next
 # run rather than being dropped.
 MAX_ALERTS_PER_RUN = 12
+
+
+def _aware_utc(dt: datetime | None) -> datetime | None:
+    """Coerce a naive datetime to aware UTC; None and aware values pass through."""
+    if dt is None or dt.tzinfo is not None:
+        return dt
+    return dt.replace(tzinfo=timezone.utc)
 
 
 @dataclass
@@ -65,6 +72,7 @@ def run_pipeline(
     cluster_salt: str = "",
     max_alerts_per_run: int = MAX_ALERTS_PER_RUN,
     max_stale_hours: float = MAX_STALE_HOURS,
+    yield_ledger: Any | None = None,
 ) -> RunReport:
     """Fetch, enrich, cluster, filter, and notify for one scheduled run.
 
@@ -200,6 +208,19 @@ def run_pipeline(
                 )
         enriched.append(listing)
 
+    if yield_ledger is not None:
+        for listing in enriched:
+            if listing.source == "fb_groups" and listing.group_id:
+                # I5: ledger bookkeeping is best-effort - a broken ledger (a
+                # corrupt state file, a bad group id) must never abort the
+                # run that would otherwise send real alerts.
+                try:
+                    yield_ledger.count_offer(listing.group_id, listing.stable_id())
+                    if listing.price is not None or listing.rooms is not None:
+                        yield_ledger.count_listing(listing.group_id, listing.stable_id())
+                except Exception as exc:  # noqa: BLE001 - isolation is the point
+                    report.errors.setdefault("yield_ledger", f"{type(exc).__name__}: {exc}")
+
     # Carry-forward cache: replace only the sources that actually fetched
     # this run; a skipped (or errored) source keeps its previous entry.
     cache = store.load(PORTAL_CACHE, {})
@@ -278,9 +299,11 @@ def run_pipeline(
         # The canonical's first-seen must be the earliest of any member's,
         # not whichever field the pooling happened to pick - otherwise a
         # long-known listing that just got cross-posted to a new source
-        # could show up with a dishonest "NEW" badge.
+        # could show up with a dishonest "NEW" badge. Coerced to aware UTC:
+        # a naive value (old state, or a caller-supplied Listing) must not
+        # TypeError when compared against another member's aware timestamp.
         member_first_seen = [
-            member.first_seen_at
+            _aware_utc(member.first_seen_at)
             for member in cluster.members
             if member.first_seen_at is not None
         ]
@@ -292,6 +315,21 @@ def run_pipeline(
         if not filters.matches(canonical):
             continue
         report.matched += 1
+
+        if yield_ledger is not None:
+            # I5: best-effort - the credit-key comparison (and credit_match
+            # itself) must never abort the run.
+            try:
+                earliest = min(
+                    cluster.members,
+                    key=lambda m: (_aware_utc(m.first_seen_at) or now, _source_rank(m.source), m.stable_id()),
+                )
+                if earliest.source == "fb_groups" and earliest.group_id:
+                    # Credit once per earliest member's stable_id (which is immutable);
+                    # cluster_id is not stable as members join, so it can't be the key.
+                    yield_ledger.credit_match(earliest.stable_id(), earliest.group_id, now)
+            except Exception as exc:  # noqa: BLE001 - isolation is the point
+                report.errors.setdefault("yield_ledger", f"{type(exc).__name__}: {exc}")
 
         member_ids = [member.stable_id() for member in cluster.members]
         if any(member_id in already_notified for member_id in member_ids):
@@ -322,5 +360,11 @@ def run_pipeline(
     report.listings = canonical_listings
 
     store.record_seen(new_seen)
+
+    if yield_ledger is not None:
+        try:
+            yield_ledger.save()
+        except Exception as exc:  # noqa: BLE001 - isolation is the point
+            report.errors.setdefault("yield_ledger", f"{type(exc).__name__}: {exc}")
 
     return report

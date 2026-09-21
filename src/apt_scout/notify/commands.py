@@ -24,6 +24,7 @@ USAGE = (
     "/cities <ערים מופרדות בפסיק> | all\n"
     "/exclude <שם שכונה> — הסתרת שכונה\n"
     "/include <שם שכונה> — החזרת שכונה\n"
+    "/groups — תפוקת קבוצות הפייסבוק\n"
     "/pause — עצירת התראות\n"
     "/resume — חידוש התראות\n"
     "/status — הצגת ההגדרות"
@@ -110,7 +111,11 @@ def _resolve_neighborhood(args: list[str], knowledge: KnowledgeBase | None) -> t
 
 
 def apply_command(
-    filters: Filters, command: str, args: list[str], knowledge: KnowledgeBase | None = None
+    filters: Filters,
+    command: str,
+    args: list[str],
+    knowledge: KnowledgeBase | None = None,
+    groups_text: str | None = None,
 ) -> tuple[Filters, str]:
     """Apply one command, returning the new filters and a reply.
 
@@ -197,6 +202,9 @@ def apply_command(
         updated = replace(filters, excluded_neighborhoods=current)
         return updated, _describe(updated, knowledge)
 
+    if command == "groups":
+        return filters, groups_text or "אין עדיין נתונים על קבוצות פייסבוק."
+
     return filters, USAGE
 
 
@@ -207,6 +215,7 @@ def process_commands(
     filters_path: Path,
     chat_id: str,
     knowledge: KnowledgeBase | None = None,
+    groups_text: str | None = None,
 ) -> Filters:
     """Poll Telegram, apply any commands, and persist the result.
 
@@ -239,7 +248,7 @@ def process_commands(
             continue
         command, args = parsed
         before = filters.to_dict()
-        filters, reply = apply_command(filters, command, args, knowledge)
+        filters, reply = apply_command(filters, command, args, knowledge, groups_text)
         if filters.to_dict() != before:
             changed = True
         notifier.send_text(reply)

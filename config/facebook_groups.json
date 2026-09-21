@@ -1,0 +1,21 @@
+{
+  "groups": [
+    {"id": "ApartmentsTelAviv", "name": "דירות להשכרה ריקות או שותפים בתל אביב", "enabled": true},
+    {"id": "101875683484689", "name": "דירות מפה לאוזן בתל אביב", "enabled": true},
+    {"id": "333022240594651", "name": "דירות להשכרה במחירים שפויים תל אביב", "enabled": true},
+    {"id": "295395253832427", "name": "", "enabled": true},
+    {"id": "184920528370332", "name": "", "enabled": true},
+    {"id": "458499457501175", "name": "", "enabled": true},
+    {"id": "tel.aviv.dirot", "name": "", "enabled": true},
+    {"id": "340827733093253", "name": "", "enabled": true},
+    {"id": "457465901082882", "name": "", "enabled": true},
+    {"id": "664805529032361", "name": "", "enabled": true},
+    {"id": "305724686290054", "name": "", "enabled": true},
+    {"id": "tlvapartment", "name": "", "enabled": true},
+    {"id": "telavivrentals", "name": "", "enabled": true},
+    {"id": "291753646078748", "name": "", "enabled": true},
+    {"id": "tlvrent", "name": "", "enabled": true},
+    {"id": "nadlan247", "name": "", "enabled": true},
+    {"id": "1196843027043598", "name": "", "enabled": true}
+  ]
+}

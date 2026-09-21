@@ -82,3 +82,11 @@ def test_legacy_dict_without_neighborhood_deserialises_to_none():
     data = serialise_listing(Listing(source="yad2", source_id="9", url="https://y/9"))
     del data["neighborhood"]
     assert deserialise_listing(data).neighborhood is None
+
+
+def test_group_id_round_trips_and_defaults():
+    original = Listing(source="fb_groups", source_id="g:1", url="https://f/1", group_id="g")
+    assert deserialise_listing(serialise_listing(original)).group_id == "g"
+    data = serialise_listing(Listing(source="yad2", source_id="1", url="https://y/1"))
+    del data["group_id"]
+    assert deserialise_listing(data).group_id is None

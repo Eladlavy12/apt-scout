@@ -73,19 +73,33 @@ try {
     $fetchExit = 1
 }
 
-if ($fetchExit -ne 0) {
-    Write-Log "fetch failed; leaving the existing feed file untouched. === run end (failure) ==="
-    exit $fetchExit
+# I3: the Facebook-groups collector runs every hour regardless of the yad2
+# outcome - it must not be skipped just because yad2's tier-2 browser
+# fallback had a bad run. It is above the yad2-failure guard below on
+# purpose, and that guard no longer exits: it only logs, so the
+# status/commit/push section still runs and picks up whichever feed files
+# actually changed (the $FeedFiles set already handles "only fb files
+# changed").
+Write-Log "collecting Facebook groups via $PythonExe -m apt_scout.fb_groups"
+try {
+    $fbOutput = (& $PythonExe -m apt_scout.fb_groups --repo $RepoRoot 2>&1 | Out-String).Trim()
+    Write-Log "fb_groups exit=$LASTEXITCODE output: $fbOutput"
+} catch {
+    Write-Log "fb_groups collection failed (continuing with yad2 only): $($_.Exception.Message)"
 }
 
-$statusOutput = (git status --porcelain state/feeds/yad2.json | Out-String).Trim()
+if ($fetchExit -ne 0) {
+    Write-Log "yad2 fetch failed; leaving the existing yad2 feed file untouched, continuing with Facebook groups only."
+}
+
+$FeedFiles = @("state/feeds/yad2.json", "state/feeds/facebook_groups.json", "state/fb_groups_rotation.json")
+$statusOutput = (git status --porcelain -- $FeedFiles | Out-String).Trim()
 if ([string]::IsNullOrWhiteSpace($statusOutput)) {
-    Write-Log "no change to state/feeds/yad2.json; nothing to commit. === run end ==="
+    Write-Log "no change to feed files; nothing to commit. === run end ==="
     exit 0
 }
-
-git add state/feeds/yad2.json
-$commitOutput = (git commit -m "chore: yad2 local feed" 2>&1 | Out-String).Trim()
+git add -- $FeedFiles
+$commitOutput = (git commit -m "chore: local feeds" 2>&1 | Out-String).Trim()
 Write-Log "git commit: $commitOutput"
 
 $pushed = $false
