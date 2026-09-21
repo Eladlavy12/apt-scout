@@ -101,6 +101,9 @@ def _parse_items(items: Any) -> list[Listing]:
                 # onmap's rent/rent-short/buy search only lists whole
                 # properties; there is no roommate-ad category here.
                 occupancy=Occupancy.WHOLE,
+                # The search asks for "rent,rent-short"; a short-term ad is
+                # exactly what the sublet toggle exists to hide.
+                is_sublet=item.get("search_option") == "rent-short",
                 posted_at=_as_datetime(item.get("created_at")),
             )
         )

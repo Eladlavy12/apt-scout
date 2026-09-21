@@ -3,7 +3,11 @@
 Continuously scouts Tel Aviv rental listings, filters them by price, rooms,
 size, real driving time from a fixed centre point, and a 5 km straight-line
 cap from that same point, and alerts on Telegram. Sublet and short-term ads
-are detected and excluded by default.
+are detected and excluded by default: from ad text where a source supplies
+it (Facebook), from yad2's structured property type (`סאבלט`), and from
+onmap's `rent-short` search option. One-room and studio ads ("דירת חדר",
+"דירת סטודיו", "דירת גלריה", "studio apartment") count as 1 room even when
+no number is stated, so the minimum-rooms filter rejects them.
 
 Design: [`docs/superpowers/specs/2026-08-31-apt-scout-design.md`](docs/superpowers/specs/2026-08-31-apt-scout-design.md)
 

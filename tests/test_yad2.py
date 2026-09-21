@@ -359,3 +359,37 @@ class TestLocalFeed:
 
         assert len(result.listings) == 1
         assert fetcher.requested == []
+
+
+class TestPropertyType:
+    """yad2's map payload has no ad text, only a structured property type;
+    the text-based detectors never see a yad2 sublet unless it is mapped."""
+
+    def _with_property(self, text, rooms=3):
+        payload = sample_payload()
+        marker = payload["data"]["markers"][0]
+        marker["additionalDetails"]["property"] = {"text": text}
+        marker["additionalDetails"]["roomsCount"] = rooms
+        return payload
+
+    def test_sublet_property_type_flags_the_listing(self):
+        listing = parse_yad2_payload(self._with_property("סאבלט"))[0]
+        assert listing.is_sublet is True
+
+    def test_plain_apartment_is_not_a_sublet(self):
+        listing = parse_yad2_payload(self._with_property("דירה"))[0]
+        assert listing.is_sublet is False
+
+    def test_studio_property_type_counts_as_one_room_when_rooms_missing(self):
+        listing = parse_yad2_payload(self._with_property("סטודיו/לופט", rooms=None))[0]
+        assert listing.rooms == 1.0
+
+    def test_studio_property_type_keeps_a_stated_room_count(self):
+        listing = parse_yad2_payload(self._with_property("סטודיו/לופט", rooms=2))[0]
+        assert listing.rooms == 2.0
+
+    def test_missing_property_type_is_harmless(self):
+        payload = sample_payload()
+        del payload["data"]["markers"][0]["additionalDetails"]["property"]
+        listing = parse_yad2_payload(payload)[0]
+        assert listing.is_sublet is False
