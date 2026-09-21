@@ -163,3 +163,16 @@ def test_format_without_a_neighborhood_is_unchanged():
 
     item = Listing(source="yad2", source_id="1", url="https://y/1", address_text="בבלי 5")
     assert "🏘" not in format_listing(item, None)
+
+
+def test_format_adds_the_group_name():
+    from apt_scout.models import Listing
+    item = Listing(source="fb_groups", source_id="tlvrent:1", url="https://f/1", group_id="tlvrent")
+    text = format_listing(item, None, group_names={"tlvrent": "TLV Rent"})
+    assert "👥 קבוצה: TLV Rent" in text
+
+
+def test_format_falls_back_to_the_group_id():
+    from apt_scout.models import Listing
+    item = Listing(source="fb_groups", source_id="x:1", url="https://f/1", group_id="x")
+    assert "👥 קבוצה: x" in format_listing(item, None)

@@ -20,7 +20,8 @@ from .budget import BudgetGuard
 from .enrich.neighborhood import NeighborhoodEnricher, load_neighborhood_data
 from .enrich.pipeline_enrichers import build_enrichers
 from .fb_groups.groups import load_groups
-from .fb_groups.ledger import YieldLedger
+from .fb_groups.ledger import YieldLedger, format_groups_report
+from .fb_groups.rotation import Rotation
 from .fetch import CurlTransport, Fetcher, HttpTransport
 from .filters import Filters
 from .health import HealthTracker
@@ -108,6 +109,10 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
 
     index, knowledge = load_neighborhood_data(repo_root / "data")
 
+    groups_config_path = repo_root / "config" / "facebook_groups.json"
+    groups = load_groups(groups_config_path) if groups_config_path.exists() else []
+    group_names = {g.id: g.name or g.id for g in groups}
+
     if dry_run:
         notifier: Any = DryRunNotifier()
     else:
@@ -118,7 +123,7 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
                 "TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID must be set "
                 "(or pass --dry-run)"
             )
-        notifier = TelegramNotifier(token, chat_id, knowledge=knowledge)
+        notifier = TelegramNotifier(token, chat_id, knowledge=knowledge, group_names=group_names)
 
     salt = env.get("PHONE_HASH_SALT")
     if not salt:
@@ -158,9 +163,7 @@ def build_runtime(repo_root: Path, env: dict, dry_run: bool = False) -> Runtime:
         chat_id=env.get("TELEGRAM_CHAT_ID"),
         knowledge=knowledge,
         yield_ledger=YieldLedger(store),
-        groups=load_groups(repo_root / "config" / "facebook_groups.json")
-        if (repo_root / "config" / "facebook_groups.json").exists()
-        else [],
+        groups=groups,
     )
 
 
@@ -236,6 +239,11 @@ def main(argv: list[str] | None = None) -> int:
 
     runtime = build_runtime(Path(args.repo), dict(os.environ), dry_run=args.dry_run)
 
+    rotation = Rotation(Path(args.repo) / "state" / "fb_groups_rotation.json")
+    groups_text = format_groups_report(
+        runtime.yield_ledger.rows(runtime.groups, rotation.data), rotation.blocked_until
+    ) if runtime.groups else None
+
     if not args.dry_run:
         runtime.filters = process_commands(
             runtime.notifier,
@@ -244,6 +252,7 @@ def main(argv: list[str] | None = None) -> int:
             Path(args.repo) / "config" / "filters.json",
             chat_id=runtime.chat_id or "",
             knowledge=runtime.knowledge,
+            groups_text=groups_text,
         )
 
     report = run_pipeline(

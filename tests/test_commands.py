@@ -389,3 +389,18 @@ def test_process_commands_forwards_the_knowledge_base(tmp_path):
     result = process_commands(Notifier(), store, Filters(), path, chat_id="7", knowledge=knowledge())
     assert result.excluded_neighborhoods == ["florentin"]
     assert json.loads(path.read_text(encoding="utf-8"))["excluded_neighborhoods"] == ["florentin"]
+
+
+class TestGroupsCommand:
+    def test_replies_with_the_report(self):
+        filters, reply = apply_command(Filters(), "groups", [], None, groups_text="קבוצה א: 3")
+        assert reply == "קבוצה א: 3"
+        assert filters.to_dict() == Filters().to_dict()
+
+    def test_without_data(self):
+        _, reply = apply_command(Filters(), "groups", [])
+        assert "אין עדיין" in reply
+
+    def test_usage_mentions_groups(self):
+        _, reply = apply_command(Filters(), "nonsense", [])
+        assert "/groups" in reply
