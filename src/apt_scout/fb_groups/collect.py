@@ -5,7 +5,7 @@ from dataclasses import dataclass, field, fields
 from datetime import datetime
 from pathlib import Path
 
-from .browser import visit_group
+from .browser import VisitResult, visit_group
 from .groups import load_groups
 from .posts import merge_feed, read_feed, write_feed
 from .rotation import Rotation
@@ -60,7 +60,10 @@ def run_collection(repo_root: Path, now: datetime, settings: CollectSettings, vi
     for index, group in enumerate(batch):
         if index > 0:
             sleep(settings.visit_gap_seconds)
-        result = visit(group.id, now)
+        try:
+            result = visit(group.id, now)
+        except Exception as exc:  # noqa: BLE001 - one group must never take the run down
+            result = VisitResult("error", error=f"{type(exc).__name__}: {exc}")
         report.visited.append(group.id)
         report.outcomes[group.id] = result.outcome
         rotation.record(group.id, result.outcome, len(result.posts), now)
@@ -79,8 +82,7 @@ def run_collection(repo_root: Path, now: datetime, settings: CollectSettings, vi
     existing = read_feed(feed_path)
     existing_posts = existing["posts"] if existing else []
     merged = merge_feed(existing_posts, new_posts, now, settings.max_post_age_days, {g.id for g in groups})
-    if new_posts or existing is None:
-        write_feed(feed_path, merged, now)
+    write_feed(feed_path, merged, now)
     report.posts_added = len(new_posts)
     report.feed_size = len(merged)
     return report

@@ -108,6 +108,45 @@ def test_settings_from_config_reads_known_keys():
     assert s.batch_size == 4 and s.visit_gap_seconds == 1 and s.min_hours_between_visits == 5
 
 
+def test_a_visit_that_raises_is_recorded_as_an_error(tmp_path):
+    root = repo(tmp_path)
+
+    class RaisingVisit:
+        def __call__(self, group_id, now):
+            if group_id == "a":
+                raise RuntimeError("boom")
+            return VisitResult("ok", [post(group_id, "1")])
+
+    report = run_collection(root, NOW, settings(batch_size=2), visit=RaisingVisit(), sleep=lambda s: None)
+    assert report.outcomes == {"a": "error", "b": "ok"}
+    rot = Rotation(root / "state" / "fb_groups_rotation.json")
+    assert rot.group_state("a")["last_outcome"] == "error"
+    feed = read_feed(root / "state" / "feeds" / "facebook_groups.json")
+    assert {p["post_id"] for p in feed["posts"]} == {"1"}
+
+
+def test_pruning_lands_even_without_new_posts(tmp_path):
+    root = repo(tmp_path)
+    # First run: collect one post at NOW
+    first_visit = FakeVisit({"a": VisitResult("ok", [post("a", "1", NOW)])})
+    first_report = run_collection(root, NOW, settings(batch_size=1), visit=first_visit, sleep=lambda s: None)
+    assert first_report.feed_size == 1
+
+    # Second run: 4 days later, no new posts (empty), but max_post_age_days=1
+    # So the old post should be pruned
+    second_visit = FakeVisit({g: VisitResult("empty") for g in "abcd"})
+    second_report = run_collection(
+        root,
+        NOW + timedelta(days=4),
+        settings(batch_size=1, max_post_age_days=1),
+        visit=second_visit,
+        sleep=lambda s: None
+    )
+    assert second_report.feed_size == 0
+    feed = read_feed(root / "state" / "feeds" / "facebook_groups.json")
+    assert feed["posts"] == []
+
+
 def test_sources_json_has_the_block():
     cfg = json.loads(Path("config/sources.json").read_text(encoding="utf-8"))["fb_groups"]
     assert cfg["feed_file"] == "state/feeds/facebook_groups.json"
