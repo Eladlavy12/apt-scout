@@ -124,3 +124,9 @@ class TestRows:
         ledger = YieldLedger(StateStore(tmp_path))
         text = format_groups_report(ledger.rows([Group("a", "קבוצה א", True)], {"groups": {}}), NOW + timedelta(hours=1))
         assert "קבוצה א" in text and "חסום עד" in text
+
+    def test_report_escapes_html_in_group_names(self, tmp_path):
+        ledger = YieldLedger(StateStore(tmp_path))
+        text = format_groups_report(ledger.rows([Group("a", "Rent & Roommates <TLV>", True)], {"groups": {}}), None)
+        assert "Rent &amp; Roommates &lt;TLV&gt;" in text
+        assert "<TLV>" not in text

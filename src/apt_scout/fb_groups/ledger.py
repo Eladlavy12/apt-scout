@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import html
 from datetime import datetime
 
 from ..state import StateStore
@@ -87,7 +88,7 @@ def format_groups_report(rows: list[dict], blocked_until: datetime | None) -> st
     lines = ["קבוצות פייסבוק (תואמות / מודעות / פוסטים / ביקורים):"]
     for row in rows:
         flag = "" if row["enabled"] else " (כבויה)"
-        lines.append(f"{row['matched']} / {row['listings']} / {row['posts_seen']} / {row['visits']} — {row['name']}{flag}")
+        lines.append(f"{row['matched']} / {row['listings']} / {row['posts_seen']} / {row['visits']} — {html.escape(row['name'])}{flag}")
     if blocked_until is not None:
         lines.append(f"פייסבוק חסום עד {blocked_until.strftime('%d/%m %H:%M')} UTC")
     return "\n".join(lines)
