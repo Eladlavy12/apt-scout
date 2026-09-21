@@ -193,3 +193,16 @@ class TestNeighborhoodUi:
         css = (ASSETS / "style.css").read_text(encoding="utf-8")
         for tier in ("sought_after", "solid", "mixed", "weak"):
             assert f".rep-{tier}" in css, tier
+
+
+class TestGroupsUi:
+    def test_html_has_the_groups_table(self):
+        html = (ASSETS / "index.html").read_text(encoding="utf-8")
+        assert 'id="groups"' in html and 'id="groups-table"' in html
+
+    def test_js_loads_groups_and_renders_badge(self):
+        js = (ASSETS / "app.js").read_text(encoding="utf-8")
+        assert 'fetch("data/groups.json")' in js
+        assert "badge group" in js
+        assert "לפוסט בקבוצה" in js
+        assert "innerHTML" not in js

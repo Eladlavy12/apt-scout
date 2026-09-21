@@ -280,6 +280,7 @@ def main(argv: list[str] | None = None) -> int:
                 filters=runtime.filters,
                 generated_at=datetime.now(timezone.utc),
                 knowledge=runtime.knowledge,
+                groups=runtime.yield_ledger.rows(runtime.groups, rotation.data),
             )
         else:
             reason = (
