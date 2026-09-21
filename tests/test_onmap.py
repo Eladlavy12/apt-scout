@@ -169,3 +169,15 @@ class TestAdapter:
         result = OnmapAdapter().fetch(FakeFetcher(text="{}"), {}, since=None)
         assert result.listings == []
         assert "url_template" in result.error
+
+
+class TestShortTermRentals:
+    """The search asks for rent AND rent-short; short-term ads are sublets."""
+
+    def test_rent_short_is_flagged_as_a_sublet(self):
+        listing = parse_onmap_payload([sample_item(search_option="rent-short")])[0]
+        assert listing.is_sublet is True
+        assert "rent-short" in listing.url
+
+    def test_plain_rent_is_not(self):
+        assert parse_onmap_payload([sample_item()])[0].is_sublet is False

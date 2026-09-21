@@ -75,13 +75,24 @@ def _parse_markers(markers: Any) -> list[Listing]:
         if not isinstance(photos, list):
             photos = []
 
+        # The map payload carries no ad text, so the text-based sublet and
+        # room detectors never fire for yad2. Its structured property type
+        # is the only signal: "סאבלט" is a sublet, "סטודיו/לופט" is a
+        # one-room flat when no room count is stated.
+        property_type = _get(marker, "additionalDetails", "property", "text")
+        property_type = property_type if isinstance(property_type, str) else ""
+        rooms = _as_float(_get(marker, "additionalDetails", "roomsCount"))
+        if rooms is None and "סטודיו" in property_type:
+            rooms = 1.0
+
         listings.append(
             Listing(
                 source="yad2",
                 source_id=source_id,
                 url=LISTING_URL.format(source_id=source_id),
                 price=_as_int(marker.get("price")),
-                rooms=_as_float(_get(marker, "additionalDetails", "roomsCount")),
+                rooms=rooms,
+                is_sublet="סאבלט" in property_type,
                 size_sqm=_as_float(_get(marker, "additionalDetails", "squareMeter")),
                 floor=_as_int(_get(marker, "address", "house", "floor")),
                 city=_get(marker, "address", "city", "text"),

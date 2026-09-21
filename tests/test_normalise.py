@@ -112,3 +112,45 @@ class TestPhone:
         assert a == b
         assert a != c
         assert "972" not in a
+
+
+class TestParseRoomsOneRoom:
+    """Studio / one-room wording with no digit still yields a count, so the
+    2-room minimum can reject it instead of failing open on None."""
+
+    def test_hebrew_one_room_apartment(self):
+        assert parse_rooms("דירת חדר בקומת קרקע") == 1.0
+
+    def test_hebrew_one_room_word_form(self):
+        assert parse_rooms("דירה של חדר אחד להשכרה") == 1.0
+        assert parse_rooms("להשכרה דירת חדר אחד") == 1.0
+
+    def test_hebrew_studio(self):
+        assert parse_rooms("דירת סטודיו על רחוב רוטשילד") == 1.0
+
+    def test_hebrew_gallery_apartment(self):
+        assert parse_rooms("דירת גלריה מקסימה") == 1.0
+
+    def test_english_studio(self):
+        assert parse_rooms("Cozy studio apartment") == 1.0
+
+    def test_english_one_room(self):
+        assert parse_rooms("1 room apartment near the beach") == 1.0
+        assert parse_rooms("one-room flat") == 1.0
+
+    def test_a_digit_count_wins_over_studio_wording(self):
+        assert parse_rooms("דירת סטודיו 3 חדרים") == 3.0
+
+    def test_one_and_a_half_still_wins(self):
+        assert parse_rooms("דירת חדר וחצי") == 1.5
+
+    def test_plural_rooms_word_is_not_one_room(self):
+        assert parse_rooms("דירת חדרים מרווחת") is None
+
+    def test_a_studio_in_the_building_is_not_a_studio_apartment(self):
+        assert parse_rooms("דירה מקסימה בבניין עם סטודיו לאמנים בחצר") is None
+        assert parse_rooms("דירה ברחוב הסטודיו 5, מרווחת ומוארת") is None
+        assert parse_rooms("Great flat, the building has a recording studio") is None
+
+    def test_one_room_among_several_is_not_a_one_room_flat(self):
+        assert parse_rooms("יש חדר אחד גדול, סלון נפרד ועוד חדר עבודה") is None
