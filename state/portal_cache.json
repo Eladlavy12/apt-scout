@@ -585,6 +585,34 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4906824"
     },
     {
+      "address_text": "תל אביב יפו, קריית שלום, בורמה 38",
+      "city": "תל אביב יפו",
+      "distance_km": 3.33,
+      "drive_minutes": 9.7,
+      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
+      "floor": 4,
+      "group_id": null,
+      "is_sublet": false,
+      "lat": 32.042061,
+      "lon": 34.773234,
+      "neighborhood": "kiryat_shalom",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33318995&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 4500,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 60.0,
+      "source": "komo",
+      "source_id": "4882936",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4882936"
+    },
+    {
       "address_text": "תל אביב יפו, נווה שאנן, הרב פרנקל 77",
       "city": "תל אביב יפו",
       "distance_km": 2.82,
@@ -1087,34 +1115,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4779844"
-    },
-    {
-      "address_text": "תל אביב יפו, עזרא, אלול 16",
-      "city": "תל אביב יפו",
-      "distance_km": 1.96,
-      "drive_minutes": 7.1,
-      "first_seen_at": "2026-09-18T01:00:35.799698+00:00",
-      "floor": 1,
-      "group_id": null,
-      "is_sublet": false,
-      "lat": 32.04309,
-      "lon": 34.790743,
-      "neighborhood": "ezra_haargazim",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33000980&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 3750,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 100.0,
-      "source": "komo",
-      "source_id": "4927681",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4927681"
     }
   ],
   "onmap": [
