@@ -483,6 +483,34 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4906824"
     },
     {
+      "address_text": "תל אביב יפו, יד אליהו, אנילביץ מרדכי 24",
+      "city": "תל אביב יפו",
+      "distance_km": 1.64,
+      "drive_minutes": 5.4,
+      "first_seen_at": "2026-09-23T03:00:40.333686+00:00",
+      "floor": 3,
+      "group_id": null,
+      "is_sublet": false,
+      "lat": 32.0618878,
+      "lon": 34.7878829,
+      "neighborhood": "yad_eliyahu",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33333742&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 4500,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 60.0,
+      "source": "komo",
+      "source_id": "4936988",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4936988"
+    },
+    {
       "address_text": "תל אביב יפו, קריית שלום, קמינסקה 6",
       "city": "תל אביב יפו",
       "distance_km": 3.21,
@@ -985,34 +1013,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4918418"
-    },
-    {
-      "address_text": "תל אביב יפו, הדר יוסף, רוזן פנחס 11",
-      "city": "תל אביב יפו",
-      "distance_km": 6.13,
-      "drive_minutes": 12.8,
-      "first_seen_at": "2026-09-15T08:00:36.487701+00:00",
-      "floor": 1,
-      "group_id": null,
-      "is_sublet": false,
-      "lat": 32.108207,
-      "lon": 34.826772,
-      "neighborhood": "tel_aviv_yafo",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=0&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 3700,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 21.0,
-      "source": "komo",
-      "source_id": "4931310",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4931310"
     }
   ],
   "onmap": [
