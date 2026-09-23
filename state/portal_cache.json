@@ -695,6 +695,34 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4906824"
     },
     {
+      "address_text": "תל אביב יפו, קריית שלום, קמינסקה 6",
+      "city": "תל אביב יפו",
+      "distance_km": 3.21,
+      "drive_minutes": 7.9,
+      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
+      "floor": 1,
+      "group_id": null,
+      "is_sublet": false,
+      "lat": 32.04054,
+      "lon": 34.775744,
+      "neighborhood": "kiryat_shalom",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33346512&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 4500,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 50.0,
+      "source": "komo",
+      "source_id": "4890313",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4890313"
+    },
+    {
       "address_text": "תל אביב יפו, נווה שאנן, נוה שאנן 11",
       "city": "תל אביב יפו",
       "distance_km": null,
@@ -1197,34 +1225,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4937318"
-    },
-    {
-      "address_text": "תל אביב יפו, רביבים, ארם משה 15",
-      "city": "תל אביב יפו",
-      "distance_km": 7.03,
-      "drive_minutes": 13.7,
-      "first_seen_at": "2026-09-16T00:00:35.818470+00:00",
-      "floor": null,
-      "group_id": null,
-      "is_sublet": false,
-      "lat": 32.117016,
-      "lon": 34.826173,
-      "neighborhood": "tel_aviv_yafo",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33219140&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 5400,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 70.0,
-      "source": "komo",
-      "source_id": "4933915",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4933915"
     }
   ],
   "onmap": [
