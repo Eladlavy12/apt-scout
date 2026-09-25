@@ -643,6 +643,34 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4906824"
     },
     {
+      "address_text": "תל אביב יפו, צהלון, שד ירושלים 66",
+      "city": "תל אביב יפו",
+      "distance_km": null,
+      "drive_minutes": null,
+      "first_seen_at": "2026-09-04T07:00:46.636796+00:00",
+      "floor": 1,
+      "group_id": null,
+      "is_sublet": false,
+      "lat": null,
+      "lon": null,
+      "neighborhood": "tel_aviv_yafo",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33376622&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 5500,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 61.0,
+      "source": "komo",
+      "source_id": "4906343",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4906343"
+    },
+    {
       "address_text": "תל אביב יפו, לבנה, דרך חיים ברלב 100",
       "city": "תל אביב יפו",
       "distance_km": null,
@@ -1145,34 +1173,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4936507"
-    },
-    {
-      "address_text": "תל אביב יפו, יד אליהו, גוש עציון 3",
-      "city": "תל אביב יפו",
-      "distance_km": 1.73,
-      "drive_minutes": 5.3,
-      "first_seen_at": "2026-09-17T17:00:39.508555+00:00",
-      "floor": 2,
-      "group_id": null,
-      "is_sublet": false,
-      "lat": 32.055047,
-      "lon": 34.785809,
-      "neighborhood": "yad_eliyahu",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33054828&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 3750,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 37.0,
-      "source": "komo",
-      "source_id": "4929524",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4929524"
     }
   ],
   "onmap": [
