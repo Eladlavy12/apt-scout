@@ -4,7 +4,7 @@
     "detail": "local feed from 2026-09-25T01:45:14.775831+00:00",
     "last_error": null,
     "last_failure": "2026-09-24T09:01:27.859213+00:00",
-    "last_success": "2026-09-25T18:01:29.717736+00:00"
+    "last_success": "2026-09-25T19:01:23.280174+00:00"
   },
   "fb_marketplace": {
     "consecutive_failures": 0,
@@ -14,10 +14,10 @@
     "last_success": "2026-09-25T14:02:01.433323+00:00"
   },
   "homeless": {
-    "consecutive_failures": 560,
+    "consecutive_failures": 561,
     "detail": null,
     "last_error": "רמת גן: fetch failed: All tiers failed for https://www.homeless.co.il/rent/city=%D7%A8%D7%9E%D7%AA%20%D7%92%D7%9F (http: HTTP 403; curl: HTTP 403)",
-    "last_failure": "2026-09-25T18:01:29.716850+00:00",
+    "last_failure": "2026-09-25T19:01:23.279258+00:00",
     "last_success": "2026-09-01T17:23:44.215720+00:00"
   },
   "komo": {
@@ -25,14 +25,14 @@
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-07T06:01:22.847449+00:00",
-    "last_success": "2026-09-25T18:01:13.041430+00:00"
+    "last_success": "2026-09-25T19:01:06.957470+00:00"
   },
   "onmap": {
     "consecutive_failures": 0,
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-11T21:01:44.858317+00:00",
-    "last_success": "2026-09-25T18:01:09.708421+00:00"
+    "last_success": "2026-09-25T19:01:03.864014+00:00"
   },
   "prog": {
     "consecutive_failures": 1,
@@ -41,10 +41,10 @@
     "last_success": "2026-09-01T15:58:42.284471+00:00"
   },
   "yad2": {
-    "consecutive_failures": 11,
-    "detail": "מוצגות 200 מודעות מהריצה האחרונה שהצליחה (לפני 11 שע')",
+    "consecutive_failures": 12,
+    "detail": "מוצגות 200 מודעות מהריצה האחרונה שהצליחה (לפני 12 שע')",
     "last_error": "response was not JSON (tier http): Expecting value: line 1 column 1 (char 0); browser fallback also failed",
-    "last_failure": "2026-09-25T18:01:09.204735+00:00",
+    "last_failure": "2026-09-25T19:01:03.348434+00:00",
     "last_success": "2026-09-25T07:00:36.937330+00:00"
   }
 }
