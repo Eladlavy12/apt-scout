@@ -554,6 +554,34 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4906824"
     },
     {
+      "address_text": "תל אביב יפו, הדר יוסף, רוזן פנחס 37",
+      "city": "תל אביב יפו",
+      "distance_km": 6.38,
+      "drive_minutes": 12.7,
+      "first_seen_at": "2026-09-15T08:00:36.487701+00:00",
+      "floor": 1,
+      "group_id": null,
+      "is_sublet": false,
+      "lat": 32.111028,
+      "lon": 34.825406,
+      "neighborhood": "tel_aviv_yafo",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33382747&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 5900,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 30.0,
+      "source": "komo",
+      "source_id": "4920798",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4920798"
+    },
+    {
       "address_text": "תל אביב יפו, נווה דן, אשכנזי 44",
       "city": "תל אביב יפו",
       "distance_km": null,
@@ -860,34 +888,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4899667"
-    },
-    {
-      "address_text": "תל אביב יפו, הדר יוסף, רוזן פנחס 37",
-      "city": "תל אביב יפו",
-      "distance_km": 6.38,
-      "drive_minutes": 12.7,
-      "first_seen_at": "2026-09-15T08:00:36.487701+00:00",
-      "floor": 1,
-      "group_id": null,
-      "is_sublet": false,
-      "lat": 32.111028,
-      "lon": 34.825406,
-      "neighborhood": "tel_aviv_yafo",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=32856304&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 5900,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 30.0,
-      "source": "komo",
-      "source_id": "4920798",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4920798"
     },
     {
       "address_text": "תל אביב יפו, נווה עופר, תל גבורים 36",
