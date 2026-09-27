@@ -1,6 +1,6 @@
 {
-  "backoff_hours": 48,
-  "blocked_until": "2026-09-27T16:29:11.020064+00:00",
+  "backoff_hours": 6,
+  "blocked_until": null,
   "groups": {
     "101875683484689": {
       "blocked": 1,
@@ -83,6 +83,21 @@
       "last_visit": "2026-09-26T16:29:11.020064+00:00",
       "name": "דירות להשכרה בתל אביב ללא תיווך - הקבוצה המובילה בפייסבוק",
       "posts_seen": 0,
+      "visits": 1
+    },
+    "ApartmentsTelAviv": {
+      "blocked": 0,
+      "last_outcome": "ok",
+      "last_visit": "2026-09-27T16:45:10.980543+00:00",
+      "posts_seen": 1,
+      "visits": 1
+    },
+    "nadlan247": {
+      "blocked": 0,
+      "last_outcome": "ok",
+      "last_visit": "2026-09-27T16:45:10.980543+00:00",
+      "name": "דירות למכירה / להשכרה תל אביב - רמת גן",
+      "posts_seen": 1,
       "visits": 1
     }
   }
