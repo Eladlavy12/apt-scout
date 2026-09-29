@@ -1,13 +1,13 @@
 {
-  "backoff_hours": 24,
-  "blocked_until": "2026-09-29T01:45:14.655994+00:00",
+  "backoff_hours": 48,
+  "blocked_until": "2026-09-30T14:53:45.573774+00:00",
   "groups": {
     "101875683484689": {
-      "blocked": 1,
+      "blocked": 2,
       "last_outcome": "blocked",
-      "last_visit": "2026-09-21T17:45:10.976957+00:00",
+      "last_visit": "2026-09-29T14:53:45.573774+00:00",
       "posts_seen": 0,
-      "visits": 1
+      "visits": 2
     },
     "1196843027043598": {
       "blocked": 1,
