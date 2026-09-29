@@ -639,6 +639,34 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4906824"
     },
     {
+      "address_text": "תל אביב יפו, שכונת התקווה, עזאי 7",
+      "city": "תל אביב יפו",
+      "distance_km": 1.36,
+      "drive_minutes": 5.6,
+      "first_seen_at": "2026-09-29T18:00:37.204986+00:00",
+      "floor": 2,
+      "group_id": null,
+      "is_sublet": false,
+      "lat": 32.051052,
+      "lon": 34.791251,
+      "neighborhood": "hatikva",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33426518&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 4200,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 40.0,
+      "source": "komo",
+      "source_id": "4939437",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4939437"
+    },
+    {
       "address_text": "תל אביב יפו, שכונת התקווה, גואל 2",
       "city": "תל אביב יפו",
       "distance_km": 1.54,
@@ -1141,34 +1169,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4929886"
-    },
-    {
-      "address_text": "תל אביב יפו, נווה אליעזר, ל''ו 9",
-      "city": "תל אביב יפו",
-      "distance_km": 0.87,
-      "drive_minutes": 3.9,
-      "first_seen_at": "2026-09-15T15:00:38.808210+00:00",
-      "floor": null,
-      "group_id": null,
-      "is_sublet": false,
-      "lat": 32.0490898,
-      "lon": 34.8065685,
-      "neighborhood": "neve_eliezer_kfar_shalem_east",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33409252&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 5500,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 57.0,
-      "source": "komo",
-      "source_id": "4927252",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4927252"
     }
   ],
   "onmap": [
