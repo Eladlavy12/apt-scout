@@ -1,9 +1,9 @@
 {
   "fb_groups": {
-    "consecutive_failures": 22,
+    "consecutive_failures": 23,
     "detail": null,
     "last_error": "feed is stale (fetched_at 2026-09-30T15:45:11.893814+00:00)",
-    "last_failure": "2026-10-02T13:01:04.663558+00:00",
+    "last_failure": "2026-10-02T14:01:36.915083+00:00",
     "last_success": "2026-10-01T15:01:00.668429+00:00"
   },
   "fb_marketplace": {
@@ -14,10 +14,10 @@
     "last_success": "2026-10-02T09:01:39.438324+00:00"
   },
   "homeless": {
-    "consecutive_failures": 722,
+    "consecutive_failures": 723,
     "detail": null,
     "last_error": "רמת גן: fetch failed: All tiers failed for https://www.homeless.co.il/rent/city=%D7%A8%D7%9E%D7%AA%20%D7%92%D7%9F (http: HTTP 403; curl: HTTP 403)",
-    "last_failure": "2026-10-02T13:01:04.662767+00:00",
+    "last_failure": "2026-10-02T14:01:36.914278+00:00",
     "last_success": "2026-09-01T17:23:44.215720+00:00"
   },
   "komo": {
@@ -25,14 +25,14 @@
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-29T08:01:22.008437+00:00",
-    "last_success": "2026-10-02T13:00:48.154496+00:00"
+    "last_success": "2026-10-02T14:01:20.141048+00:00"
   },
   "onmap": {
     "consecutive_failures": 0,
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-11T21:01:44.858317+00:00",
-    "last_success": "2026-10-02T13:00:45.237543+00:00"
+    "last_success": "2026-10-02T14:01:16.908944+00:00"
   },
   "prog": {
     "consecutive_failures": 1,
@@ -41,10 +41,10 @@
     "last_success": "2026-09-01T15:58:42.284471+00:00"
   },
   "yad2": {
-    "consecutive_failures": 14,
-    "detail": "מוצגות 200 מודעות מהריצה האחרונה שהצליחה (לפני 14 שע')",
-    "last_error": "fetch failed: All tiers failed for https://gw.yad2.co.il/realestate-feed/rent/map?region=3&area=1&minPrice=3500&maxPrice=6000&minRooms=2 (http: HTTP 403; curl: HTTP 403)",
-    "last_failure": "2026-10-02T13:00:44.658866+00:00",
+    "consecutive_failures": 15,
+    "detail": "מוצגות 200 מודעות מהריצה האחרונה שהצליחה (לפני 15 שע')",
+    "last_error": "response was not JSON (tier http): Expecting value: line 1 column 1 (char 0); browser fallback also failed",
+    "last_failure": "2026-10-02T14:01:16.207600+00:00",
     "last_success": "2026-10-01T23:00:35.879726+00:00"
   }
 }
