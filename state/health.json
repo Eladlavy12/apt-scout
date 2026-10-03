@@ -4,7 +4,7 @@
     "detail": "local feed from 2026-10-03T00:11:25.294954+00:00; חסום עד 03:11",
     "last_error": null,
     "last_failure": "2026-10-03T00:01:16.078526+00:00",
-    "last_success": "2026-10-03T15:01:50.839598+00:00"
+    "last_success": "2026-10-03T16:00:52.145315+00:00"
   },
   "fb_marketplace": {
     "consecutive_failures": 0,
@@ -14,10 +14,10 @@
     "last_success": "2026-10-03T15:01:50.838786+00:00"
   },
   "homeless": {
-    "consecutive_failures": 748,
+    "consecutive_failures": 749,
     "detail": null,
     "last_error": "רמת גן: fetch failed: All tiers failed for https://www.homeless.co.il/rent/city=%D7%A8%D7%9E%D7%AA%20%D7%92%D7%9F (http: HTTP 403; curl: HTTP 403)",
-    "last_failure": "2026-10-03T15:01:15.006710+00:00",
+    "last_failure": "2026-10-03T16:00:52.144333+00:00",
     "last_success": "2026-09-01T17:23:44.215720+00:00"
   },
   "komo": {
@@ -25,14 +25,14 @@
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-29T08:01:22.008437+00:00",
-    "last_success": "2026-10-03T15:00:58.765768+00:00"
+    "last_success": "2026-10-03T16:00:35.904372+00:00"
   },
   "onmap": {
     "consecutive_failures": 0,
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-11T21:01:44.858317+00:00",
-    "last_success": "2026-10-03T15:00:55.488987+00:00"
+    "last_success": "2026-10-03T16:00:33.255275+00:00"
   },
   "prog": {
     "consecutive_failures": 1,
@@ -41,10 +41,10 @@
     "last_success": "2026-09-01T15:58:42.284471+00:00"
   },
   "yad2": {
-    "consecutive_failures": 9,
-    "detail": "מוצגות 200 מודעות מהריצה האחרונה שהצליחה (לפני 9 שע')",
-    "last_error": "response was not JSON (tier http): Expecting value: line 1 column 1 (char 0); browser fallback also failed",
+    "consecutive_failures": 0,
+    "detail": "local feed from 2026-10-03T15:51:18.007123+00:00",
+    "last_error": null,
     "last_failure": "2026-10-03T15:00:54.835743+00:00",
-    "last_success": "2026-10-03T06:00:34.106553+00:00"
+    "last_success": "2026-10-03T16:00:32.695831+00:00"
   }
 }
