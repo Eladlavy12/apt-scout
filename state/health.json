@@ -1,9 +1,9 @@
 {
   "fb_groups": {
-    "consecutive_failures": 14,
+    "consecutive_failures": 15,
     "detail": null,
     "last_error": "feed is stale (fetched_at 2026-10-03T00:11:25.294954+00:00)",
-    "last_failure": "2026-10-04T14:00:50.920110+00:00",
+    "last_failure": "2026-10-04T15:01:41.515724+00:00",
     "last_success": "2026-10-04T00:00:55.368344+00:00"
   },
   "fb_marketplace": {
@@ -11,13 +11,13 @@
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-01T17:12:20.654776+00:00",
-    "last_success": "2026-10-04T09:02:06.995567+00:00"
+    "last_success": "2026-10-04T15:01:41.514998+00:00"
   },
   "homeless": {
-    "consecutive_failures": 771,
+    "consecutive_failures": 772,
     "detail": null,
     "last_error": "רמת גן: fetch failed: All tiers failed for https://www.homeless.co.il/rent/city=%D7%A8%D7%9E%D7%AA%20%D7%92%D7%9F (http: HTTP 403; curl: HTTP 403)",
-    "last_failure": "2026-10-04T14:00:50.919278+00:00",
+    "last_failure": "2026-10-04T15:00:55.983205+00:00",
     "last_success": "2026-09-01T17:23:44.215720+00:00"
   },
   "komo": {
@@ -25,14 +25,14 @@
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-29T08:01:22.008437+00:00",
-    "last_success": "2026-10-04T14:00:34.594136+00:00"
+    "last_success": "2026-10-04T15:00:39.772423+00:00"
   },
   "onmap": {
     "consecutive_failures": 0,
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-11T21:01:44.858317+00:00",
-    "last_success": "2026-10-04T14:00:32.143846+00:00"
+    "last_success": "2026-10-04T15:00:37.298643+00:00"
   },
   "prog": {
     "consecutive_failures": 1,
@@ -42,9 +42,9 @@
   },
   "yad2": {
     "consecutive_failures": 0,
-    "detail": "local feed from 2026-10-04T13:45:11.158620+00:00",
+    "detail": "local feed from 2026-10-04T14:45:11.596889+00:00",
     "last_error": null,
     "last_failure": "2026-10-04T09:01:03.065401+00:00",
-    "last_success": "2026-10-04T14:00:31.758950+00:00"
+    "last_success": "2026-10-04T15:00:36.739095+00:00"
   }
 }
