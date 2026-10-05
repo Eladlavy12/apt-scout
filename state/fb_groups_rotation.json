@@ -1,6 +1,6 @@
 {
-  "backoff_hours": 48,
-  "blocked_until": "2026-10-05T00:11:25.294954+00:00",
+  "backoff_hours": 6,
+  "blocked_until": null,
   "groups": {
     "101875683484689": {
       "blocked": 2,
@@ -36,18 +36,18 @@
     "295395253832427": {
       "blocked": 0,
       "last_outcome": "ok",
-      "last_visit": "2026-09-24T09:37:59.289131+00:00",
+      "last_visit": "2026-10-05T13:49:52.547637+00:00",
       "name": "דירות בתל אביב",
-      "posts_seen": 1,
-      "visits": 1
+      "posts_seen": 2,
+      "visits": 2
     },
     "305724686290054": {
       "blocked": 0,
       "last_outcome": "ok",
-      "last_visit": "2026-09-24T09:45:10.546938+00:00",
+      "last_visit": "2026-10-05T13:49:52.547637+00:00",
       "name": "דירות להשכרה בתל אביב",
-      "posts_seen": 1,
-      "visits": 1
+      "posts_seen": 2,
+      "visits": 2
     },
     "333022240594651": {
       "blocked": 0,
