@@ -1,9 +1,9 @@
 {
   "fb_groups": {
-    "consecutive_failures": 32,
+    "consecutive_failures": 33,
     "detail": null,
     "last_error": "feed is stale (fetched_at 2026-10-03T00:11:25.294954+00:00)",
-    "last_failure": "2026-10-05T08:01:24.747638+00:00",
+    "last_failure": "2026-10-05T09:02:05.367161+00:00",
     "last_success": "2026-10-04T00:00:55.368344+00:00"
   },
   "fb_marketplace": {
@@ -11,13 +11,13 @@
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-01T17:12:20.654776+00:00",
-    "last_success": "2026-10-05T03:01:51.845266+00:00"
+    "last_success": "2026-10-05T09:02:05.365975+00:00"
   },
   "homeless": {
-    "consecutive_failures": 789,
+    "consecutive_failures": 790,
     "detail": null,
     "last_error": "רמת גן: fetch failed: All tiers failed for https://www.homeless.co.il/rent/city=%D7%A8%D7%9E%D7%AA%20%D7%92%D7%9F (http: HTTP 403; curl: HTTP 403)",
-    "last_failure": "2026-10-05T08:01:24.746828+00:00",
+    "last_failure": "2026-10-05T09:01:29.103480+00:00",
     "last_success": "2026-09-01T17:23:44.215720+00:00"
   },
   "komo": {
@@ -25,14 +25,14 @@
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-29T08:01:22.008437+00:00",
-    "last_success": "2026-10-05T08:01:08.217814+00:00"
+    "last_success": "2026-10-05T09:01:12.847925+00:00"
   },
   "onmap": {
     "consecutive_failures": 0,
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-11T21:01:44.858317+00:00",
-    "last_success": "2026-10-05T08:01:05.276284+00:00"
+    "last_success": "2026-10-05T09:01:09.510828+00:00"
   },
   "prog": {
     "consecutive_failures": 1,
@@ -41,10 +41,10 @@
     "last_success": "2026-09-01T15:58:42.284471+00:00"
   },
   "yad2": {
-    "consecutive_failures": 5,
-    "detail": "מוצגות 200 מודעות מהריצה האחרונה שהצליחה (לפני 5 שע')",
+    "consecutive_failures": 6,
+    "detail": "מוצגות 200 מודעות מהריצה האחרונה שהצליחה (לפני 6 שע')",
     "last_error": "response was not JSON (tier http): Expecting value: line 1 column 1 (char 0); browser fallback also failed",
-    "last_failure": "2026-10-05T08:01:04.493354+00:00",
+    "last_failure": "2026-10-05T09:01:08.947023+00:00",
     "last_success": "2026-10-05T03:00:47.723869+00:00"
   }
 }
