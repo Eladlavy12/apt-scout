@@ -1,6 +1,6 @@
 {
-  "backoff_hours": 6,
-  "blocked_until": null,
+  "backoff_hours": 12,
+  "blocked_until": "2026-10-05T20:45:13.391484+00:00",
   "groups": {
     "101875683484689": {
       "blocked": 2,
@@ -52,16 +52,16 @@
     "333022240594651": {
       "blocked": 0,
       "last_outcome": "ok",
-      "last_visit": "2026-09-24T09:45:10.546938+00:00",
-      "posts_seen": 1,
-      "visits": 1
+      "last_visit": "2026-10-05T14:45:13.391484+00:00",
+      "posts_seen": 2,
+      "visits": 2
     },
     "340827733093253": {
-      "blocked": 1,
+      "blocked": 2,
       "last_outcome": "blocked",
-      "last_visit": "2026-09-24T10:45:13.482444+00:00",
+      "last_visit": "2026-10-05T14:45:13.391484+00:00",
       "posts_seen": 0,
-      "visits": 1
+      "visits": 2
     },
     "457465901082882": {
       "blocked": 1,
