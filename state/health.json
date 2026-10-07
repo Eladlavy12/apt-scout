@@ -1,9 +1,9 @@
 {
   "fb_groups": {
-    "consecutive_failures": 12,
+    "consecutive_failures": 13,
     "detail": null,
     "last_error": "feed is stale (fetched_at 2026-10-05T14:45:13.391484+00:00)",
-    "last_failure": "2026-10-07T02:01:20.506802+00:00",
+    "last_failure": "2026-10-07T03:01:14.952161+00:00",
     "last_success": "2026-10-06T14:01:24.603022+00:00"
   },
   "fb_marketplace": {
@@ -14,10 +14,10 @@
     "last_success": "2026-10-06T22:01:57.758315+00:00"
   },
   "homeless": {
-    "consecutive_failures": 830,
+    "consecutive_failures": 831,
     "detail": null,
     "last_error": "רמת גן: fetch failed: All tiers failed for https://www.homeless.co.il/rent/city=%D7%A8%D7%9E%D7%AA%20%D7%92%D7%9F (http: HTTP 403; curl: HTTP 403)",
-    "last_failure": "2026-10-07T02:01:20.506200+00:00",
+    "last_failure": "2026-10-07T03:01:14.951295+00:00",
     "last_success": "2026-09-01T17:23:44.215720+00:00"
   },
   "komo": {
@@ -25,14 +25,14 @@
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-29T08:01:22.008437+00:00",
-    "last_success": "2026-10-07T02:01:04.084139+00:00"
+    "last_success": "2026-10-07T03:00:58.583501+00:00"
   },
   "onmap": {
     "consecutive_failures": 0,
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-11T21:01:44.858317+00:00",
-    "last_success": "2026-10-07T02:01:01.282267+00:00"
+    "last_success": "2026-10-07T03:00:55.709358+00:00"
   },
   "prog": {
     "consecutive_failures": 1,
@@ -41,10 +41,10 @@
     "last_success": "2026-09-01T15:58:42.284471+00:00"
   },
   "yad2": {
-    "consecutive_failures": 23,
-    "detail": "מוצגות 200 מודעות מהריצה האחרונה שהצליחה (לפני 23 שע')",
+    "consecutive_failures": 24,
+    "detail": null,
     "last_error": "response was not JSON (tier http): Expecting value: line 1 column 1 (char 0); browser fallback also failed",
-    "last_failure": "2026-10-07T02:01:00.896773+00:00",
+    "last_failure": "2026-10-07T03:00:55.174047+00:00",
     "last_success": "2026-10-06T03:01:00.372926+00:00"
   }
 }
