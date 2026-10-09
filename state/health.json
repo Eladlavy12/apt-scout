@@ -4,20 +4,20 @@
     "detail": "local feed from 2026-10-09T00:45:15.972944+00:00; חסום עד 03:45",
     "last_error": null,
     "last_failure": "2026-10-09T00:01:13.445886+00:00",
-    "last_success": "2026-10-09T15:01:33.346267+00:00"
+    "last_success": "2026-10-09T16:01:56.636323+00:00"
   },
   "fb_marketplace": {
     "consecutive_failures": 0,
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-01T17:12:20.654776+00:00",
-    "last_success": "2026-10-09T10:01:51.559002+00:00"
+    "last_success": "2026-10-09T16:01:56.635533+00:00"
   },
   "homeless": {
-    "consecutive_failures": 890,
+    "consecutive_failures": 891,
     "detail": null,
     "last_error": "רמת גן: fetch failed: All tiers failed for https://www.homeless.co.il/rent/city=%D7%A8%D7%9E%D7%AA%20%D7%92%D7%9F (http: HTTP 403; curl: HTTP 403)",
-    "last_failure": "2026-10-09T15:01:33.344794+00:00",
+    "last_failure": "2026-10-09T16:01:25.281646+00:00",
     "last_success": "2026-09-01T17:23:44.215720+00:00"
   },
   "komo": {
@@ -25,14 +25,14 @@
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-29T08:01:22.008437+00:00",
-    "last_success": "2026-10-09T15:01:16.567691+00:00"
+    "last_success": "2026-10-09T16:01:09.042555+00:00"
   },
   "onmap": {
     "consecutive_failures": 0,
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-11T21:01:44.858317+00:00",
-    "last_success": "2026-10-09T15:01:13.507002+00:00"
+    "last_success": "2026-10-09T16:01:06.624772+00:00"
   },
   "prog": {
     "consecutive_failures": 1,
@@ -41,10 +41,10 @@
     "last_success": "2026-09-01T15:58:42.284471+00:00"
   },
   "yad2": {
-    "consecutive_failures": 8,
-    "detail": "מוצגות 200 מודעות מהריצה האחרונה שהצליחה (לפני 8 שע')",
+    "consecutive_failures": 9,
+    "detail": "מוצגות 200 מודעות מהריצה האחרונה שהצליחה (לפני 9 שע')",
     "last_error": "response was not JSON (tier http): Expecting value: line 1 column 1 (char 0); browser fallback also failed",
-    "last_failure": "2026-10-09T15:01:12.780294+00:00",
+    "last_failure": "2026-10-09T16:01:06.152468+00:00",
     "last_success": "2026-10-09T07:00:36.814321+00:00"
   }
 }
