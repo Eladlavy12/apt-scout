@@ -1,6 +1,6 @@
 {
   "backoff_hours": 48,
-  "blocked_until": "2026-10-10T00:45:15.972944+00:00",
+  "blocked_until": "2026-10-12T21:02:04.077063+00:00",
   "groups": {
     "101875683484689": {
       "blocked": 2,
@@ -97,18 +97,18 @@
     "nadlan247": {
       "blocked": 0,
       "last_outcome": "ok",
-      "last_visit": "2026-09-27T16:45:10.980543+00:00",
+      "last_visit": "2026-10-10T21:02:04.077063+00:00",
       "name": "דירות למכירה / להשכרה תל אביב - רמת גן",
-      "posts_seen": 1,
-      "visits": 1
+      "posts_seen": 2,
+      "visits": 2
     },
     "tel.aviv.dirot": {
-      "blocked": 0,
-      "last_outcome": "ok",
-      "last_visit": "2026-09-27T17:45:11.002671+00:00",
+      "blocked": 1,
+      "last_outcome": "blocked",
+      "last_visit": "2026-10-10T21:02:04.077063+00:00",
       "name": "לוח דירות תל אביב-יפו",
       "posts_seen": 1,
-      "visits": 1
+      "visits": 2
     },
     "telavivrentals": {
       "blocked": 0,
