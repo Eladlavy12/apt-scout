@@ -4,7 +4,7 @@
     "detail": "local feed from 2026-10-10T21:02:04.077063+00:00; חסום עד 00:02",
     "last_error": null,
     "last_failure": "2026-10-10T21:01:25.191688+00:00",
-    "last_success": "2026-10-11T15:58:51.986443+00:00"
+    "last_success": "2026-10-11T17:00:51.113153+00:00"
   },
   "fb_marketplace": {
     "consecutive_failures": 0,
@@ -14,10 +14,10 @@
     "last_success": "2026-10-11T15:58:51.985657+00:00"
   },
   "homeless": {
-    "consecutive_failures": 939,
+    "consecutive_failures": 940,
     "detail": null,
     "last_error": "רמת גן: fetch failed: All tiers failed for https://www.homeless.co.il/rent/city=%D7%A8%D7%9E%D7%AA%20%D7%92%D7%9F (http: HTTP 403; curl: HTTP 403)",
-    "last_failure": "2026-10-11T15:58:22.887909+00:00",
+    "last_failure": "2026-10-11T17:00:51.112258+00:00",
     "last_success": "2026-09-01T17:23:44.215720+00:00"
   },
   "komo": {
@@ -25,14 +25,14 @@
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-29T08:01:22.008437+00:00",
-    "last_success": "2026-10-11T15:58:06.656973+00:00"
+    "last_success": "2026-10-11T17:00:34.634866+00:00"
   },
   "onmap": {
     "consecutive_failures": 0,
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-11T21:01:44.858317+00:00",
-    "last_success": "2026-10-11T15:58:04.760126+00:00"
+    "last_success": "2026-10-11T17:00:32.239423+00:00"
   },
   "prog": {
     "consecutive_failures": 1,
@@ -42,9 +42,9 @@
   },
   "yad2": {
     "consecutive_failures": 0,
-    "detail": "local feed from 2026-10-11T15:45:14.279704+00:00",
+    "detail": "local feed from 2026-10-11T16:45:12.157249+00:00",
     "last_error": null,
     "last_failure": "2026-10-11T13:00:58.518848+00:00",
-    "last_success": "2026-10-11T15:58:04.339420+00:00"
+    "last_success": "2026-10-11T17:00:31.801850+00:00"
   }
 }
