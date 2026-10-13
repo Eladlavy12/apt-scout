@@ -1,6 +1,6 @@
 {
   "backoff_hours": 48,
-  "blocked_until": "2026-10-12T21:02:04.077063+00:00",
+  "blocked_until": "2026-10-15T15:45:15.082336+00:00",
   "groups": {
     "101875683484689": {
       "blocked": 2,
@@ -111,12 +111,12 @@
       "visits": 2
     },
     "telavivrentals": {
-      "blocked": 0,
-      "last_outcome": "ok",
-      "last_visit": "2026-09-27T17:45:11.002671+00:00",
+      "blocked": 1,
+      "last_outcome": "blocked",
+      "last_visit": "2026-10-13T15:45:15.082336+00:00",
       "name": "דירות צפון ישן מרכז לב תל אביב זה כאן",
       "posts_seen": 1,
-      "visits": 1
+      "visits": 2
     },
     "tlvapartment": {
       "blocked": 1,
