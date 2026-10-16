@@ -705,6 +705,34 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4942717"
     },
     {
+      "address_text": "תל אביב יפו, פלורנטין, המשביר 5",
+      "city": "תל אביב יפו",
+      "distance_km": 3.13,
+      "drive_minutes": 7.7,
+      "first_seen_at": "2026-09-01T15:51:40.130630+00:00",
+      "floor": null,
+      "group_id": null,
+      "is_sublet": false,
+      "lat": 32.060281,
+      "lon": 34.771128,
+      "neighborhood": "florentin",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33634225&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 3800,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 35.0,
+      "source": "komo",
+      "source_id": "4779844",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4779844"
+    },
+    {
       "address_text": "תל אביב יפו, קריית שלום, בורמה 38",
       "city": "תל אביב יפו",
       "distance_km": 3.33,
@@ -1207,34 +1235,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4923693"
-    },
-    {
-      "address_text": "תל אביב יפו, עזרא, שתולים 44",
-      "city": "תל אביב יפו",
-      "distance_km": 1.66,
-      "drive_minutes": 5.1,
-      "first_seen_at": "2026-09-16T06:00:33.216514+00:00",
-      "floor": null,
-      "group_id": null,
-      "is_sublet": false,
-      "lat": 32.0434067,
-      "lon": 34.7957224,
-      "neighborhood": "ezra_haargazim",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33134088&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 3600,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 40.0,
-      "source": "komo",
-      "source_id": "4932214",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4932214"
     }
   ],
   "onmap": [
