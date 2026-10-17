@@ -1,6 +1,6 @@
 {
   "backoff_hours": 48,
-  "blocked_until": "2026-10-15T15:45:15.082336+00:00",
+  "blocked_until": "2026-10-19T20:07:37.192395+00:00",
   "groups": {
     "101875683484689": {
       "blocked": 2,
@@ -119,11 +119,12 @@
       "visits": 2
     },
     "tlvapartment": {
-      "blocked": 1,
+      "blocked": 2,
       "last_outcome": "blocked",
-      "last_visit": "2026-09-27T18:45:11.567573+00:00",
+      "last_visit": "2026-10-17T20:07:37.192395+00:00",
+      "name": "דירות בתל אביב ללא תיווך. הודעות מתיווך יוסרו.",
       "posts_seen": 0,
-      "visits": 1
+      "visits": 2
     },
     "tlvrent": {
       "blocked": 1,
