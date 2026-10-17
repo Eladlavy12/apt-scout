@@ -695,6 +695,34 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4942717"
     },
     {
+      "address_text": "תל אביב יפו, מונטיפיורי, ילין מור נתן 21",
+      "city": "תל אביב יפו",
+      "distance_km": null,
+      "drive_minutes": null,
+      "first_seen_at": "2026-09-21T05:00:34.506565+00:00",
+      "floor": null,
+      "group_id": null,
+      "is_sublet": false,
+      "lat": null,
+      "lon": null,
+      "neighborhood": "tel_aviv_yafo",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33305147&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 4600,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 50.0,
+      "source": "komo",
+      "source_id": "4936378",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4936378"
+    },
+    {
       "address_text": "תל אביב יפו, פלורנטין, המשביר 5",
       "city": "תל אביב יפו",
       "distance_km": 3.13,
@@ -1197,34 +1225,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4934137"
-    },
-    {
-      "address_text": "תל אביב יפו, שד ירושלים 129",
-      "city": "תל אביב יפו",
-      "distance_km": null,
-      "drive_minutes": null,
-      "first_seen_at": "2026-09-26T05:00:36.326268+00:00",
-      "floor": 13,
-      "group_id": null,
-      "is_sublet": false,
-      "lat": null,
-      "lon": null,
-      "neighborhood": "tel_aviv_yafo",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=0&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 6000,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": null,
-      "source": "komo",
-      "source_id": "4938552",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4938552"
     }
   ],
   "onmap": [
