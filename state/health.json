@@ -4,7 +4,7 @@
     "detail": "local feed from 2026-10-17T20:07:37.192395+00:00; חסום עד 23:07",
     "last_error": null,
     "last_failure": "2026-10-17T20:01:21.712756+00:00",
-    "last_success": "2026-10-18T05:01:13.553996+00:00"
+    "last_success": "2026-10-18T06:01:10.442236+00:00"
   },
   "fb_marketplace": {
     "consecutive_failures": 0,
@@ -14,10 +14,10 @@
     "last_success": "2026-10-18T04:01:48.924736+00:00"
   },
   "homeless": {
-    "consecutive_failures": 1095,
+    "consecutive_failures": 1096,
     "detail": null,
     "last_error": "רמת גן: fetch failed: All tiers failed for https://www.homeless.co.il/rent/city=%D7%A8%D7%9E%D7%AA%20%D7%92%D7%9F (http: HTTP 403; curl: HTTP 403)",
-    "last_failure": "2026-10-18T05:01:13.553083+00:00",
+    "last_failure": "2026-10-18T06:01:10.441270+00:00",
     "last_success": "2026-09-01T17:23:44.215720+00:00"
   },
   "komo": {
@@ -25,14 +25,14 @@
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-29T08:01:22.008437+00:00",
-    "last_success": "2026-10-18T05:00:57.209755+00:00"
+    "last_success": "2026-10-18T06:00:54.123859+00:00"
   },
   "onmap": {
     "consecutive_failures": 0,
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-11T21:01:44.858317+00:00",
-    "last_success": "2026-10-18T05:00:53.825093+00:00"
+    "last_success": "2026-10-18T06:00:51.656740+00:00"
   },
   "prog": {
     "consecutive_failures": 1,
@@ -41,10 +41,10 @@
     "last_success": "2026-09-01T15:58:42.284471+00:00"
   },
   "yad2": {
-    "consecutive_failures": 3,
-    "detail": "מוצגות 200 מודעות מהריצה האחרונה שהצליחה (לפני 3 שע')",
+    "consecutive_failures": 4,
+    "detail": "מוצגות 200 מודעות מהריצה האחרונה שהצליחה (לפני 4 שע')",
     "last_error": "response was not JSON (tier http): Expecting value: line 1 column 1 (char 0); browser fallback also failed",
-    "last_failure": "2026-10-18T05:00:53.510623+00:00",
+    "last_failure": "2026-10-18T06:00:51.083242+00:00",
     "last_success": "2026-10-18T02:00:35.710423+00:00"
   }
 }
