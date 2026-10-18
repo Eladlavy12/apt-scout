@@ -682,6 +682,34 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4942717"
     },
     {
+      "address_text": "תל אביב יפו, נווה שרת, אלמגור 8",
+      "city": "תל אביב יפו",
+      "distance_km": 7.88,
+      "drive_minutes": 17.3,
+      "first_seen_at": "2026-10-18T05:00:34.009364+00:00",
+      "floor": 1,
+      "group_id": null,
+      "is_sublet": false,
+      "lat": 32.119527,
+      "lon": 34.842577,
+      "neighborhood": "tel_aviv_yafo",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33657351&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 4900,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 45.0,
+      "source": "komo",
+      "source_id": "4943487",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4943487"
+    },
+    {
       "address_text": "תל אביב יפו, פלורנטין, הרצל 84",
       "city": "תל אביב יפו",
       "distance_km": 3.14,
@@ -1184,34 +1212,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4888859"
-    },
-    {
-      "address_text": "תל אביב יפו, נווה כפיר, הרב אלנקווה 48",
-      "city": "תל אביב יפו",
-      "distance_km": null,
-      "drive_minutes": null,
-      "first_seen_at": "2026-10-08T12:00:40.645072+00:00",
-      "floor": 1,
-      "group_id": null,
-      "is_sublet": false,
-      "lat": null,
-      "lon": null,
-      "neighborhood": "tel_aviv_yafo",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33524902&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 4300,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 41.0,
-      "source": "komo",
-      "source_id": "4941639",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4941639"
     }
   ],
   "onmap": [
