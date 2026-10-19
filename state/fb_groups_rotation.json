@@ -1,13 +1,13 @@
 {
-  "backoff_hours": 48,
-  "blocked_until": "2026-10-19T20:07:37.192395+00:00",
+  "backoff_hours": 6,
+  "blocked_until": null,
   "groups": {
     "101875683484689": {
       "blocked": 2,
-      "last_outcome": "blocked",
-      "last_visit": "2026-09-29T14:53:45.573774+00:00",
-      "posts_seen": 0,
-      "visits": 2
+      "last_outcome": "ok",
+      "last_visit": "2026-10-19T20:45:11.918619+00:00",
+      "posts_seen": 1,
+      "visits": 3
     },
     "1196843027043598": {
       "blocked": 1,
@@ -128,10 +128,11 @@
     },
     "tlvrent": {
       "blocked": 1,
-      "last_outcome": "blocked",
-      "last_visit": "2026-09-28T13:45:14.655994+00:00",
-      "posts_seen": 0,
-      "visits": 1
+      "last_outcome": "ok",
+      "last_visit": "2026-10-19T20:45:11.918619+00:00",
+      "name": "[RENTME] דירות להשכרה בתל אביב ללא תיווך",
+      "posts_seen": 1,
+      "visits": 2
     }
   }
 }
