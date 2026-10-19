@@ -699,6 +699,34 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4842532"
     },
     {
+      "address_text": "תל אביב יפו, לבנה, דרך חיים ברלב 100",
+      "city": "תל אביב יפו",
+      "distance_km": null,
+      "drive_minutes": null,
+      "first_seen_at": "2026-09-15T08:00:36.487701+00:00",
+      "floor": null,
+      "group_id": null,
+      "is_sublet": false,
+      "lat": null,
+      "lon": null,
+      "neighborhood": "tel_aviv_yafo",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33681909&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 4000,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 35.0,
+      "source": "komo",
+      "source_id": "4914396",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4914396"
+    },
+    {
       "address_text": "תל אביב יפו, נווה שרת, אלמגור 9",
       "city": "תל אביב יפו",
       "distance_km": 7.94,
@@ -725,34 +753,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4909888"
-    },
-    {
-      "address_text": "תל אביב יפו, לבנה, דרך חיים ברלב 100",
-      "city": "תל אביב יפו",
-      "distance_km": null,
-      "drive_minutes": null,
-      "first_seen_at": "2026-09-15T08:00:36.487701+00:00",
-      "floor": null,
-      "group_id": null,
-      "is_sublet": false,
-      "lat": null,
-      "lon": null,
-      "neighborhood": "tel_aviv_yafo",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33519894&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 4000,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 35.0,
-      "source": "komo",
-      "source_id": "4914396",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4914396"
     },
     {
       "address_text": "תל אביב יפו, שכונת התקווה, מבשר 80",
