@@ -1,6 +1,6 @@
 {
-  "backoff_hours": 6,
-  "blocked_until": null,
+  "backoff_hours": 12,
+  "blocked_until": "2026-10-20T21:11:54.375875+00:00",
   "groups": {
     "101875683484689": {
       "blocked": 2,
@@ -12,18 +12,18 @@
     "1196843027043598": {
       "blocked": 1,
       "last_outcome": "ok",
-      "last_visit": "2026-09-30T15:45:11.893814+00:00",
+      "last_visit": "2026-10-20T15:11:54.375875+00:00",
       "name": "דירות להשכרה מכירה תל אביב Tel Aviv Apartments",
-      "posts_seen": 1,
-      "visits": 2
+      "posts_seen": 2,
+      "visits": 3
     },
     "184920528370332": {
-      "blocked": 2,
+      "blocked": 3,
       "last_outcome": "blocked",
-      "last_visit": "2026-09-30T15:45:11.893814+00:00",
+      "last_visit": "2026-10-20T15:11:54.375875+00:00",
       "name": "דירות להשכרה בתל אביב",
       "posts_seen": 0,
-      "visits": 2
+      "visits": 3
     },
     "291753646078748": {
       "blocked": 1,
