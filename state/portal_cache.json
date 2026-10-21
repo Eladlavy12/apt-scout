@@ -695,6 +695,34 @@
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4842532"
     },
     {
+      "address_text": "תל אביב יפו, שכונת התקווה, אריאל 11",
+      "city": "תל אביב יפו",
+      "distance_km": 0.73,
+      "drive_minutes": 3.9,
+      "first_seen_at": "2026-09-18T01:00:35.799698+00:00",
+      "floor": 3,
+      "group_id": null,
+      "is_sublet": false,
+      "lat": 32.051784,
+      "lon": 34.798867,
+      "neighborhood": "hatikva",
+      "occupancy": "whole",
+      "phone_hash": null,
+      "photos": [
+        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33529481&luachNum=2&picSize=1"
+      ],
+      "posted_at": null,
+      "price": 4800,
+      "raw_text": null,
+      "rooms": 2.0,
+      "size_sqm": 50.0,
+      "source": "komo",
+      "source_id": "4923158",
+      "sources": [],
+      "title": null,
+      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4923158"
+    },
+    {
       "address_text": "תל אביב יפו, נווה שרת, אלמגור 9",
       "city": "תל אביב יפו",
       "distance_km": 7.94,
@@ -861,34 +889,6 @@
       "sources": [],
       "title": null,
       "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4928294"
-    },
-    {
-      "address_text": "תל אביב יפו, שכונת התקווה, אריאל 11",
-      "city": "תל אביב יפו",
-      "distance_km": 0.73,
-      "drive_minutes": 3.9,
-      "first_seen_at": "2026-09-18T01:00:35.799698+00:00",
-      "floor": 3,
-      "group_id": null,
-      "is_sublet": false,
-      "lat": 32.051784,
-      "lon": 34.798867,
-      "neighborhood": "hatikva",
-      "occupancy": "whole",
-      "phone_hash": null,
-      "photos": [
-        "https://www.komo.co.il/api/modaot/tmunot/showPic/list/?picNum=33529481&luachNum=2&picSize=1"
-      ],
-      "posted_at": null,
-      "price": 4800,
-      "raw_text": null,
-      "rooms": 2.0,
-      "size_sqm": 50.0,
-      "source": "komo",
-      "source_id": "4923158",
-      "sources": [],
-      "title": null,
-      "url": "https://www.komo.co.il/code/nadlan/details/?modaaNum=4923158"
     },
     {
       "address_text": "תל אביב יפו, ביצרון, עמינדב 22",
