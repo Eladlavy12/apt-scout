@@ -1,6 +1,6 @@
 {
-  "backoff_hours": 12,
-  "blocked_until": "2026-10-21T16:45:10.550049+00:00",
+  "backoff_hours": 24,
+  "blocked_until": "2026-10-22T04:45:12.246944+00:00",
   "groups": {
     "101875683484689": {
       "blocked": 2,
@@ -64,12 +64,12 @@
       "visits": 3
     },
     "457465901082882": {
-      "blocked": 1,
-      "last_outcome": "ok",
-      "last_visit": "2026-10-07T18:45:18.550453+00:00",
+      "blocked": 2,
+      "last_outcome": "blocked",
+      "last_visit": "2026-10-21T16:45:12.246944+00:00",
       "name": "דירות בתל אביב ללא תיווך",
       "posts_seen": 1,
-      "visits": 2
+      "visits": 3
     },
     "458499457501175": {
       "blocked": 1,
