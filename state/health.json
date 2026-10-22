@@ -4,7 +4,7 @@
     "detail": "local feed from 2026-10-21T16:45:12.246944+00:00",
     "last_error": null,
     "last_failure": "2026-10-19T20:00:55.922429+00:00",
-    "last_success": "2026-10-22T10:01:50.342147+00:00"
+    "last_success": "2026-10-22T11:01:26.372577+00:00"
   },
   "fb_marketplace": {
     "consecutive_failures": 0,
@@ -14,10 +14,10 @@
     "last_success": "2026-10-22T10:01:50.341481+00:00"
   },
   "homeless": {
-    "consecutive_failures": 1196,
+    "consecutive_failures": 1197,
     "detail": null,
     "last_error": "רמת גן: fetch failed: All tiers failed for https://www.homeless.co.il/rent/city=%D7%A8%D7%9E%D7%AA%20%D7%92%D7%9F (http: HTTP 403; curl: HTTP 403)",
-    "last_failure": "2026-10-22T10:01:18.947587+00:00",
+    "last_failure": "2026-10-22T11:01:26.371652+00:00",
     "last_success": "2026-09-01T17:23:44.215720+00:00"
   },
   "komo": {
@@ -25,14 +25,14 @@
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-29T08:01:22.008437+00:00",
-    "last_success": "2026-10-22T10:01:02.510022+00:00"
+    "last_success": "2026-10-22T11:01:09.806968+00:00"
   },
   "onmap": {
     "consecutive_failures": 0,
     "detail": null,
     "last_error": null,
     "last_failure": "2026-09-11T21:01:44.858317+00:00",
-    "last_success": "2026-10-22T10:00:59.768794+00:00"
+    "last_success": "2026-10-22T11:01:06.086259+00:00"
   },
   "prog": {
     "consecutive_failures": 1,
@@ -41,10 +41,10 @@
     "last_success": "2026-09-01T15:58:42.284471+00:00"
   },
   "yad2": {
-    "consecutive_failures": 7,
-    "detail": "מוצגות 200 מודעות מהריצה האחרונה שהצליחה (לפני 7 שע')",
+    "consecutive_failures": 8,
+    "detail": "מוצגות 200 מודעות מהריצה האחרונה שהצליחה (לפני 8 שע')",
     "last_error": "response was not JSON (tier http): Expecting value: line 1 column 1 (char 0); browser fallback also failed",
-    "last_failure": "2026-10-22T10:00:59.202745+00:00",
+    "last_failure": "2026-10-22T11:01:05.460551+00:00",
     "last_success": "2026-10-22T03:00:36.387596+00:00"
   }
 }
